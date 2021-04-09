@@ -1,7 +1,5 @@
 package sample;
-
 import java.sql.*;
-
 public class SellerTable {
     public static final String DB_NAME = "SELLER.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
@@ -16,6 +14,7 @@ public class SellerTable {
     public static final String COLUMN_PRICE = "Price";
 
     public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " VALUES ( ? , ? , ? , ? , ? , ? , ? ) ";
+    public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " VALUES ( NULL, ? , ? , ? , ? , ? , ? , ? ) ";
     public static final String UPDATE_OFFER_PRICE = " UPDATE " + SELL_TABLE + " SET " + COLUMN_PRICE + " = ? WHERE " +
             COLUMN_OFFER_ID + " = ? ";
     public static final String UPDATE_OFFER_END_DATE = " UPDATE " + SELL_TABLE + " SET " + COLUMN_END_DATE + " = ? " + " WHERE " +
@@ -23,26 +22,20 @@ public class SellerTable {
     public static final String UPDATE_OFFER_QUANTITY = " UPDATE " + SELL_TABLE + " SET " + COLUMN_QUANTITY + " = ? " + " WHERE " +
             COLUMN_OFFER_ID + " = ? ";
     public static final String DELETE_OFFER = " DELETE FROM " + SELL_TABLE + " WHERE " + COLUMN_OFFER_ID + " = ? ";
-
     public Connection conn;
     public PreparedStatement addOffer;
     public PreparedStatement updateOfferPrice;
     public PreparedStatement updateOfferEndDate;
     public PreparedStatement updateOfferQuantity;
     public PreparedStatement deleteOffer;
-
     private static SellerTable sellerTable;
-
     public static SellerTable getInstance() {
         if(sellerTable == null)
             sellerTable = new SellerTable();
         return sellerTable;
     }
-
     private SellerTable() {
-
     }
-
     public boolean open() {
         try {
             conn = Server.conn;
@@ -57,7 +50,6 @@ public class SellerTable {
             return false;
         }
     }
-
     public boolean close() {
         try {
             if (addOffer != null) {
@@ -81,7 +73,6 @@ public class SellerTable {
             return false;
         }
     }
-
     public boolean deleteOffer(int offerId) {
         try {
             deleteOffer.setInt(1, offerId);
@@ -92,7 +83,6 @@ public class SellerTable {
             return false;
         }
     }
-
     public boolean addOffer(String cropName, int quantity, int price,
                              Date startDate, Date endDate, String sellerName, String sellerPhone) {
         try {
@@ -110,7 +100,6 @@ public class SellerTable {
             return false;
         }
     }
-
     public boolean updateOfferPrice(int offerId,int price){
         try {
             updateOfferPrice.setInt(1,price);
