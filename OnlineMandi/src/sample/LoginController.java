@@ -29,17 +29,25 @@ public class LoginController implements Initializable {
     @FXML
     void signIn(ActionEvent e) throws IOException {
         String pass = getMd5(password.getText());
+        System.out.println(pass);
         String phoneNo = phoneNumber.getText();
-        //creating an instance of UserTable class, if it already present then same instance will be returned
         //creating an instance of UserTable class, if it already present then the same instance will be returned
         UserTable userTable = UserTable.getInstance();
         userTable.open();
         FullNameProfilePic fullNameProfilePic = userTable.authentication(pass,phoneNo);
+        FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass,phoneNo);
         if(fullNameProfilePic!=null){
             //if authentication is successful then fetch the profile pic and name of the user
             Image image = fullNameProfilePic.getImage();
             String name = fullNameProfilePic.getFullName();
             Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
+
+
+            //Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
+            Parent root = (Parent) loader.load();
+            ProfilePageController ppc = loader.getController();
+            ppc.createProfile(image, name);
             Scene scene = new Scene(root, 580, 790);
             Main.primaryStage.setTitle("My Profile");
             Main.primaryStage.setScene(scene);
