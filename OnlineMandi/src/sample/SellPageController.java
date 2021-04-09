@@ -38,7 +38,7 @@ public class SellPageController {
     void addOffer(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("AddOfferPage.fxml"));
         Parent root = (Parent) loader.load();
-        SellPageController  aopc = loader.getController();
+        AddOfferController  aopc = loader.getController();
         aopc.setName(name);
         aopc.setPhoneNo(phoneNo);
         Scene scene = new Scene(root, 580, 790);
