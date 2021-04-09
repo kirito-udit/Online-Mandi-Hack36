@@ -7,6 +7,7 @@ module OnlineMandi {
     requires javafx.base;
     requires javafx.graphics;
     requires javafx.swt;
+    requires java.sql;
 
     opens sample;
 }
