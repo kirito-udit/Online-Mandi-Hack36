@@ -1,18 +1,17 @@
 package sample;
 import javafx.scene.image.Image;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.*;
 
 public class UserTable {
-    public static final String DB_NAME = "Register.db";
+    public static final String DB_NAME = "register.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
     public static final String UTABLE = "USERTABLE";
 
     public static final String COLUMN_PHONE = "PhoneNumber";
     public static final String COLUMN_ID = "AadharNumber";
-    public static final String COLUMN_NAME = "Name";
+    public static final String COLUMN_NAME = "FullName";
     public static final String COLUMN_POBOX = "PoBox";
     public static final String COLUMN_DOB = "DOB";
     public static final String COLUMN_CITY = "City";
@@ -38,12 +37,15 @@ public class UserTable {
     public PreparedStatement updateProfilePic;
 
     private static UserTable userTable;
-    private UserTable(){
 
-    }
     public static UserTable getInstance() {
-        if(userTable==null) userTable = new UserTable();
+        if(userTable == null)
+                userTable = new UserTable();
         return userTable;
+    }
+
+    private UserTable() {
+
     }
 
     public boolean open() {
@@ -94,24 +96,23 @@ public class UserTable {
         }
     }
 
-    public void insertUser(String fullName, String phoneNumber, String password, String city, String local, String aadharNumber, Date dob, String poBox) {
+    public void insertUser(String fullName, String phoneNumber, String password, String city, FileInputStream fis, String aadharNumber, Date dob, String poBox) {
         try {
             insertUser.setString(1, fullName);
             insertUser.setString(2, phoneNumber);
             insertUser.setString(3, password);
             insertUser.setString(4, city);
-            FileInputStream fis = new FileInputStream(local);
             insertUser.setBinaryStream(5, fis, fis.available());
             insertUser.setString(6, aadharNumber);
             insertUser.setDate(7, dob);
             insertUser.setString(8, poBox);
-            insertUser.executeQuery();
+            insertUser.executeUpdate();
         } catch (Exception e) {
             System.out.println("Insert failed: " + e.getMessage());
         }
     }
 
-    public void updateName(String aadharNumber, String newName) {
+    private void updateName(String aadharNumber, String newName) {
         try {
             updateName.setString(1, newName);
             updateName.setString(2, aadharNumber);
@@ -120,7 +121,7 @@ public class UserTable {
         }
     }
 
-    public void updateCity(String aadharNumber, String newCity) {
+    private void updateCity(String aadharNumber, String newCity) {
         try {
             updateCity.setString(1, newCity);
             updateCity.setString(2, aadharNumber);
@@ -129,7 +130,7 @@ public class UserTable {
         }
     }
 
-    public void updatePoBox(String aadharNumber, String newPoBox) {
+    private void updatePoBox(String aadharNumber, String newPoBox) {
         try {
             updatePoBox.setString(1, newPoBox);
             updatePoBox.setString(2, aadharNumber);
@@ -138,7 +139,7 @@ public class UserTable {
         }
     }
 
-    public void updatePhone(String aadharNumber, String newPhoneNumber) {
+    private void updatePhone(String aadharNumber, String newPhoneNumber) {
         try {
             updatePhone.setString(1, newPhoneNumber);
             updatePhone.setString(2, aadharNumber);
@@ -147,7 +148,7 @@ public class UserTable {
         }
     }
 
-    public void updateProfilePic(String aadharNumber, String local) {
+    private void updateProfilePic(String aadharNumber, String local) {
         try {
             FileInputStream fis = new FileInputStream(local);
             updateProfilePic.setBinaryStream(1, fis, fis.available());
