@@ -2,8 +2,10 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -15,6 +17,8 @@ import java.util.ResourceBundle;
 
 public class BuyPageController implements Initializable {
     @FXML
+    private Button refreshButton;
+    @FXML
     private TableColumn cropNameTableColumn;
     @FXML
     private TableColumn priceTableColumn;
@@ -25,6 +29,7 @@ public class BuyPageController implements Initializable {
     @FXML
     private TextArea descriptionTextArea;
 
+    ObservableList<Offer> data;
     private String phoneNo;
     private String name;
 
@@ -46,7 +51,11 @@ public class BuyPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        final ObservableList<Offer> data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        SellerTable.getInstance().close();
+        SellerTable.getInstance().open();
+        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        SellerTable.getInstance().close();
+
         cropNameTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("cropName")
         );
@@ -76,5 +85,16 @@ public class BuyPageController implements Initializable {
                         "Sale start date: "+offer.getStartDate().toString()+"\n"+
                         "Sale end date: "+offer.getEndDate().toString()+"\n"
                 );
+    }
+
+    @FXML
+    public void refresh(ActionEvent e) {
+        SellerTable.getInstance().close();
+        SellerTable.getInstance().open();
+        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        SellerTable.getInstance().close();
+        cropTableView.setItems(data);
+        cropTableView.getSelectionModel().select(0);
+        setDescriptionTextArea();
     }
 }
