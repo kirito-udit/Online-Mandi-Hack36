@@ -1,5 +1,5 @@
 import sample.SignUpController;
-
+//import org.apache.commons.codec.binary.Base64;
 import java.sql.*;
 public class jdbc01 {
     String url = ""; //INSERT THE URL
@@ -30,6 +30,38 @@ public class jdbc01 {
         Statement st = con.createStatement();
         st.execute(query1);
     }
+        void insert_image(Image original) throws Exception
+    {
+        String value = original.toString();
+        String query1 = "insert into 'table'"+value;
+        Class.forName("com.mysql.jdbc.Driver");
+        Connection con = DriverManager.getConnection(url,username,pass);
+        Statement st = con.createStatement();
+        st.execute(query1);
+
+    }
+   /*
+    public void convertStringToImageByteArray(String imageString){
+        OutputStream outputStream = null;
+        byte [] imageInByteArray = Base64.decodeBase64(
+                imageString);
+        try {
+            outputStream = new FileOutputStream("resources"
+                    + "\\Spring2.png");
+            outputStream.write(imageInByteArray);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            try {
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+    */
     public static void main(String []args) throws Exception
     {
         SignUpController obj = new SignUpController();
