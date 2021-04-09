@@ -19,7 +19,7 @@ public class UserTable {
     public static final String COLUMN_DOB = "DOB";
     public static final String COLUMN_CITY = "City";
     public static final String COLUMN_PASSWORD = "Password";
-    public static final String COLUMN_PROFILE_PIC = "Password";
+    public static final String COLUMN_PROFILE_PIC = "ProfilePicture";
 
     public static final String INSERT_USER = "INSERT INTO " + UTABLE + " VALUES (?,?,?,?,?,?,?,?)";
     public static final String UPDATE_PHONE = "UPDATE " + UTABLE + " SET " + COLUMN_PHONE + " = ? WHERE " + COLUMN_ID + " = ?";
@@ -218,16 +218,26 @@ public class UserTable {
             ResultSet results = selectProfilePicWithThisPhoneNumber.executeQuery();
             while (results.next()) {
                 InputStream input = results.getBinaryStream(1);
-                Image image;
+                Image image = null;
                 if (input != null && input.available() > 1) {
                     System.out.println("image available");
                     image = new Image(input);
-                    return image;
+                    System.out.println("image h:"+image.getHeight());
+                    System.out.println("image w:"+image.getWidth());
                 }
-                return null;
+                return image;
+//                Blob blob = results.getBlob(1);
+//                byte byteArray[] = blob.getBytes(1,(int)blob.length());
+//                ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
+//                BufferedImage bufferedImage = ImageIO.read(bis);
+//                Image image = SwingFXUtils.toFXImage(bufferedImage,null);
+//                System.out.println("image h:"+image.getHeight());
+//                System.out.println("image w:"+image.getWidth());
+//                return image;
             }
         }catch (Exception e){
-            System.out.println("Exception occured while checking the profile pic of the user during user login "+e.getMessage());
+            System.out.println("Exception occured while checking the profile pic of the user during user login ");
+            e.printStackTrace();
         }
         return null;
     }
