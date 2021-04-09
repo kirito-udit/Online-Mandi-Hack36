@@ -6,7 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SellerTable {
-    public static final String DB_NAME = "SELLER.db";
     public static final String DB_NAME = "register.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
     public static final String SELL_TABLE = "SellTable";
@@ -18,6 +17,7 @@ public class SellerTable {
     public static final String COLUMN_END_DATE = "EndDate";
     public static final String COLUMN_OFFER_ID = "OfferId";
     public static final String COLUMN_PRICE = "Price";
+
     public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " VALUES ( NULL, ? , ? , ? , ? , ? , ? , ? ) ";
     public static final String UPDATE_OFFER_PRICE = " UPDATE " + SELL_TABLE + " SET " + COLUMN_PRICE + " = ? WHERE " +
             COLUMN_OFFER_ID + " = ? ";
@@ -34,7 +34,6 @@ public class SellerTable {
     public PreparedStatement updateOfferEndDate;
     public PreparedStatement updateOfferQuantity;
     public PreparedStatement deleteOffer;
-
     public PreparedStatement getAllOffers;
     private static SellerTable sellerTable;
 
@@ -43,8 +42,11 @@ public class SellerTable {
             sellerTable = new SellerTable();
         return sellerTable;
     }
+
     private SellerTable() {
+
     }
+
     public boolean open() {
         try {
             this.conn = Server.conn;
@@ -60,6 +62,7 @@ public class SellerTable {
             return false;
         }
     }
+
     public boolean close() {
         try {
             if (addOffer != null) {
@@ -89,6 +92,7 @@ public class SellerTable {
             return false;
         }
     }
+
     public boolean deleteOffer(int offerId) {
         try {
             deleteOffer.setInt(1, offerId);
@@ -99,6 +103,7 @@ public class SellerTable {
             return false;
         }
     }
+
     public boolean addOffer(String cropName, int quantity, int price,
                              Date startDate, Date endDate, String sellerName, String sellerPhone) {
         try {
@@ -109,7 +114,6 @@ public class SellerTable {
             addOffer.setDate(5, endDate);
             addOffer.setString(6, sellerName);
             addOffer.setString(7, sellerPhone);
-            addOffer.executeQuery();
             addOffer.executeUpdate();
             return true;
         } catch (SQLException e) {
@@ -117,6 +121,7 @@ public class SellerTable {
             return false;
         }
     }
+
     public boolean updateOfferPrice(int offerId,int price){
         try {
             updateOfferPrice.setInt(1,price);
