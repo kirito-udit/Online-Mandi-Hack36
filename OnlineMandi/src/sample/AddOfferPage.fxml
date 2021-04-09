@@ -11,6 +11,8 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
+
+
 <BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddOfferController">
    <center>
       <GridPane prefHeight="292.0" prefWidth="318.0">
@@ -40,6 +42,9 @@
             <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="5" />
             <DatePicker fx:id="endDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="5" />
             <Spinner fx:id="quantitySpinner" prefHeight="26.0" prefWidth="78.0" GridPane.columnIndex="3" />
+            <DatePicker fx:id="startDate" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <DatePicker fx:id="endDate" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+            <Spinner fx:id="quantitySpinner" max="10000" min="1" prefHeight="26.0" prefWidth="78.0" GridPane.columnIndex="3" />
             <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Describe your product:" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
          </children>
@@ -54,7 +59,7 @@
    </top>
    <bottom>
       <Button fx:id="addButton" mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
-      <Button fx:id="addButton" onAction="#addOffer"mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
+      <Button fx:id="addButton" mnemonicParsing="false" onAction="#addOffer" text="Add" BorderPane.alignment="CENTER">
          <font>
             <Font size="19.0" />
          </font>
