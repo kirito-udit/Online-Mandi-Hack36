@@ -1,9 +1,10 @@
 package sample;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.sql.*;
 
 public class UserTable {
@@ -30,7 +31,7 @@ public class UserTable {
     public static final String UPDATE_PROFILE_PIC = "UPDATE " + UTABLE + " SET " + COLUMN_PROFILE_PIC + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_NAME+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
-    public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" ? ";
+    public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
 
     public Connection conn;
     public PreparedStatement insertUser;
@@ -181,10 +182,12 @@ public class UserTable {
 
     public FullNameProfilePic authentication(String password,String phoneNumber){
         try {
+            System.out.println(phoneNumber);
+            System.out.println(password);
             queryPasswordVerfication.setString(1,phoneNumber);
             ResultSet results=queryPasswordVerfication.executeQuery();
             while(results.next()){
-                if(results.getString(1)==password) {
+                if(results.getString(1).equals(password)) {
                     FullNameProfilePic fullNameProfilePic=new FullNameProfilePic(getFullName(phoneNumber), getProfilePic(phoneNumber));
                     return fullNameProfilePic;
                 }
@@ -210,18 +213,22 @@ public class UserTable {
         }
     }
     private Image getProfilePic(String phoneNumber){
-        try{
-            selectProfilePicWithThisPhoneNumber.setString(1,phoneNumber);
-            ResultSet results=selectProfilePicWithThisPhoneNumber.executeQuery();
-            while(results.next()){
-                FileInputStream fis= (FileInputStream) results.getBinaryStream(1);
-                Image image=new Image(fis);
-                return image;
+        try {
+            selectProfilePicWithThisPhoneNumber.setString(1, phoneNumber);
+            ResultSet results = selectProfilePicWithThisPhoneNumber.executeQuery();
+            while (results.next()) {
+                InputStream input = results.getBinaryStream(1);
+                Image image;
+                if (input != null && input.available() > 1) {
+                    System.out.println("image available");
+                    image = new Image(input);
+                    return image;
+                }
+                return null;
             }
-            return null;
         }catch (Exception e){
             System.out.println("Exception occured while checking the profile pic of the user during user login "+e.getMessage());
-            return null;
         }
+        return null;
     }
 }
