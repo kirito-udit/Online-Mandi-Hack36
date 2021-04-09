@@ -10,8 +10,11 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+
 import javax.swing.*;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -26,33 +29,39 @@ public class LoginController implements Initializable {
     private TextField phoneNumber;
     @FXML
     private PasswordField password;
+
     @FXML
     void signIn(ActionEvent e) throws IOException {
+    void signIn(ActionEvent e) throws IOException, ClassNotFoundException {
         String pass = getMd5(password.getText());
         System.out.println(pass);
         String phoneNo = phoneNumber.getText();
+
         //creating an instance of UserTable class, if it already present then the same instance will be returned
-        UserTable userTable = UserTable.getInstance();
-        userTable.open();
-        FullNameProfilePic fullNameProfilePic = userTable.authentication(pass,phoneNo);
         FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass,phoneNo);
         if(fullNameProfilePic!=null){
             //if authentication is successful then fetch the profile pic and name of the user
             Image image = fullNameProfilePic.getImage();
             String name = fullNameProfilePic.getFullName();
-            Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
+        ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
+        oos.writeObject(phoneNo);
+        oos.writeObject(pass);
+        String nameOfClient = (String) ois.readObject();
 
+        if(nameOfClient!=null){
+            //if authentication is successful then fetch the profile pic and name of the user
+            Image image = UserTable.getInstance().getProfilePic(phoneNo);
 
             //Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
             Parent root = (Parent) loader.load();
             ProfilePageController ppc = loader.getController();
             ppc.createProfile(image, name);
+            ppc.createProfile(image, nameOfClient);
             Scene scene = new Scene(root, 580, 790);
             Main.primaryStage.setTitle("My Profile");
             Main.primaryStage.setScene(scene);
-            ProfilePageController ppc = new ProfilePageController();
-            ppc.createProfile(image, name);
             Main.primaryStage.show();
         }
         else{
