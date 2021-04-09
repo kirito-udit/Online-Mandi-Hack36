@@ -18,10 +18,10 @@ public class AddOfferController {
     private TextArea descriptionTextArea;
 
     @FXML
-    private DatePicker startDate;
+    private DatePicker startDatePicker;
 
     @FXML
-    private DatePicker endDate;
+    private DatePicker endDatePicker;
 
     @FXML
     private Spinner quantitySpinner;
@@ -51,12 +51,14 @@ public class AddOfferController {
     void addOffer(ActionEvent e){
         String cropName = cropTextField.getText();
         String desc = descriptionTextArea.getText();
-        java.sql.Date startDateValue = Date.valueOf(startDate.getValue());
-        java.sql.Date endDateValue = Date.valueOf(endDate.getValue());
+        java.sql.Date startDateValue = Date.valueOf(startDatePicker.getValue());
+        java.sql.Date endDateValue = Date.valueOf(endDatePicker.getValue());
         int quantity = (int) quantitySpinner.getValue();
         int price = Integer.parseInt(priceTextField.getText());
+        SellerTable.getInstance().close();
+        SellerTable.getInstance().open();
         System.out.println(SellerTable.getInstance().addOffer(cropName,quantity,price,startDateValue,endDateValue,name,phoneNo));
-
+        SellerTable.getInstance().close();
     }
 
 }
