@@ -58,11 +58,11 @@
                </font>
             </Label>
             <Button fx:id="buySectionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" text="Buying" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="buySectionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#buyButtonResponse" prefHeight="38.0" prefWidth="115.0" text="Buying" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
-            <Button fx:id="sellSectionButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="111.0" text="Selling" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
             <Button fx:id="sellSectionButton" mnemonicParsing="false" onAction="#sellButtonResponse" prefHeight="37.0" prefWidth="111.0" text="Selling" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
