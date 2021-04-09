@@ -14,12 +14,6 @@
    <top>
       <HBox fx:id="hBox" alignment="CENTER" prefHeight="95.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="Button" />
-            <BorderPane>
-               <center>
-                  <ImageView fx:id="profilePic" fitHeight="165.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" />
-               </center>
-            </BorderPane>
             <ImageView fx:id="profilePic" fitHeight="155.0" fitWidth="169.0" pickOnBounds="true" preserveRatio="true" />
             <VBox alignment="CENTER" prefHeight="166.0" prefWidth="234.0" spacing="20.0">
                <children>
@@ -64,11 +58,13 @@
                </font>
             </Label>
             <Button fx:id="buySectionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" text="Buying" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="buySectionButton"  alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="38.0" prefWidth="115.0" text="Buying" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="14.0" />
                </font>
             </Button>
             <Button fx:id="sellSectionButton" mnemonicParsing="false" prefHeight="37.0" prefWidth="111.0" text="Selling" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="sellSectionButton" onAction="#sellButtonResponse" mnemonicParsing="false" prefHeight="37.0" prefWidth="111.0" text="Selling" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font size="14.0" />
                </font>
