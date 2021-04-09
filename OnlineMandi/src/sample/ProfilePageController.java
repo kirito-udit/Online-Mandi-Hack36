@@ -30,6 +30,9 @@ public class ProfilePageController implements Initializable {
     private Button refreshButton;
 
     @FXML
+    private Button buySectionButton;
+
+    @FXML
     private Button sellSectionButton;
     private Image img;
 
@@ -43,6 +46,20 @@ public class ProfilePageController implements Initializable {
         this.phoneNo = phoneNo;
         this.name = name;
     }
+
+    @FXML
+    void buyButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("BuyPage.fxml"));
+        Parent root = (Parent) loader.load();
+        BuyPageController  bpc = loader.getController();
+        bpc.setName(name);
+        bpc.setPhoneNo(phoneNo);
+        Scene scene = new Scene(root, 800, 700);
+        Main.primaryStage.setTitle("Buy Page");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
+    }
+
     @FXML
     void sellButtonResponse(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("SellPage.fxml"));
@@ -51,7 +68,7 @@ public class ProfilePageController implements Initializable {
         spc.setName(name);
         spc.setPhoneNo(phoneNo);
         Scene scene = new Scene(root, 580, 790);
-        Main.primaryStage.setTitle("Login");
+        Main.primaryStage.setTitle("Sell Page");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
 
