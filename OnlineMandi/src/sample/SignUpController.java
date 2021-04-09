@@ -101,6 +101,7 @@ public class SignUpController implements Initializable {
     public java.sql.Date getDob() {
         String dob = dateOfBirth.getText();
         //verify the correctness of dob
+        java.sql.Date date = parseDate(dob);
         return date;
     }
 
@@ -202,6 +203,17 @@ public class SignUpController implements Initializable {
             throw new RuntimeException(e);
         }
     }
-   
+    //an utility function to convert the date string from textfield into sql date
+    java.sql.Date parseDate(String date) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+        java.sql.Date sqlDate = null;
+        try {
+            java.util.Date utilDate = format.parse(date);
+            sqlDate = new java.sql.Date(utilDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return sqlDate;
+    }
 }
 }
