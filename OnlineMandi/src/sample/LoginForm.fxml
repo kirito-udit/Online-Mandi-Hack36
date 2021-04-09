@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -10,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="loginPane" prefHeight="427.0" prefWidth="603.0" stylesheets="@LoginStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+<BorderPane fx:id="loginPane" prefHeight="427.0" prefWidth="603.0" stylesheets="@LoginStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
    <center>
       <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="603.0">
          <columnConstraints>
@@ -35,18 +39,18 @@
                   <Font size="19.0" />
                </font>
             </Label>
-            <TextField prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <TextField fx:id="phoneNumber" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label prefHeight="46.0" prefWidth="83.0" style="-fx-font-size: 30;" text="Login" GridPane.columnSpan="2">
                <font>
                   <Font name="Arial" size="28.0" />
                </font>
             </Label>
-            <Button mnemonicParsing="false" text="Sign in" GridPane.columnSpan="2" GridPane.rowIndex="3">
+            <Button fx:id="signIn" mnemonicParsing="false" onAction="#signIn" text="Sign in" GridPane.columnSpan="2" GridPane.rowIndex="3">
                <font>
                   <Font size="16.0" />
                </font>
             </Button>
-            <PasswordField prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <PasswordField fx:id="password" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
             <Button mnemonicParsing="false" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
