@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
@@ -12,8 +11,6 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
-
-
 <BorderPane xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.AddOfferController">
    <center>
       <GridPane prefHeight="292.0" prefWidth="318.0">
@@ -57,6 +54,7 @@
    </top>
    <bottom>
       <Button fx:id="addButton" mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
+      <Button fx:id="addButton" onAction="#addOffer"mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
          <font>
             <Font size="19.0" />
          </font>
