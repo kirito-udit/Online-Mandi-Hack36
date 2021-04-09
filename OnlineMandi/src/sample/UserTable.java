@@ -37,9 +37,12 @@ public class UserTable {
     public PreparedStatement updatePassword;
     public PreparedStatement updateProfilePic;
 
-    private UserTable userTable;
+    private static UserTable userTable;
+    private UserTable(){
 
-    public UserTable getInstance() {
+    }
+    public static UserTable getInstance() {
+        if(userTable==null) userTable = new UserTable();
         return userTable;
     }
 
@@ -91,7 +94,7 @@ public class UserTable {
         }
     }
 
-    private void insertUser(String fullName, String phoneNumber, String password, String city, String local, String aadharNumber, Date dob, String poBox) {
+    public void insertUser(String fullName, String phoneNumber, String password, String city, String local, String aadharNumber, Date dob, String poBox) {
         try {
             insertUser.setString(1, fullName);
             insertUser.setString(2, phoneNumber);
@@ -108,7 +111,7 @@ public class UserTable {
         }
     }
 
-    private void updateName(String aadharNumber, String newName) {
+    public void updateName(String aadharNumber, String newName) {
         try {
             updateName.setString(1, newName);
             updateName.setString(2, aadharNumber);
@@ -117,7 +120,7 @@ public class UserTable {
         }
     }
 
-    private void updateCity(String aadharNumber, String newCity) {
+    public void updateCity(String aadharNumber, String newCity) {
         try {
             updateCity.setString(1, newCity);
             updateCity.setString(2, aadharNumber);
@@ -126,7 +129,7 @@ public class UserTable {
         }
     }
 
-    private void updatePoBox(String aadharNumber, String newPoBox) {
+    public void updatePoBox(String aadharNumber, String newPoBox) {
         try {
             updatePoBox.setString(1, newPoBox);
             updatePoBox.setString(2, aadharNumber);
@@ -135,7 +138,7 @@ public class UserTable {
         }
     }
 
-    private void updatePhone(String aadharNumber, String newPhoneNumber) {
+    public void updatePhone(String aadharNumber, String newPhoneNumber) {
         try {
             updatePhone.setString(1, newPhoneNumber);
             updatePhone.setString(2, aadharNumber);
@@ -144,7 +147,7 @@ public class UserTable {
         }
     }
 
-    private void updateProfilePic(String aadharNumber, String local) {
+    public void updateProfilePic(String aadharNumber, String local) {
         try {
             FileInputStream fis = new FileInputStream(local);
             updateProfilePic.setBinaryStream(1, fis, fis.available());
