@@ -77,6 +77,7 @@
          <TextField prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          <Label text="PO Box:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
          <TextField prefHeight="40.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+         <Button mnemonicParsing="false" style="-fx-font-size: 14; -fx-font-style: Italic;" text="Already have an account? Login!" GridPane.columnSpan="4" GridPane.rowIndex="7" />
          <rowConstraints>
             <RowConstraints />
             <RowConstraints valignment="CENTER" vgrow="NEVER" />
@@ -84,6 +85,7 @@
             <RowConstraints valignment="CENTER" vgrow="NEVER" />
             <RowConstraints prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
             <RowConstraints prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
             <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
          </rowConstraints>
       </GridPane>
