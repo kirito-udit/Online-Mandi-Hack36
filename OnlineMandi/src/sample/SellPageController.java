@@ -15,6 +15,7 @@ public class SellPageController {
 
     @FXML
     private Button viewOffersButton;
+
     private String phoneNo;
     private String name;
 
@@ -42,7 +43,7 @@ public class SellPageController {
         aopc.setName(name);
         aopc.setPhoneNo(phoneNo);
         Scene scene = new Scene(root, 580, 790);
-        Main.primaryStage.setTitle("Login");
+        Main.primaryStage.setTitle("AddOfferPage");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
     }
