@@ -47,4 +47,4 @@ public class jdbc01 {
             System.out.print(e);
         }
     }
-}
+} 
