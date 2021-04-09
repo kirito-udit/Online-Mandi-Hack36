@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.chart.CategoryAxis?>
 <?import javafx.scene.chart.LineChart?>
@@ -19,56 +14,51 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="sample.BuyPage"
-            prefHeight="400.0" prefWidth="600.0">
-
-</AnchorPane>
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="593.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.BuyPageController">
-   <bottom>
-      <VBox prefHeight="256.0" prefWidth="600.0" spacing="5.0" BorderPane.alignment="CENTER">
-         <children>
-            <HBox prefHeight="26.0" prefWidth="600.0" spacing="20.0">
-               <children>
-                  <Label prefHeight="26.0" prefWidth="29.0" text="Crop:" />
-                  <ComboBox prefHeight="26.0" prefWidth="90.0" />
-                  <Label prefHeight="26.0" prefWidth="42.0" text="Sort by:" />
-                  <ComboBox prefHeight="26.0" prefWidth="90.0" />
-               </children>
-            </HBox>
-            <HBox prefHeight="229.0" prefWidth="600.0" spacing="5.0">
-               <children>
-                  <TableView fx:id="cropTableView" onMouseClicked="#clickItem" prefHeight="230.0" prefWidth="225.0">
-                     <columns>
-                        <TableColumn fx:id="cropNameTableColumn" prefWidth="75.0" text="Crop Name" />
-                        <TableColumn fx:id="quantityTableColumn" prefWidth="75.0" text="Quantity" />
-                        <TableColumn fx:id="priceTableColumn" prefWidth="75.0" text="Price/kg" />
-                     </columns>
-                  </TableView>
-                  <VBox alignment="CENTER" prefHeight="230.0" prefWidth="378.0" spacing="5.0">
-                     <children>
-                        <Label text="Description" />
-                        <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Place Order" VBox.vgrow="NEVER" />
-                     </children>
-                  </VBox>
-               </children>
-            </HBox>
-         </children>
-      </VBox>
-   </bottom>
-   <center>
-      <LineChart fx:id="lineChart" prefHeight="283.0" prefWidth="511.0" title="Crop price fluctuations" BorderPane.alignment="CENTER">
-         <xAxis>
-            <CategoryAxis side="BOTTOM" />
-         </xAxis>
-         <yAxis>
-            <NumberAxis side="LEFT" />
-         </yAxis>
-      </LineChart>
-   </center>
-   <padding>
-      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-   </padding>
+<bottom>
+   <VBox prefHeight="256.0" prefWidth="600.0" spacing="5.0" BorderPane.alignment="CENTER">
+      <children>
+         <HBox prefHeight="26.0" prefWidth="600.0" spacing="20.0">
+            <children>
+               <Label prefHeight="26.0" prefWidth="29.0" text="Crop:" />
+               <ComboBox prefHeight="26.0" prefWidth="90.0" />
+               <Label prefHeight="26.0" prefWidth="42.0" text="Sort by:" />
+               <ComboBox prefHeight="26.0" prefWidth="90.0" />
+                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
+            </children>
+         </HBox>
+         <HBox prefHeight="229.0" prefWidth="600.0" spacing="5.0">
+            <children>
+               <TableView fx:id="cropTableView" onMouseClicked="#clickItem" prefHeight="230.0" prefWidth="225.0">
+                  <columns>
+                     <TableColumn fx:id="cropNameTableColumn" prefWidth="75.0" text="Crop Name" />
+                     <TableColumn fx:id="quantityTableColumn" prefWidth="75.0" text="Quantity" />
+                     <TableColumn fx:id="priceTableColumn" prefWidth="75.0" text="Price/kg" />
+                  </columns>
+               </TableView>
+               <VBox alignment="CENTER" prefHeight="230.0" prefWidth="378.0" spacing="5.0">
+                  <children>
+                     <Label text="Description" />
+                     <TextArea fx:id="descriptionTextArea" prefHeight="200.0" prefWidth="200.0" />
+                     <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" text="Place Order" VBox.vgrow="NEVER" />
+                  </children>
+               </VBox>
+            </children>
+         </HBox>
+      </children>
+   </VBox>
+</bottom>
+<center>
+   <LineChart fx:id="lineChart" prefHeight="283.0" prefWidth="511.0" title="Crop price fluctuations" BorderPane.alignment="CENTER">
+      <xAxis>
+         <CategoryAxis side="BOTTOM" />
+      </xAxis>
+      <yAxis>
+         <NumberAxis side="LEFT" />
+      </yAxis>
+   </LineChart>
+</center>
+<padding>
+   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+</padding>
 </BorderPane>
