@@ -1,11 +1,13 @@
 package sample;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -15,14 +17,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
 import java.io.File;
+import java.io.FileInputStream;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -40,6 +44,9 @@ public class SignUpController implements Initializable {
     private Button submit;
 
     @FXML
+    private Button upload;
+
+    @FXML
     private TextField nameField;
 
     @FXML
@@ -55,7 +62,7 @@ public class SignUpController implements Initializable {
     private TextField aadharNumber;
 
     @FXML
-    private TextField dateOfBirth;
+    private DatePicker dateOfBirth;
 
     @FXML
     private TextField poBoxNumber;
@@ -99,9 +106,8 @@ public class SignUpController implements Initializable {
     }
 
     public java.sql.Date getDob() {
-        String dob = dateOfBirth.getText();
-        //verify the correctness of dob
-        java.sql.Date date = parseDate(dob);
+        LocalDate dob = dateOfBirth.getValue();
+        java.sql.Date date = Date.valueOf(dob);
         return date;
     }
 
@@ -115,7 +121,7 @@ public class SignUpController implements Initializable {
     void upload(ActionEvent e) {
         FileChooser fc = new FileChooser();
         //set the initial directory which will be opened first
-        fc.setInitialDirectory(new File("C:\\Users\\HP\\Pictures\\Screenshots"));
+//        fc.setInitialDirectory(new File("C:\\Users\\HP\\Pictures\\Screenshots"));
         //adding filters to the type of file that will be opened
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("image files","*.png","*.jpg","*.jpeg"));
         selectedFile = fc.showOpenDialog(null);
@@ -138,22 +144,23 @@ public class SignUpController implements Initializable {
         //fetching the path of the image selectd from fileChooser
         //but before that check if file size exceeds  307200 bytes, if so then error is to be shown
         String local = null;
-        if(selectedFile.length() > 307200)
-             JOptionPane.showMessageDialog(null,"File size exceeds 300KB!!!");
-        else
-        local = selectedFile.toURI().toString();
+//        if(selectedFile.length() > 307200)
+//             JOptionPane.showMessageDialog(null,"File size exceeds 300KB!!!");
+//        else
+//        local = selectedFile.toURI().toString();
 
         //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
+        FileInputStream fis = new FileInputStream(selectedFile);
         UserTable userTable = UserTable.getInstance();
-        userTable.insertUser(name,phoneNo,password,city,local,aadhar,dob,poBoxNumber);
+        userTable.open();
+        userTable.insertUser(name,phoneNo,password,city,fis,aadhar,dob,poBoxNumber);
 
-        //open a new Scene for profile page
-        Stage primaryStage = new Stage();
-        Parent root = FXMLLoader.load(getClass().getResource("profilePage.fxml"));
-        Scene scene = new Scene(root, 1400, 700);
-        primaryStage.setTitle("ProfilePage");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        //open a new Scene for Login Page
+        Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
+        Scene scene = new Scene(root, 580, 790);
+        Main.primaryStage.setTitle("Login");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
 
 
 
