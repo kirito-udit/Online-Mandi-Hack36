@@ -32,11 +32,6 @@ public class SignUpController implements Initializable {
     Image image = new Image("file:///C:/Users/hp/Desktop/farm.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                bSize));
-
-        borderPane.setBackground(background);
+           
     }
 }
