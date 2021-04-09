@@ -11,7 +11,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -35,10 +34,6 @@ public class SignUpController implements Initializable {
 
     @FXML
     private BorderPane borderPane;
- public java.lang.String getname()
-    {
-        java.lang.String x = "k";
-        return x;
 
     @FXML
     private Button submit;
@@ -75,17 +70,11 @@ public class SignUpController implements Initializable {
         //verify name
         return name;
     }
-    public java.lang.String getpass()
-    {
-        return "t";
     public String getPhone() {
         String phoneNo = phoneNumber.getText();
         //verify correctness of phone
         return phoneNo;
     }
-    public java.lang.String getmail()
-    {
-        return "t";
     public String getPassword() {
         String password = getMd5(passwordField.getText());
         return password;
@@ -151,9 +140,7 @@ public class SignUpController implements Initializable {
 
         //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
         FileInputStream fis = new FileInputStream(selectedFile);
-        UserTable userTable = UserTable.getInstance();
-        userTable.open();
-        userTable.insertUser(name,phoneNo,password,city,fis,aadhar,dob,poBoxNumber);
+        Main.userTable.insertUser(name,phoneNo,password,city,fis,aadhar,dob,poBoxNumber);
 
         //open a new Scene for Login Page
         Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
@@ -168,9 +155,6 @@ public class SignUpController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-    Image image = new Image("file:///C:/Users/hp/Desktop/farm.jpg");
-    BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
-    Background background = new Background(new BackgroundImage(image,
         Image image = new Image("file:///C:/Users/hp/Desktop/farm.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
@@ -179,7 +163,6 @@ public class SignUpController implements Initializable {
                 BackgroundPosition.CENTER,
                 bSize));
 
-    borderPane.setBackground(background);
         borderPane.setBackground(background);
     }
 
@@ -222,5 +205,4 @@ public class SignUpController implements Initializable {
         }
         return sqlDate;
     }
-}
 }
