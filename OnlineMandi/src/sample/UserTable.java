@@ -59,7 +59,7 @@ public class UserTable {
 
     public boolean open() {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            this.conn = DriverManager.getConnection(CONNECTION_STRING);
             insertUser = conn.prepareStatement(INSERT_USER);
             updatePhone = conn.prepareStatement(UPDATE_PHONE);
             updateName = conn.prepareStatement(UPDATE_NAME);
