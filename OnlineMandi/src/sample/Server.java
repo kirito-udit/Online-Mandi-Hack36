@@ -19,6 +19,7 @@ public class Server {
     public static void main(String[] args) {
         UserTable.getInstance().open();
         Server.conn=UserTable.getInstance().conn;
+        SellerTable.getInstance().open();
         ServerSocket serverSocket;
         Socket socket;
         ArrayList<String> currentlyActiveUser = new ArrayList<>();
