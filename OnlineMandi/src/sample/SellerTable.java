@@ -12,8 +12,6 @@ public class SellerTable {
     public static final String COLUMN_END_DATE = "EndDate";
     public static final String COLUMN_OFFER_ID = "OfferId";
     public static final String COLUMN_PRICE = "Price";
-
-    public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " VALUES ( ? , ? , ? , ? , ? , ? , ? ) ";
     public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " VALUES ( NULL, ? , ? , ? , ? , ? , ? , ? ) ";
     public static final String UPDATE_OFFER_PRICE = " UPDATE " + SELL_TABLE + " SET " + COLUMN_PRICE + " = ? WHERE " +
             COLUMN_OFFER_ID + " = ? ";
@@ -36,9 +34,11 @@ public class SellerTable {
     }
     private SellerTable() {
     }
+
     public boolean open() {
         try {
             conn = Server.conn;
+            this.conn = Server.conn;
             addOffer = conn.prepareStatement(ADD_OFFER);
             updateOfferPrice = conn.prepareStatement(UPDATE_OFFER_PRICE);
             updateOfferEndDate = conn.prepareStatement(UPDATE_OFFER_END_DATE);
