@@ -1,16 +1,19 @@
 import sample.SignUpController;
 //import org.apache.commons.codec.binary.Base64;
 import java.sql.*;
+
 public class jdbc01 {
     String url = ""; //INSERT THE URL
     String username = "root";
     String pass = "";
+
     void insert_name(String value) throws  Exception
     {
         String query1 = "insert into 'table'"+value;
         Class.forName("com.mysql.jdbc.Driver");
         Connection con = DriverManager.getConnection(url,username,pass);
         Statement st = con.createStatement();
+
         st.execute(query1);
     }
 
