@@ -50,7 +50,7 @@
           <Label text="Password" GridPane.rowIndex="4">
     </Label>
           <!-- Add Email Text Field -->
-          <TextField fx:id="emailField" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+          <TextField fx:id="phoneNumber" prefHeight="40" GridPane.columnIndex="1" GridPane.rowIndex="3" />
       
       
       
@@ -62,7 +62,7 @@
       
       
           <!-- Add Submit Button -->
-          <Button fx:id="submitButton" defaultButton="true" prefHeight="42.0" prefWidth="110.0" text="Submit" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.rowSpan="1">
+          <Button fx:id="submit" defaultButton="true" onAction="#submitResponse" prefHeight="42.0" prefWidth="110.0" text="Submit" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="6" GridPane.rowSpan="1">
               <GridPane.margin>
                   <Insets />
               </GridPane.margin>
@@ -70,13 +70,13 @@
          <Label contentDisplay="CENTER" text="Phone Number:" GridPane.rowIndex="3" />
          <Label text="Aadhar number:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
          <Label text="Date of birth:" GridPane.columnIndex="2" GridPane.rowIndex="4" />
-         <DatePicker maxHeight="40.0" prefHeight="40.0" prefWidth="203.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
-         <TextField maxHeight="40.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
-         <Button mnemonicParsing="false" text="Upload" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+         <DatePicker fx:id="dateOfBirth" maxHeight="40.0" prefHeight="40.0" prefWidth="203.0" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+         <TextField fx:id="aadharNumber" maxHeight="40.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+         <Button fx:id="upload" mnemonicParsing="false" onAction="#upload" text="Upload" GridPane.columnIndex="3" GridPane.rowIndex="2" />
          <Label text="Profile picture:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
-         <TextField prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+         <TextField fx:id="cityName" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
          <Label text="PO Box:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
-         <TextField prefHeight="40.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+         <TextField fx:id="poBoxNumber" prefHeight="40.0" GridPane.columnIndex="3" GridPane.rowIndex="5" />
          <Button mnemonicParsing="false" style="-fx-font-size: 14; -fx-font-style: Italic;" text="Already have an account? Login!" GridPane.columnSpan="4" GridPane.rowIndex="7" />
          <rowConstraints>
             <RowConstraints />
