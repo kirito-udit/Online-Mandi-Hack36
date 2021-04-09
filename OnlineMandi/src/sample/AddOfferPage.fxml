@@ -58,7 +58,7 @@
       </Label>
    </top>
    <bottom>
-      <Button fx:id="addButton" mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
+      <Button fx:id="addButton" onAction="#addOffer"mnemonicParsing="false" text="Add" BorderPane.alignment="CENTER">
       <Button fx:id="addButton" mnemonicParsing="false" onAction="#addOffer" text="Add" BorderPane.alignment="CENTER">
          <font>
             <Font size="19.0" />
