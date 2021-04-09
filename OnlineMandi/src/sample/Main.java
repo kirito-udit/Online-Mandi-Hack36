@@ -25,6 +25,9 @@ public class Main extends Application {
     @Override
     public void start(Stage primary) throws Exception{
         userTable = UserTable.getInstance();
+        userTable.open();
+        Server.conn=UserTable.getInstance().conn;
+        SellerTable.getInstance().open();
 
         //Start Page
         Parent root = FXMLLoader.load(getClass().getResource("Start.fxml"));
