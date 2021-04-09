@@ -8,8 +8,9 @@ import java.io.*;
 import java.sql.*;
 
 public class UserTable {
+    public static File dbFile = new File("./src/sample/Resources");
     public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
+    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String UTABLE = "USERTABLE";
 
     public static final String COLUMN_PHONE = "PhoneNumber";
@@ -226,14 +227,6 @@ public class UserTable {
                     System.out.println("image w:"+image.getWidth());
                 }
                 return image;
-//                Blob blob = results.getBlob(1);
-//                byte byteArray[] = blob.getBytes(1,(int)blob.length());
-//                ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
-//                BufferedImage bufferedImage = ImageIO.read(bis);
-//                Image image = SwingFXUtils.toFXImage(bufferedImage,null);
-//                System.out.println("image h:"+image.getHeight());
-//                System.out.println("image w:"+image.getWidth());
-//                return image;
             }
         }catch (Exception e){
             System.out.println("Exception occured while checking the profile pic of the user during user login ");
