@@ -39,7 +39,11 @@ public class LoginController implements Initializable {
         System.out.println(pass);
         String phoneNo = phoneNumber.getText();
         //creating an instance of UserTable class, if it already present then the same instance will be returned
+        UserTable.getInstance().close();
+        UserTable.getInstance().open();
         FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass,phoneNo);
+        UserTable.getInstance().close();
+
         if(fullNameProfilePic!=null){
             //if authentication is successful then fetch the profile pic and name of the user
             Image image = fullNameProfilePic.getImage();
@@ -63,7 +67,7 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image image = new Image("file:///C:/Users/hp/Desktop/farmLogin.jpg");
+        Image image = new Image("file:./src/sample/Resources/farmLogin.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
