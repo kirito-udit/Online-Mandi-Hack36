@@ -1,5 +1,4 @@
 package sample;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,6 +7,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     public static Stage primaryStage;
+    public static UserTable userTable;
+
     @Override
     public void start(Stage primary) throws Exception{
         //Sign Up Page
@@ -16,6 +17,14 @@ public class Main extends Application {
         primaryStage.setTitle("Sign up");
         primaryStage.setScene(new Scene(root, 1023, 614));
         primaryStage.show();
+        userTable = UserTable.getInstance();
+        userTable.open();
+//        //Sign Up Page
+//        Parent root = FXMLLoader.load(getClass().getResource("SignUpForm.fxml"));
+//        primaryStage = primary;
+//        primaryStage.setTitle("Sign up");
+//        primaryStage.setScene(new Scene(root, 1023, 614));
+//        primaryStage.show();
 
           //Profile Page
 //        Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
@@ -30,6 +39,11 @@ public class Main extends Application {
 //        primaryStage.setTitle("Welcome to Online Mandi!");
 //        primaryStage.setScene(new Scene(root, 720, 540));
 //        primaryStage.show();
+        Parent root = FXMLLoader.load(getClass().getResource("Start.fxml"));
+        primaryStage = primary;
+        primaryStage.setTitle("Welcome to Online Mandi!");
+        primaryStage.setScene(new Scene(root, 720, 540));
+        primaryStage.show();
     }
     public static void main(String[] args) {
         launch(args);
