@@ -212,7 +212,7 @@ public class UserTable {
             return null;
         }
     }
-    private Image getProfilePic(String phoneNumber){
+    public Image getProfilePic(String phoneNumber){
         try {
             selectProfilePicWithThisPhoneNumber.setString(1, phoneNumber);
             ResultSet results = selectProfilePicWithThisPhoneNumber.executeQuery();
