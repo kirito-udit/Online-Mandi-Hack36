@@ -2,15 +2,27 @@ package sample;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 
 import java.net.URL;
-import java.util.ResourceBundle;
-
-public class ProfilePageController implements Initializable {
     @FXML
     private BorderPane profilePane;
+
+    @FXML
+    private ImageView profilePic;
+
+    @FXML
+    private Label nameLabel;
+
+
+    void createProfile(Image image, String name)
+    {
+        profilePic.setImage(image);
+        nameLabel.setText(name);
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
