@@ -7,9 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SellerTable {
-    public static File dbFile = new File("./src/sample/Resources");
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String SELL_TABLE = "SellTable";
     public static final String COLUMN_SELLER_PHONE = "SellerPhone";
     public static final String COLUMN_START_DATE = "StartDate";
@@ -60,8 +57,7 @@ public class SellerTable {
 
     public boolean deleteOffer(int offerId) {
         try {
-            conn.close();
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             deleteOffer=conn.prepareStatement(DELETE_OFFER);
             deleteOffer.setInt(1, offerId);
             deleteOffer.executeUpdate();
@@ -72,7 +68,6 @@ public class SellerTable {
         }finally {
             try{
                 deleteOffer.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources of deleteOffer "+e.getMessage());
             }
@@ -83,7 +78,7 @@ public class SellerTable {
                             Date startDate, Date endDate,
                             String sellerPhone,String description) {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             addOffer=conn.prepareStatement(ADD_OFFER);
             addOffer.setString(1, cropName);
             addOffer.setInt(2, quantity);
@@ -101,7 +96,6 @@ public class SellerTable {
         }finally {
             try{
                 addOffer.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while addOffer "+e.getMessage());
             }
@@ -110,7 +104,7 @@ public class SellerTable {
 
     public boolean updateOfferPrice(int offerId,int price){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateOfferPrice=conn.prepareStatement(UPDATE_OFFER_PRICE);
             updateOfferPrice.setInt(1,price);
             updateOfferPrice.setInt(2,offerId);
@@ -125,7 +119,6 @@ public class SellerTable {
         }finally {
             try{
                 updateOfferPrice.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while updateOfferPrice "+e.getMessage());
             }
@@ -133,7 +126,7 @@ public class SellerTable {
     }
     public Offer getOffer(int offerId){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             getQuantity = conn.prepareStatement(GET_OFFER);
             getQuantity.setInt(1,offerId);
             ResultSet results = getQuantity.executeQuery();
@@ -147,7 +140,6 @@ public class SellerTable {
         }finally {
             try {
                 getQuantity.close();
-                conn.close();
             }catch(SQLException e){
                 System.out.println("Exception occured while closing the resources in getQuantity method of the SellTable class "+e.getMessage());
                 return null;
@@ -158,8 +150,7 @@ public class SellerTable {
 
     public boolean updateOfferQuantity(int offerId,int quantity){
         try {
-            conn.close();
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateOfferQuantity=conn.prepareStatement(UPDATE_OFFER_QUANTITY);
             updateOfferQuantity.setInt(1,quantity);
             updateOfferQuantity.setInt(2,offerId);
@@ -174,7 +165,6 @@ public class SellerTable {
         }finally {
             try{
                 updateOfferQuantity.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while updateOfferQuantity "+e.getMessage());
             }
@@ -182,7 +172,7 @@ public class SellerTable {
     }
     public boolean updateOfferEndDate(int offerId,Date endDate){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateOfferEndDate=conn.prepareStatement(UPDATE_OFFER_END_DATE);
             updateOfferPrice.setDate(1,endDate);
             updateOfferPrice.setInt(2,offerId);
@@ -197,7 +187,6 @@ public class SellerTable {
         }finally {
             try{
                 updateOfferEndDate.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while updateOfferEndDate "+e.getMessage());
             }
@@ -206,7 +195,7 @@ public class SellerTable {
 
     public boolean updateDescription(int offerId,String description){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateDescription=conn.prepareStatement(UPDATE_DESCRIPTION);
             updateOfferPrice.setString(1,description);
             updateOfferPrice.setInt(2,offerId);
@@ -221,7 +210,6 @@ public class SellerTable {
         }finally {
             try{
                 updateDescription.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing updateDescription "+e.getMessage());
             }
@@ -230,7 +218,7 @@ public class SellerTable {
     //this function returns the list of all the offers of a particular seller
     public ArrayList<Offer> getAllOffers() {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             getAllOffers=conn.prepareStatement(GET_ALL_OFFERS);
             ArrayList <Offer> offers = new ArrayList<Offer>();
             ResultSet resultSet = getAllOffers.executeQuery();
@@ -250,7 +238,6 @@ public class SellerTable {
         }finally {
             try{
                 getAllOffers.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while getAllOffers "+e.getMessage());
             }
@@ -259,7 +246,7 @@ public class SellerTable {
     }
     public ArrayList<Offer> getAllOffersFilterMethod(String cropName,int minPrice,int maxPrice){
         try{
-            conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             getAllOffersFilter=conn.prepareStatement(GET_ALL_OFFERS_FILTER);
             getAllOffersFilter.setString(1,cropName);
             getAllOffersFilter.setInt(2,minPrice);
@@ -282,7 +269,6 @@ public class SellerTable {
         }finally {
             try{
                 getAllOffersFilter.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the sources in getAllOffersFilterMethod "+e.getMessage());
             }
