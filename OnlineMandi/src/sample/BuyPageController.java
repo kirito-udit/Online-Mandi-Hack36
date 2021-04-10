@@ -5,13 +5,17 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
+import javax.swing.*;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ResourceBundle;
@@ -29,6 +33,8 @@ public class BuyPageController implements Initializable {
     private TableView cropTableView;
     @FXML
     private TextArea descriptionTextArea;
+    @FXML
+    private Button buyButton;
 
     ObservableList<Offer> data;
     private String phoneNo;
@@ -102,5 +108,43 @@ public class BuyPageController implements Initializable {
         String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
         MessageManager.getInstance().addConversation(this.phoneNo,offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
         //MessageManager.getInstance().close();
+    }
+    @FXML
+    public void buyButtonResponse(ActionEvent e) {
+        Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
+        Spinner spinner = new Spinner();
+        spinner.setEditable(true);
+        spinner.setPromptText("Quantity:");
+        SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, offer.getQuantity(), 1);
+        spinner.setValueFactory(valueFactory);
+
+        Button createButton = new Button();
+        createButton.setText("Confirm order");
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(spinner,createButton);
+        vBox.setPrefHeight(150);
+        vBox.setPrefWidth(200);
+        vBox.setSpacing(5);
+        vBox.setAlignment(Pos.CENTER);
+
+        Stage createStage = new Stage();
+        AnchorPane root = new AnchorPane();
+        root.getChildren().add(vBox);
+
+        Scene canvasScene = new Scene(root);
+        createStage.setTitle("Select Quantity");
+        createStage.setScene(canvasScene);
+        createStage.show();
+
+        String sellerPhone = offer.getSellerPhone();
+        String buyerPhone = phoneNo;
+        String cropName = offer.getCropName();
+        int price = offer.getPrice();
+
+        createButton.setOnAction(actionEvent1 -> {
+            Transactions.getInstance().processATransaction(buyerPhone,offer.getOfferId(),(int)spinner.getValue(),new Timestamp(System.currentTimeMillis()));
+            createStage.close();
+        });
     }
 }
