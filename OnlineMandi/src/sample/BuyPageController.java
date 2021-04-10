@@ -43,6 +43,8 @@ public class BuyPageController implements Initializable {
     @FXML
     private TableView cropTableView;
     @FXML
+    private Button distanceButton;
+    @FXML
     private TextArea descriptionTextArea;
     @FXML
     private Button buyButton;
@@ -305,6 +307,20 @@ public class BuyPageController implements Initializable {
                 createStage.close();
             });
         }
+    }
+    @FXML
+    public void distanceButtonResponse(ActionEvent e) {
+        Offer sellOffer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
+        String sellPhone = sellOffer.getSellerPhone();
+        ArrayList <String> sellerLatLong = UserTable.getInstance().getLatLong(sellPhone);
+        ArrayList <String> buyerLatLong = UserTable.getInstance().getLatLong(this.phoneNo);
+        Distance dis = new Distance();
+        System.out.println(sellerLatLong.get(0)+" "+sellerLatLong.get(1));
+        System.out.println(buyerLatLong.get(0)+" "+buyerLatLong.get(1));
+        dis.getdes2(sellerLatLong.get(0),sellerLatLong.get(1));
+        dis.getdes(buyerLatLong.get(0),buyerLatLong.get(1));
+        Thread t = new Thread(dis);
+        t.start();
     }
 
 }
