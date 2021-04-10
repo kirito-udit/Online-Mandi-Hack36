@@ -30,7 +30,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="sellingTableView" prefHeight="200.0" prefWidth="200.0">
               <columns>
                   <TableColumn fx:id="sTID" prefWidth="94.39999043941498" text="Transaction ID" />
                 <TableColumn fx:id="sBuyerName" prefWidth="83.20002746582031" text="Buyer Name" />
@@ -49,7 +49,7 @@
                   <Font size="18.0" />
                </font>
             </Label>
-            <TableView prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="buyingTableView" prefHeight="200.0" prefWidth="200.0">
                <columns>
                   <TableColumn fx:id="bTID" prefWidth="92.79995381832123" text="Transaction ID" />
                   <TableColumn fx:id="bSellerName" prefWidth="76.00007629394531" text="Seller Name" />
