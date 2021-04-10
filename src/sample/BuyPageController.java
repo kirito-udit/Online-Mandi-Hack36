@@ -165,7 +165,7 @@ public class BuyPageController implements Initializable {
         sortByComboBox.setItems(FXCollections.observableArrayList(sortByArrayList));
 
         //
-        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers(phoneNo));
         final String[] crops = {"Wheat", "Rice","Barley","Jowar","Maize","Soybean","ChickPeas","Beans"
                 ,"Sugarcane","Potatoes","Tomatoes","Coconut","Coffee","Tea",
                 "SweetPotato","Radish","Carrot","SugarBeat","Olives","grapes","Cocoa Beans","Peas","Apples","Plantains","Mango",
@@ -227,7 +227,7 @@ public class BuyPageController implements Initializable {
 
     @FXML
     public void refresh() {
-        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        data = FXCollections.observableList(SellerTable.getInstance().getAllOffers(phoneNo));
         offerSortedList = new SortedList<Offer>(data,globalComparator);
         cropTableView.setItems(offerSortedList);
         cropTableView.getSelectionModel().select(0);
@@ -243,7 +243,7 @@ public class BuyPageController implements Initializable {
         Parent root = (Parent) loader.load();
         ChatsController cpc = loader.getController();
         cpc.setSellerPhone(offer.getSellerPhone());
-        cpc.first(name,phoneNo,cpc);
+        cpc.first(this.name,phoneNo,cpc);
         Scene scene = new Scene(root, 681, 530);
         Main.primaryStage.setTitle("Chat Page");
         Main.primaryStage.setScene(scene);
@@ -284,37 +284,33 @@ public class BuyPageController implements Initializable {
         int price = offer.getPrice();
 
         createButton.setOnAction(actionEvent1 -> {
-            //Calculating cost of item
-            Double cost = ((int)spinner.getValue())*(offer.getPrice())/100.0;
-//            File dir = new File("C:\\Users\\hp\\Desktop\\Payment\\onlinemandi01");
-            String cmd = "mvn spring-boot:run -Dspring-boot.run.arguments=\""+""+cost+"\"";
-            Runtime run = Runtime.getRuntime();
-//       String command = "cmd /c start run.bat";
-//            Process process = null;
-
-            try {
-                //process = Runtime.getRuntime().exec(command,null,dir);
-//                run.exec("cd C:/Users/hp/Desktop/Payment/onlinemandi01")
-                Task task = new Task<Void>() {
-                    @Override
-                    public Void call() throws InterruptedException, IOException {
-                        ProcessBuilder builder = new ProcessBuilder(
-                                "cmd.exe", "/c", "cd \"C:\\Users\\hp\\Desktop\\Payment\\onlinemandi01\" && " + cmd);
-                        builder.redirectErrorStream(true);
-                        Process process = builder.start();
-                        return null;
-                    }
-                };
-                new Thread(task).start();
+//            //Calculating cost of item
+//            Double cost = ((int)spinner.getValue())*(offer.getPrice())/100.0;
+////            File dir = new File("C:\\Users\\hp\\Desktop\\Payment\\onlinemandi01");
+//            String cmd = "mvn spring-boot:run -Dspring-boot.run.arguments=\""+""+cost+"\"";
+//            Runtime run = Runtime.getRuntime();
+////       String command = "cmd /c start run.bat";
+////            Process process = null;
+//
+//            try {
+//                //process = Runtime.getRuntime().exec(command,null,dir);
+////                run.exec("cd C:/Users/hp/Desktop/Payment/onlinemandi01")
+//                Task task = new Task<Void>() {
+//                    @Override
+//                    public Void call() throws InterruptedException, IOException {
+//                        ProcessBuilder builder = new ProcessBuilder(
+//                                "cmd.exe", "/c", "cd \"C:\\Users\\hp\\Desktop\\Payment\\onlinemandi01\" && " + cmd);
+//                        builder.redirectErrorStream(true);
+//                        Process process = builder.start();
+//                        return null;
+//                    }
+//                };
+//                new Thread(task).start();
                 //Thread.sleep(500);
                 if(!Transactions.getInstance().processATransaction(buyerPhone,offer.getOfferId(),(int)spinner.getValue(),new Timestamp(System.currentTimeMillis())))
                     JOptionPane.showMessageDialog(null,"Error in transaction!");
                 else
                     JOptionPane.showMessageDialog(null,"Transaction successful");
-            } catch (Exception e2) {
-                JOptionPane.showMessageDialog(null,"Error in transaction!");
-                System.out.println("Error in updating table of Transaction");
-            }
             createStage.close();
         });
     }
@@ -386,7 +382,7 @@ public class BuyPageController implements Initializable {
             createButton.setOnAction(actionEvent1 -> {
                 minPrice = (Integer) spinner.getValue();
                 maxPrice = (Integer) spinner2.getValue();
-                data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+                data = FXCollections.observableList(SellerTable.getInstance().getAllOffers(phoneNo));
                 offerSortedList = new SortedList<Offer>(data,globalComparator);
                 filteredList = new FilteredList<>(offerSortedList,priceRangePredicate);
                 cropTableView.setItems(filteredList);

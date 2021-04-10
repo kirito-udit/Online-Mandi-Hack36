@@ -31,7 +31,7 @@ public class SellerTable {
             COLUMN_OFFER_ID+" = ? ";
     public static final String GET_OFFER="SELECT * FROM "+SELL_TABLE+" WHERE "+COLUMN_OFFER_ID+" = ? ";
     public static final String DELETE_OFFER = " DELETE FROM " + SELL_TABLE + " WHERE " + COLUMN_OFFER_ID + " = ? ";
-    public static final String GET_ALL_OFFERS = " SELECT * FROM " + SELL_TABLE;
+    public static final String GET_ALL_OFFERS = " SELECT * FROM " + SELL_TABLE + " WHERE " + COLUMN_SELLER_PHONE + " <> ? AND ? >= "+COLUMN_START_DATE+" AND ? <="+COLUMN_END_DATE;
     public static final String GET_MY_OFFERS = " SELECT * FROM " + SELL_TABLE + " WHERE " + COLUMN_SELLER_PHONE+ " =? ";
 
     public Connection conn;
@@ -245,10 +245,15 @@ public class SellerTable {
         }
     }
     //this function returns the list of all the offers of a particular seller
-    public ArrayList<Offer> getAllOffers() {
+    public ArrayList<Offer> getAllOffers(String phoneNo) {
         try {
             conn=Server.getConnection();
             getAllOffers=conn.prepareStatement(GET_ALL_OFFERS);
+            getAllOffers.setString(1,phoneNo);
+            long millis=System.currentTimeMillis();
+            java.sql.Date date=new java.sql.Date(millis);
+            getAllOffers.setDate(2,date);
+            getAllOffers.setDate(3,date);
             ArrayList <Offer> offers = new ArrayList<Offer>();
             ResultSet resultSet = getAllOffers.executeQuery();
             while (resultSet.next()) {

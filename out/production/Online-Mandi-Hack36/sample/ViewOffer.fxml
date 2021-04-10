@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewOfferController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewOfferController">
    <top>
       <HBox alignment="CENTER" cacheShape="false" prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -19,17 +22,17 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
             <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonResponse" text="Back to profile page" />
             <Button fx:id="updateOfferButton" mnemonicParsing="false" onAction="#updateOfferButtonResponse" text="Update Selected Offer">
                <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
             <Button fx:id="deleteOfferButton" mnemonicParsing="false" onAction="#deleteOfferButtonResponse" text="Delete Selected Offer">
                <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" />
+                  <Insets />
                </HBox.margin>
             </Button>
          </children>
@@ -38,11 +41,11 @@
    <center>
       <TableView fx:id="viewOfferTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="cropNameTableColumn" prefWidth="137.0" text="Crop name" />
-          <TableColumn fx:id="priceTableColumn" prefWidth="81.0" text="price" />
-            <TableColumn fx:id="startDateTableColumn" prefWidth="95.0" text="start date" />
-            <TableColumn fx:id="endDateTableColumn" prefWidth="104.0" text="endDate" />
-            <TableColumn fx:id="descriptionTableColumn" prefWidth="182.0" text="Description" />
+          <TableColumn fx:id="cropNameTableColumn" prefWidth="99.2000732421875" text="Crop name" />
+          <TableColumn fx:id="priceTableColumn" prefWidth="91.20001220703125" text="Price/100kg" />
+            <TableColumn fx:id="startDateTableColumn" prefWidth="124.79998779296875" text="Start Date" />
+            <TableColumn fx:id="endDateTableColumn" prefWidth="125.60003662109375" text="End Date" />
+            <TableColumn fx:id="descriptionTableColumn" prefWidth="160.7999267578125" text="Description" />
         </columns>
       </TableView>
    </center>
