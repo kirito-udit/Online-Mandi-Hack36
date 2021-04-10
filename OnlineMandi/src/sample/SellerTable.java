@@ -58,10 +58,11 @@ public class SellerTable {
 
     public boolean deleteOffer(int offerId) {
         try {
+            conn.close();
             conn = DriverManager.getConnection(CONNECTION_STRING);
             deleteOffer=conn.prepareStatement(DELETE_OFFER);
             deleteOffer.setInt(1, offerId);
-            deleteOffer.executeQuery();
+            deleteOffer.executeUpdate();
             return true;
         } catch (SQLException e) {
             System.out.println("Error occured while deleting the offer " + e.getMessage());
@@ -155,11 +156,12 @@ public class SellerTable {
 
     public boolean updateOfferQuantity(int offerId,int quantity){
         try {
+            conn.close();
             conn = DriverManager.getConnection(CONNECTION_STRING);
             updateOfferQuantity=conn.prepareStatement(UPDATE_OFFER_QUANTITY);
-            updateOfferPrice.setInt(1,quantity);
-            updateOfferPrice.setInt(2,offerId);
-            int affectedRows=updateOfferPrice.executeUpdate();
+            updateOfferQuantity.setInt(1,quantity);
+            updateOfferQuantity.setInt(2,offerId);
+            int affectedRows=updateOfferQuantity.executeUpdate();
             if(affectedRows!=1){
                 throw new SQLException("Couldn't update the offer quantity");
             }
