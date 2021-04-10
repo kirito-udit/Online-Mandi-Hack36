@@ -1,6 +1,7 @@
 package sample;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -8,7 +9,7 @@ import java.sql.*;
 
 public class UserTable {
     public static File dbFile = new File("./src/sample/Resources");
-    public static final String DB_NAME = "REGISTER.db";
+    public static final String DB_NAME = "register.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String UTABLE = "USERTABLE";
 
@@ -20,6 +21,7 @@ public class UserTable {
     public static final String COLUMN_CITY = "City";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_PROFILE_PIC = "ProfilePicture";
+
     public static final String INSERT_USER = "INSERT INTO " + UTABLE + " VALUES (?,?,?,?,?,?,?,?)";
     public static final String UPDATE_PHONE = "UPDATE " + UTABLE + " SET " + COLUMN_PHONE + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_NAME = "UPDATE " + UTABLE + " SET " + COLUMN_NAME + " = ? WHERE " + COLUMN_ID + " = ?";
@@ -31,6 +33,7 @@ public class UserTable {
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_NAME+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
+
     public Connection conn;
     public PreparedStatement insertUser;
     public PreparedStatement updatePhone;
@@ -42,14 +45,19 @@ public class UserTable {
     public PreparedStatement queryPasswordVerfication;
     public PreparedStatement selectFullNameWithThisPhoneNumber;
     public PreparedStatement selectProfilePicWithThisPhoneNumber;
+
     private static UserTable userTable;
+
     public static UserTable getInstance() {
         if(userTable == null)
                 userTable = new UserTable();
         return userTable;
     }
+
     private UserTable() {
+
     }
+
     public boolean open() {
         try {
             this.conn = DriverManager.getConnection(CONNECTION_STRING);
@@ -69,6 +77,7 @@ public class UserTable {
             return false;
         }
     }
+
     public void close() {
         try {
             if (updatePoBox != null) {
@@ -108,6 +117,7 @@ public class UserTable {
             System.out.println("Couldn't close connections: " + e.getMessage());
         }
     }
+
     public void insertUser(String fullName, String phoneNumber, String password, String city, FileInputStream fis, String aadharNumber, Date dob, String poBox) {
         try {
             insertUser.setString(1, fullName);
@@ -123,6 +133,7 @@ public class UserTable {
             System.out.println("Insert failed: " + e.getMessage());
         }
     }
+
     private void updateName(String aadharNumber, String newName) {
         try {
             updateName.setString(1, newName);
@@ -131,6 +142,7 @@ public class UserTable {
             System.out.println("Update Name failed: " + e.getMessage());
         }
     }
+
     private void updateCity(String aadharNumber, String newCity) {
         try {
             updateCity.setString(1, newCity);
@@ -139,6 +151,7 @@ public class UserTable {
             System.out.println("Update City failed: " + e.getMessage());
         }
     }
+
     private void updatePoBox(String aadharNumber, String newPoBox) {
         try {
             updatePoBox.setString(1, newPoBox);
@@ -147,6 +160,7 @@ public class UserTable {
             System.out.println("Update PoBox failed: " + e.getMessage());
         }
     }
+
     private void updatePhone(String aadharNumber, String newPhoneNumber) {
         try {
             updatePhone.setString(1, newPhoneNumber);
@@ -155,6 +169,7 @@ public class UserTable {
             System.out.println("Update Phone failed: " + e.getMessage());
         }
     }
+
     private void updateProfilePic(String aadharNumber, String local) {
         try {
             FileInputStream fis = new FileInputStream(local);
@@ -165,6 +180,7 @@ public class UserTable {
             System.out.println("Update ProfilePic failed: " + e.getMessage());
         }
     }
+
     public FullNameProfilePic authentication(String password,String phoneNumber){
         try {
             System.out.println(phoneNumber);
@@ -183,6 +199,7 @@ public class UserTable {
             return null;
         }
     }
+
     private String getFullName(String phoneNumber){
         try{
             selectFullNameWithThisPhoneNumber.setString(1,phoneNumber);
@@ -210,14 +227,6 @@ public class UserTable {
                     System.out.println("image w:"+image.getWidth());
                 }
                 return image;
-//                Blob blob = results.getBlob(1);
-//                byte byteArray[] = blob.getBytes(1,(int)blob.length());
-//                ByteArrayInputStream bis = new ByteArrayInputStream(byteArray);
-//                BufferedImage bufferedImage = ImageIO.read(bis);
-//                Image image = SwingFXUtils.toFXImage(bufferedImage,null);
-//                System.out.println("image h:"+image.getHeight());
-//                System.out.println("image w:"+image.getWidth());
-//                return image;
             }
         }catch (Exception e){
             System.out.println("Exception occured while checking the profile pic of the user during user login ");
