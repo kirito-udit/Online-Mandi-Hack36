@@ -10,9 +10,13 @@ import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 
 
@@ -28,6 +32,7 @@ import java.util.ResourceBundle;
 public class ChatsController implements Initializable, Runnable{
 
     private String name,phoneNo;
+    private String sellerPhone = null;
     private ArrayList<Conversation> convoList;
     public ObservableList<Conversation> observableConvoList;
 
@@ -68,12 +73,22 @@ public class ChatsController implements Initializable, Runnable{
     private TableColumn nameTableColumn;
     @FXML
     private TextField searchTextField;
-
+    private FilteredList<Conversation> filteredData;
+    private SortedList<Conversation> sortedData;
     private ChatsController cpc;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
+
+    public String getSellerPhone() {
+        return sellerPhone;
+    }
+
+    public void setSellerPhone(String sellerPhone) {
+        this.sellerPhone = sellerPhone;
+    }
+
     //    public ChatsController(ChatsController cpc){
 //        this.cpc = cpc;
 //    }
@@ -93,11 +108,20 @@ public class ChatsController implements Initializable, Runnable{
 
         observableConvoList= FXCollections.observableList(list);
         conversationTableView.setItems(observableConvoList);
-        conversationTableView.getSelectionModel().select(0);
+        if(sellerPhone == null)
+            conversationTableView.getSelectionModel().select(0);
+        else {
+            for(Conversation conversation : observableConvoList) {
+                if(conversation.getClient().equals(sellerPhone)) {
+                    conversationTableView.getSelectionModel().select(conversation);
+                    break;
+                }
+            }
+        }
         setConvoTextArea();
 
         conversationTextArea.textProperty().addListener((observableValue, s, t1) -> conversationTextArea.setScrollTop(Double.MAX_VALUE));
-        FilteredList<Conversation> filteredData = new FilteredList<>(observableConvoList, b -> true);
+        filteredData = new FilteredList<>(observableConvoList, b -> true);
 
         // 2. Set the filter Predicate whenever the filter changes.
         searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -122,7 +146,7 @@ public class ChatsController implements Initializable, Runnable{
         });
 
         // 3. Wrap the FilteredList in a SortedList.
-        SortedList<Conversation> sortedData = new SortedList<>(filteredData);
+        sortedData = new SortedList<>(filteredData);
 
         // 4. Bind the SortedList comparator to the TableView comparator.
         // 	  Otherwise, sorting the TableView would have no effect.
@@ -168,7 +192,10 @@ public class ChatsController implements Initializable, Runnable{
         int index = conversationTableView.getSelectionModel().getSelectedIndex();
         ArrayList<Conversation> list = MessageManager.getInstance().getAllConversations(this.phoneNo,this.name);
         this.observableConvoList= FXCollections.observableList(list);
-        this.conversationTableView.setItems(observableConvoList);
+        filteredData = new FilteredList<>(observableConvoList, b -> true);
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(conversationTableView.comparatorProperty());
+        conversationTableView.setItems(sortedData);
         this.conversationTableView.getSelectionModel().select(index);
     }
 
@@ -179,6 +206,8 @@ public class ChatsController implements Initializable, Runnable{
     }
 
     public void setConvoTextArea() {
+        if(conversationTableView.getSelectionModel().getSelectedItem() == null)
+            return;
         Conversation convo = (Conversation)this.conversationTableView.getSelectionModel().getSelectedItem();
         this.conversationTextArea.setText(convo.getConvo());
         this.conversationTextArea.appendText("");
@@ -195,5 +224,19 @@ public class ChatsController implements Initializable, Runnable{
         conversationTextArea.appendText("");
         Main.oos.flush();
         sendTextField.setText("");
+    }
+    @FXML
+    public void backToProfileResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
+        Parent root = (Parent) loader.load();
+        ProfilePageController ppc = loader.getController();
+        ppc.setName(name);
+        ppc.setPhoneNo(phoneNo);
+        Image image = UserTable.getInstance().getProfilePic(phoneNo);
+        ppc.createProfile(phoneNo,image,name);
+        Scene scene = new Scene(root, 900, 620);
+        Main.primaryStage.setTitle("My Profile");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
     }
 }
