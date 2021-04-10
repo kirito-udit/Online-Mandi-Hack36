@@ -10,9 +10,6 @@ import java.io.*;
 import java.sql.*;
 
 public class UserTable {
-    public static File dbFile = new File("./src/sample/Resources");
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String UTABLE = "USERTABLE";
 
     public static final String COLUMN_PHONE = "PhoneNumber";
@@ -74,7 +71,7 @@ public class UserTable {
     public boolean insertUser(String fullName, String phoneNumber, String password, String city, FileInputStream fis, String aadharNumber, Date dob, String poBox,
                               double latitude,double longitude) {
         try {
-            this.conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             insertUser=conn.prepareStatement(INSERT_USER);
             insertUser.setString(1, fullName);
             insertUser.setString(2, phoneNumber);
@@ -95,7 +92,6 @@ public class UserTable {
         }finally {
             try{
                 insertUser.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in insertUser in UserTable");
                 return false;
@@ -105,7 +101,7 @@ public class UserTable {
 
     private boolean updateName(String aadharNumber, String newName) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateName=conn.prepareStatement(UPDATE_NAME);
             updateName.setString(1, newName);
             updateName.setString(2, aadharNumber);
@@ -124,7 +120,6 @@ public class UserTable {
         }finally{
             try{
                 updateName.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in insertUser in UserTable");
             }
@@ -133,7 +128,7 @@ public class UserTable {
 
     private boolean updateCity(String aadharNumber, String newCity) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateCity=conn.prepareStatement(UPDATE_CITY);
             updateCity.setString(1, newCity);
             updateCity.setString(2, aadharNumber);
@@ -152,7 +147,6 @@ public class UserTable {
         }finally {
             try{
                 updateCity.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updateCity in UserTable");
             }
@@ -161,7 +155,7 @@ public class UserTable {
 
     private boolean updatePoBox(String aadharNumber, String newPoBox) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updatePoBox=conn.prepareStatement(UPDATE_POBOX);
             updatePoBox.setString(1, newPoBox);
             updatePoBox.setString(2, aadharNumber);
@@ -180,7 +174,6 @@ public class UserTable {
         }finally {
             try{
                 updatePoBox.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updatePoBox in UserTable");
             }
@@ -189,7 +182,7 @@ public class UserTable {
 
     private boolean updatePhone(String aadharNumber, String newPhoneNumber) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updatePhone=conn.prepareStatement(UPDATE_PHONE);
             updatePhone.setString(1, newPhoneNumber);
             updatePhone.setString(2, aadharNumber);
@@ -207,7 +200,6 @@ public class UserTable {
         }finally {
             try{
                 updatePhone.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updatePhone in UserTable");
             }
@@ -216,7 +208,7 @@ public class UserTable {
 
     private boolean updateProfilePic(String aadharNumber, String local) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateProfilePic=conn.prepareStatement(UPDATE_PROFILE_PIC);
             FileInputStream fis = new FileInputStream(local);
             updateProfilePic.setBinaryStream(1, fis, fis.available());
@@ -235,7 +227,6 @@ public class UserTable {
         }finally {
             try{
                 updateProfilePic.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updateProfilePic in UserTable");
             }
@@ -244,7 +235,7 @@ public class UserTable {
 
     private boolean updateLatitude(String aadharNumber, double newLatitude) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateLatitde=conn.prepareStatement(UPDATE_LATITUDE);
             updateLatitde.setDouble(1, newLatitude);
             updateLatitde.setString(2, aadharNumber);
@@ -262,7 +253,6 @@ public class UserTable {
         }finally {
             try{
                 updateLatitde.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updateLatitue in UserTable");
             }
@@ -270,7 +260,7 @@ public class UserTable {
     }
     private boolean updateLongitude(String aadharNumber, double newLongitude) {
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             updateLongitude=conn.prepareStatement(UPDATE_LONGITUDE);
             updateLongitude.setDouble(1, newLongitude);
             updateLongitude.setString(2, aadharNumber);
@@ -288,7 +278,6 @@ public class UserTable {
         }finally {
             try{
                 updateLongitude.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in updateLongitude in UserTable");
             }
@@ -297,7 +286,7 @@ public class UserTable {
 
     public FullNameProfilePic authentication(String password,String phoneNumber){
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             queryPasswordVerfication=conn.prepareStatement(QUERY_PASSWORD_VERIFICATION);
             queryPasswordVerfication.setString(1,phoneNumber);
             ResultSet results=queryPasswordVerfication.executeQuery();
@@ -314,7 +303,6 @@ public class UserTable {
         }finally {
             try{
                 queryPasswordVerfication.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in authentication in UserTable");
             }
@@ -323,7 +311,7 @@ public class UserTable {
 
     public String getFullName(String phoneNumber){
         try{
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             selectFullNameWithThisPhoneNumber=conn.prepareStatement(SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER);
             selectFullNameWithThisPhoneNumber.setString(1,phoneNumber);
             ResultSet results=selectFullNameWithThisPhoneNumber.executeQuery();
@@ -337,7 +325,6 @@ public class UserTable {
         }finally {
             try{
                 selectFullNameWithThisPhoneNumber.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in selectFullNameWithThisPhoneNumber in UserTable");
             }
@@ -345,7 +332,7 @@ public class UserTable {
     }
     public Image getProfilePic(String phoneNumber){
         try {
-            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            conn=Server.getConnection();
             selectProfilePicWithThisPhoneNumber=conn.prepareStatement(SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER);
             selectProfilePicWithThisPhoneNumber.setString(1, phoneNumber);
             ResultSet results = selectProfilePicWithThisPhoneNumber.executeQuery();
@@ -366,7 +353,6 @@ public class UserTable {
         }finally {
             try{
                 selectProfilePicWithThisPhoneNumber.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in selectProfilePicWithThisPhoneNumber in UserTable");
             }
@@ -375,7 +361,7 @@ public class UserTable {
     }
     public Address queryAddress(String aadharNumber){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = Server.getConnection();
             queryAddress=conn.prepareStatement(QUERY_ADDRESS);
             queryAddress.setString(1,aadharNumber);
             ResultSet results=queryAddress.executeQuery();
@@ -389,7 +375,6 @@ public class UserTable {
         } finally {
             try{
                 queryAddress.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in selectProfilePicWithThisPhoneNumber in UserTable");
             }
