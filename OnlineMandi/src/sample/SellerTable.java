@@ -19,6 +19,7 @@ public class SellerTable {
     public static final String COLUMN_OFFER_ID = "OfferId";
     public static final String COLUMN_PRICE = "Price";
     public static final String COLUMN_DESCRIPTION="Description";
+    public static final String GET_ALL_OFFERS_FILTER="SELECT * FROM "+SELL_TABLE+" WHERE "+COLUMN_CROP_NAME+" = ? AND "+COLUMN_PRICE+" IS BETWEEN ? AND ? ";
     public static final String ADD_OFFER = " INSERT INTO " + SELL_TABLE + " ( "+COLUMN_CROP_NAME+" , "+COLUMN_QUANTITY+" , "+
             COLUMN_PRICE+" , "+COLUMN_START_DATE+" , "+COLUMN_END_DATE+" , "+COLUMN_SELLER_PHONE+" , "+COLUMN_DESCRIPTION+" ) VALUES ( ? , ? , ? , ? , ? , ? , ? ) ";
     public static final String UPDATE_OFFER_PRICE = " UPDATE " + SELL_TABLE + " SET " + COLUMN_PRICE + " = ? WHERE " +
@@ -42,6 +43,7 @@ public class SellerTable {
     public PreparedStatement deleteOffer;
     public PreparedStatement getAllOffers;
     public PreparedStatement getQuantity;
+    public PreparedStatement getAllOffersFilter;
 
     private static SellerTable sellerTable;
 
@@ -254,5 +256,36 @@ public class SellerTable {
             }
         }
         return null;
+    }
+    public ArrayList<Offer> getAllOffersFilterMethod(String cropName,int minPrice,int maxPrice){
+        try{
+            conn=DriverManager.getConnection(CONNECTION_STRING);
+            getAllOffersFilter=conn.prepareStatement(GET_ALL_OFFERS_FILTER);
+            getAllOffersFilter.setString(1,cropName);
+            getAllOffersFilter.setInt(2,minPrice);
+            getAllOffersFilter.setInt(3,maxPrice);
+            ArrayList <Offer> offers = new ArrayList<Offer>();
+            ResultSet resultSet=getAllOffersFilter.executeQuery();
+            while (resultSet.next()) {
+                Offer offer = new Offer(resultSet.getInt(1), resultSet.getString(2), resultSet.getInt(3),
+                        resultSet.getInt(4), resultSet.getDate(5), resultSet.getDate(6),
+                        resultSet.getString(7),resultSet.getString(8));
+                System.out.println(offer.getOfferId());
+                System.out.println(offer.getStartDate());
+                System.out.println(offer.getEndDate());
+                offers.add(offer);
+            }
+            return offers;
+        }catch (SQLException e){
+            System.out.println("Couldn't fetch all offers using filter: "+e.getMessage());
+            return null;
+        }finally {
+            try{
+                getAllOffersFilter.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the sources in getAllOffersFilterMethod "+e.getMessage());
+            }
+        }
     }
 }
