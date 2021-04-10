@@ -108,11 +108,11 @@ public class ProfilePageController implements Initializable {
 
     }
     @FXML
-    void chatButtonResponse(ActionEvent e) throws IOException {
+    void chatButtonResponse(ActionEvent e) throws IOException, InterruptedException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Chats.fxml"));
         Parent root = (Parent) loader.load();
         ChatsController cpc = loader.getController();
-        cpc.first(name,phoneNo);
+        cpc.first(name,phoneNo,cpc);
         Scene scene = new Scene(root, 681, 530);
         Main.primaryStage.setTitle("Chat Page");
         Main.primaryStage.setScene(scene);
