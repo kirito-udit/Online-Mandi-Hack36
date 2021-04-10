@@ -32,6 +32,7 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) throws IOException {
+        SellerTable.getInstance().removeOutdatedOffers();
         try {
             socket = new Socket("localhost", 6975);
             oos= new ObjectOutputStream(socket.getOutputStream());

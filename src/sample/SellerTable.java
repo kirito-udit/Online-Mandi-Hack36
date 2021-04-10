@@ -33,6 +33,7 @@ public class SellerTable {
     public static final String DELETE_OFFER = " DELETE FROM " + SELL_TABLE + " WHERE " + COLUMN_OFFER_ID + " = ? ";
     public static final String GET_ALL_OFFERS = " SELECT * FROM " + SELL_TABLE + " WHERE " + COLUMN_SELLER_PHONE + " <> ? AND ? >= "+COLUMN_START_DATE+" AND ? <="+COLUMN_END_DATE;
     public static final String GET_MY_OFFERS = " SELECT * FROM " + SELL_TABLE + " WHERE " + COLUMN_SELLER_PHONE+ " =? ";
+    public static final String REMOVE_OUTDATED_OFFERS = " DELETE FROM " + SELL_TABLE + " WHERE ? > "+COLUMN_END_DATE;
 
     public Connection conn;
     public PreparedStatement addOffer;
@@ -46,6 +47,7 @@ public class SellerTable {
     public PreparedStatement getMyOffers;
     public PreparedStatement getQuantity;
     public PreparedStatement getAllOffersFilter;
+    public PreparedStatement removeOutdatedOffers;
 
     private static SellerTable sellerTable;
 
@@ -332,6 +334,24 @@ public class SellerTable {
                 getAllOffersFilter.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the sources in getAllOffersFilterMethod "+e.getMessage());
+            }
+        }
+    }
+    public void removeOutdatedOffers() {
+        try{
+            conn=Server.getConnection();
+            removeOutdatedOffers = conn.prepareStatement(REMOVE_OUTDATED_OFFERS);
+            long millis=System.currentTimeMillis();
+            java.sql.Date date=new java.sql.Date(millis);
+            removeOutdatedOffers.setDate(1,date);
+            removeOutdatedOffers.execute();
+        }catch (SQLException e){
+            System.out.println("Unable to clear outdated offers: "+e.getMessage());
+        }finally {
+            try{
+                removeOutdatedOffers.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing removeOutdatedOffers "+e.getMessage());
             }
         }
     }
