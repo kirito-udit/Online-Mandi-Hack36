@@ -8,6 +8,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class UserTable {
     public static final String UTABLE = "USERTABLE";
@@ -33,6 +34,7 @@ public class UserTable {
     public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
     public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
 
+    public static final String QUERY_LATLONG = "SELECT " + COLUMN_LATITUDE + ","+ COLUMN_LONGITUDE + " FROM "+UTABLE +" WHERE "+COLUMN_PHONE + " = ?";
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_NAME+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
@@ -51,6 +53,7 @@ public class UserTable {
     public PreparedStatement updateLongitude;
     public PreparedStatement queryAddress;
     public PreparedStatement queryPasswordVerfication;
+    public PreparedStatement queryLatLong;
     public PreparedStatement selectFullNameWithThisPhoneNumber;
     public PreparedStatement selectProfilePicWithThisPhoneNumber;
 
@@ -377,6 +380,30 @@ public class UserTable {
                 queryAddress.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in selectProfilePicWithThisPhoneNumber in UserTable");
+            }
+        }
+        return null;
+    }
+
+    public ArrayList <String> getLatLong(String phoneNumber) {
+        try {
+            conn = Server.getConnection();
+            queryLatLong = conn.prepareStatement(QUERY_LATLONG);
+            queryLatLong.setString(1,phoneNumber);
+            ResultSet results = queryLatLong.executeQuery();
+            ArrayList <String> arrayList = new ArrayList<>();
+            while(results.next()) {
+                arrayList.add(results.getString(1));
+                arrayList.add(results.getString(2));
+            }
+            return arrayList;
+        } catch(SQLException e) {
+            System.out.println("Error in querying Lat Long: "+e.getMessage());
+        } finally {
+            try {
+                queryLatLong.close();
+            } catch (SQLException e1) {
+                System.out.println("Error in closing queryLatLong.");
             }
         }
         return null;
