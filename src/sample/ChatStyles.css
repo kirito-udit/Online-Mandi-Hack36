@@ -1,0 +1,127 @@
+.root {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.button {
+    -fx-font-size  : 10pt;
+    -fx-font-family: "Tahoma";
+    -fx-font-color: #FFFFFF;
+    -fx-text-fill: white;
+    -fx-base       : #dfe5f2;
+    -fx-focus-color: #dfe5f2;
+    -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.dialog-pane {
+    -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.label {
+    -fx-text-fill: white;
+    -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.context-menu {
+    -fx-text-fill:white;
+     -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.scroll-bar {
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+.list-cell:selected {
+-fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+-fx-background-color: linear-gradient( to right,#273452,#374259);
+
+}
+
+.list-cell {
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+.text-area{
+    -fx-font-size  : 10pt;
+    -fx-font-family: "Lucida Handwriting";
+    -fx-font-color: #FFFFFF;
+    -fx-text-fill: white;
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.text-area .content {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Lucida Handwriting";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.text-area.scroll-pane {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Lucida Handwriting";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+ }
+.list-view {
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.menu-bar {
+
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+.tool-bar{
+ -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+
+
+.list-view {
+    -fx-background-color: linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+#colorpicker {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: #FFFFFF;
+        -fx-text-fill: white;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+
+.hbox-group {
+-fx-font-size  : 10pt;
+    -fx-font-family: "Tahoma";
+    -fx-font-color: #FFFFFF;
+    -fx-text-fill: white;
+    -fx-base       : #dfe5f2;
+    -fx-focus-color: #dfe5f2;
+    -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.toggle-button {
+     -fx-font-size  : 10pt;
+     -fx-font-family: "Tahoma";
+     -fx-text-fill: white;
+     -fx-font-color: #FFFFFF;
+     -fx-base       : #FFFFFF;
+     -fx-focus-color: #FFFFFF;
+     -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}
+.table-view {
+     -fx-font-size  : 10pt;
+     -fx-font-family: "Tahoma";
+     -fx-text-fill: white;
+     -fx-font-color: #FFFFFF;
+     -fx-base       : #FFFFFF;
+     -fx-focus-color: #FFFFFF;
+     -fx-background-color:  linear-gradient( to right,#020a1c,#07122b,#16223d,#273452,#374259);
+}

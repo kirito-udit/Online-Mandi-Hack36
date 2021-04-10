@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GiveContractsController">
+   <top>
+      <HBox alignment="CENTER" cacheShape="false" prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="38.0" prefWidth="326.0" text="Available Contract Farmers">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonResponse" text="Back to profile page" />
+            <Button fx:id="approachForContractButton" mnemonicParsing="false" onAction="#approachForContractButtonResponse" text="ApproachForContract">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <TableView fx:id="contractsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="cropNameTableColumn" prefWidth="137.0" text="Crop name" />
+          <TableColumn fx:id="priceTableColumn" prefWidth="154.0" text="Expected Minimum Price" />
+            <TableColumn fx:id="phoneNoTableColumn" prefWidth="143.0" text="phoneNumber" />
+            <TableColumn fx:id="descriptionTableColumn" prefWidth="165.0" text="Description" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

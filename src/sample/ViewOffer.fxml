@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ViewOfferController">
+   <top>
+      <HBox alignment="CENTER" cacheShape="false" prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="17.0" prefWidth="157.0" text="Your Offers">
+               <font>
+                  <Font size="26.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </top>
+   <bottom>
+      <HBox prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonResponse" text="Back to profile page" />
+            <Button fx:id="updateOfferButton" mnemonicParsing="false" onAction="#updateOfferButtonResponse" text="Update Selected Offer">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="deleteOfferButton" mnemonicParsing="false" onAction="#deleteOfferButtonResponse" text="Delete Selected Offer">
+               <HBox.margin>
+                  <Insets bottom="5.0" left="5.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </bottom>
+   <center>
+      <TableView fx:id="viewOfferTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+        <columns>
+          <TableColumn fx:id="cropNameTableColumn" prefWidth="137.0" text="Crop name" />
+          <TableColumn fx:id="priceTableColumn" prefWidth="81.0" text="price" />
+            <TableColumn fx:id="startDateTableColumn" prefWidth="95.0" text="start date" />
+            <TableColumn fx:id="endDateTableColumn" prefWidth="104.0" text="endDate" />
+            <TableColumn fx:id="descriptionTableColumn" prefWidth="182.0" text="Description" />
+        </columns>
+      </TableView>
+   </center>
+</BorderPane>

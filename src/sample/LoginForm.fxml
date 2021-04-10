@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane fx:id="loginPane" prefHeight="427.0" prefWidth="603.0" stylesheets="@LoginStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+   <center>
+      <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="603.0">
+         <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="150.0" prefWidth="150.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="NEVER" minWidth="100.0" prefWidth="200.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints maxHeight="-Infinity" minHeight="80.0" prefHeight="80.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label text="Phone number:" GridPane.rowIndex="1">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <Label text="Password:" GridPane.rowIndex="2">
+               <font>
+                  <Font size="19.0" />
+               </font>
+            </Label>
+            <TextField fx:id="phoneNumber" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label prefHeight="46.0" prefWidth="83.0" style="-fx-font-size: 30;" text="Login" GridPane.columnSpan="2">
+               <font>
+                  <Font name="Arial" size="28.0" />
+               </font>
+            </Label>
+            <Button fx:id="signIn" mnemonicParsing="false" onAction="#signIn" text="Sign in" GridPane.columnSpan="2" GridPane.rowIndex="3">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+            <PasswordField fx:id="password" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#signUpResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <Button fx:id="forgotPasswordButton" mnemonicParsing="false" onAction="#forgotPasswordButtonResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="Forgot password?" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+         </children>
+      </GridPane>
+   </center>
+</BorderPane>

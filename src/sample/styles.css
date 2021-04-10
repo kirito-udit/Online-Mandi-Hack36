@@ -1,0 +1,141 @@
+.root {
+    -fx-font-size  : 10pt;
+            -fx-font-family: "Tahoma";
+            -fx-font-color: black;
+            -fx-base       : #dfe5f2;
+            -fx-focus-color: #dfe5f2;
+            -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+
+.border-pane {
+    -fx-font-size  : 10pt;
+            -fx-font-family: "Tahoma";
+            -fx-font-color: black;
+            -fx-base       : #dfe5f2;
+            -fx-focus-color: #dfe5f2;
+            -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.dialog-pane {
+    -fx-font-size  : 10pt;
+                -fx-font-family: "Tahoma";
+                -fx-font-color: black;
+                -fx-base       : #dfe5f2;
+                -fx-focus-color: #dfe5f2;
+                -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.label {
+    -fx-text-fill: black;
+    -fx-background-color:  linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.menu-item .label:focused{
+    -fx-text-fill:black;
+    -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7);
+}
+.menu-item:focused  {
+    -fx-text-fill:black;
+    -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7);
+}
+.menu-bar {
+    -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.context-menu {
+    -fx-text-fill:black;
+     -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.tool-bar{
+ -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.button {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+
+.label {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+
+.scroll-bar {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-background-color :  linear-gradient( to right,#010817,#06122b,#132242);
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.context-menu-item {
+    -fx-text-fill: black;
+    -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.list-cell:selected {
+    -fx-font-size  : 10pt;
+    -fx-font-family: "Tahoma";
+    -fx-font-color: black;
+    -fx-base       : #dfe5f2;
+    -fx-focus-color: #dfe5f2;
+    -fx-background-color: linear-gradient(to right,#82abb0,#cbeaf5,#e4f2f7);
+}
+
+.list-cell {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+
+.text-area{
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Lucida Handwriting";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.text-area .content {
+            -fx-font-size  : 10pt;
+            -fx-font-family: "Lucida Handwriting";
+            -fx-font-color: black;
+            -fx-base       : #dfe5f2;
+            -fx-focus-color: #dfe5f2;
+            -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+.text-area.scroll-pane {
+            -fx-font-size  : 10pt;
+            -fx-font-family: "Lucida Handwriting";
+            -fx-font-color: black;
+            -fx-base       : #dfe5f2;
+            -fx-focus-color: #dfe5f2;
+            -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+ }
+.list-view {
+    -fx-background-color: linear-gradient(to right,#cbeaf5,#e4f2f7,#fafcfc);
+}
+#colorpicker {
+            -fx-font-size  : 10pt;
+            -fx-font-family: "Tahoma";
+            -fx-font-color: black;
+            -fx-base       : #dfe5f2;
+            -fx-focus-color: #dfe5f2;
+            -fx-background-color: linear-gradient(#cbeaf5,#e4f2f7,#fafcfc);
+}
+
+.toggle-button {
+        -fx-font-size  : 10pt;
+        -fx-font-family: "Tahoma";
+        -fx-font-color: black;
+        -fx-base       : #dfe5f2;
+        -fx-background-color :  linear-gradient( to right,#010817,#06122b,#132242);
+        -fx-focus-color: #dfe5f2;
+        -fx-background-color: linear-gradient(#cbeaf5,#e4f2f7,#fafcfc);
+}
