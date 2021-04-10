@@ -23,7 +23,7 @@ public class Server {
         UserTable.getInstance().open();
         Server.conn=UserTable.getInstance().conn;
         UserTable.getInstance().close();
-        ServerSocket serverSocket = null;
+        ServerSocket serverSocket;
         Socket socket;
 
         try {
@@ -32,6 +32,7 @@ public class Server {
         }
         catch (IOException e) {
             e.printStackTrace();
+            return;
         }
         while(true) {
             try {
@@ -64,7 +65,7 @@ public class Server {
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                
+                return;
             }
         }
     }
