@@ -35,14 +35,13 @@ public class LoginController implements Initializable {
 
     @FXML
     private PasswordField password;
-    public static Socket socket;
 
     @FXML
     void signIn(ActionEvent e) throws IOException, ClassNotFoundException {
         String pass = getMd5(password.getText());
         String phoneNo = phoneNumber.getText();
-        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
-        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
         oos.writeObject(phoneNo);
         oos.writeObject(pass);
         phoneNo = ois.readObject().toString();
@@ -50,10 +49,7 @@ public class LoginController implements Initializable {
 
         //creating an instance of UserTable class, if it already present then the same instance will be returned
         if (phoneNo != null) {
-            UserTable.getInstance().close();
-            UserTable.getInstance().open();
             FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass, phoneNo);
-            UserTable.getInstance().close();
 
             //if authentication is successful then fetch the profile pic and name of the user
             Image image = fullNameProfilePic.getImage();
@@ -75,11 +71,11 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        try {
-            socket = new Socket("localhost", 6963);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+//        try {
+//            socket = new Socket("localhost", 6963);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         Image image = new Image("file:./src/sample/Resources/farmLogin.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
