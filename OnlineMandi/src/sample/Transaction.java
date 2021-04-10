@@ -3,13 +3,31 @@ package sample;
 import java.sql.Timestamp;
 
 public class Transaction {
-        public String transactionID;
-        public String sellerPhone;
-        public String buyerPhone;
-        public String cropName;
-        public int price;
-        public int quantity;
-        public Timestamp timestamp;
+    public String transactionID;
+    public String sellerPhone;
+    public String buyerPhone;
+    public String cropName;
+    public int price;
+    public int quantity;
+    public String buyerName;
+    public String sellerName;
+    public Timestamp timestamp;
+
+    public String getBuyerName() {
+        return buyerName;
+    }
+
+    public void setBuyerName(String buyerName) {
+        this.buyerName = buyerName;
+    }
+
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public void setSellerName(String sellerName) {
+        this.sellerName = sellerName;
+    }
 
     public String getTransactionID() {
         return transactionID;
