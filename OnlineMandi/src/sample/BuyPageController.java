@@ -74,12 +74,14 @@ public class BuyPageController implements Initializable {
 
     public void setDescriptionTextArea() {
         Offer offer = (Offer)cropTableView.getSelectionModel().getSelectedItem();
+        String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
         descriptionTextArea.setText("OfferID: "+offer.getOfferId()+"\n"+
-                        "Seller Name: "+offer.getSellerName()+"\n"+
+                        "Seller Name: "+name+"\n"+
                         "Seller Phone Number: "+offer.getSellerPhone()+"\n"+
                         "Crop Name: "+offer.getCropName()+"\n"+
                         "Quantity: "+offer.getQuantity()+"\n"+
                         "Price/KG: "+offer.getPrice()+"\n"+
+                        "Description: "+offer.getDescription()+"\n"+
                         "Sale start date: "+offer.getStartDate().toString()+"\n"+
                         "Sale end date: "+offer.getEndDate().toString()+"\n"
                 );
@@ -97,7 +99,8 @@ public class BuyPageController implements Initializable {
         MessageManager.getInstance().close();
         MessageManager.getInstance().open();
         Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
-        MessageManager.getInstance().addConversation(this.name,this.phoneNo,offer.getSellerName(),offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
+        String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
+        MessageManager.getInstance().addConversation(this.phoneNo,offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
         //MessageManager.getInstance().close();
     }
 }
