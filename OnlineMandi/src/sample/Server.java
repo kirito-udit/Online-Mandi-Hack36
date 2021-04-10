@@ -50,6 +50,11 @@ public class Server implements  Runnable {
             }
         }catch(Exception e){
             e.printStackTrace();
+            for(ClientDetails client : clients) {
+                if(client.getPhoneNo().equals(phoneNumber)) {
+                    clients.remove(client);
+                }
+            }
             return;
         }
 
@@ -64,6 +69,11 @@ public class Server implements  Runnable {
                 mm.addConversation(phoneNumber,data, message,t, 0);
             } catch (Exception e) {
                 e.printStackTrace();
+                for(ClientDetails client : clients) {
+                    if(client.getPhoneNo().equals(phoneNumber)) {
+                        clients.remove(client);
+                    }
+                }
                 return;
             }
 
