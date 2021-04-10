@@ -61,7 +61,7 @@
             <TextArea fx:id="descriptionTextArea" prefHeight="50.0" prefWidth="275.0" GridPane.columnSpan="4" GridPane.rowIndex="3" GridPane.rowSpan="2" />
             <DatePicker fx:id="startDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="6" />
             <DatePicker fx:id="endDatePicker" GridPane.columnIndex="3" GridPane.rowIndex="6" />
-            <Spinner fx:id="quantitySpinner" max="100" min="1" prefHeight="26.0" prefWidth="78.0" GridPane.columnIndex="3" />
+            <Spinner fx:id="quantitySpinner" editable="true" max="10000" min="1" prefHeight="26.0" prefWidth="78.0" GridPane.columnIndex="3" />
             <TextField fx:id="priceTextField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
             <Label text="Describe your product:" GridPane.columnSpan="4" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="CENTER">
                <font>
