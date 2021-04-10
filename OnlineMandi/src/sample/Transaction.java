@@ -3,85 +3,61 @@ package sample;
 import java.sql.Timestamp;
 
 public class Transaction {
-    public String transactionID;
-    public String sellerPhone;
-    public String buyerPhone;
-    public String cropName;
-    public int price;
-    public int quantity;
-    public String buyerName;
-    public String sellerName;
-    public Timestamp timestamp;
+    private int transactionId;
+    private String sellerPhone;
+    private String buyerPhone;
+    private String sellerName;
+    private String buyerName;
+    private String cropName;
+    private int quantity;
+    private int price;
+    private Timestamp timestamp;
 
-    public String getBuyerName() {
-        return buyerName;
-    }
-
-    public void setBuyerName(String buyerName) {
-        this.buyerName = buyerName;
-    }
-
-    public String getSellerName() {
-        return sellerName;
-    }
-
-    public void setSellerName(String sellerName) {
+    public Transaction(int transactionId, String sellerPhone, String buyerPhone, String sellerName, String buyerName, String cropName, int quantity, int price, Timestamp timestamp) {
+        this.transactionId = transactionId;
+        this.sellerPhone = sellerPhone;
+        this.buyerPhone = buyerPhone;
         this.sellerName = sellerName;
+        this.buyerName = buyerName;
+        this.cropName = cropName;
+        this.quantity = quantity;
+        this.price = price;
+        this.timestamp = timestamp;
     }
 
-    public String getTransactionID() {
-        return transactionID;
-    }
-
-    public void setTransactionID(String transactionID) {
-        this.transactionID = transactionID;
+    public int getTransactionId() {
+        return transactionId;
     }
 
     public String getSellerPhone() {
         return sellerPhone;
     }
 
-    public void setSellerPhone(String sellerPhone) {
-        this.sellerPhone = sellerPhone;
-    }
-
     public String getBuyerPhone() {
         return buyerPhone;
     }
 
-    public void setBuyerPhone(String buyerPhone) {
-        this.buyerPhone = buyerPhone;
+    public String getSellerName() {
+        return sellerName;
+    }
+
+    public String getBuyerName() {
+        return buyerName;
     }
 
     public String getCropName() {
         return cropName;
     }
 
-    public void setCropName(String cropName) {
-        this.cropName = cropName;
+    public int getQuantity() {
+        return quantity;
     }
 
     public int getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
-        this.price = price;
-    }
-
-    public int getQuantity() {
-        return quantity;
-    }
-
-    public void setQuantity(int quantity) {
-        this.quantity = quantity;
-    }
-
     public Timestamp getTimestamp() {
         return timestamp;
-    }
-
-    public void setTimestamp(Timestamp timestamp) {
-        this.timestamp = timestamp;
     }
 }
