@@ -21,7 +21,7 @@
          <HBox prefHeight="26.0" prefWidth="600.0" spacing="20.0">
             <children>
                <Label prefHeight="26.0" prefWidth="29.0" text="Crop:" />
-               <ComboBox prefHeight="26.0" prefWidth="90.0" />
+               <ComboBox fx:id="cropComboBox" editable="true" onHiding="#handleOnHiding" onKeyPressed="#handleOnKeyPressed" prefHeight="26.0" prefWidth="90.0" promptText="Crop name here" />
                <Label prefHeight="26.0" prefWidth="42.0" text="Sort by:" />
                <ComboBox prefHeight="26.0" prefWidth="90.0" />
                   <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refresh" text="Refresh" />
