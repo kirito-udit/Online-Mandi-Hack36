@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
@@ -14,7 +10,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="loginPane" prefHeight="427.0" prefWidth="603.0" stylesheets="@LoginStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
+<BorderPane fx:id="loginPane" prefHeight="427.0" prefWidth="603.0" stylesheets="@LoginStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.LoginController">
    <center>
       <GridPane alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="603.0">
          <columnConstraints>
@@ -51,7 +47,7 @@
                </font>
             </Button>
             <PasswordField fx:id="password" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button mnemonicParsing="false" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#signUpResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
