@@ -6,9 +6,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Transactions {
-    public static File dbFile = new File("./src/sample/Resources");
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:" + dbFile.getAbsolutePath() + "\\" + DB_NAME;
     public static final String TRANSACTION_TABLE="Transactions";
     public static final String COLUMN_SELLER_PHONE="SellerPhone";
     public static final String COLUMN_BUYER_PHONE="BuyerPhone";
@@ -37,9 +34,10 @@ public class Transactions {
     private Transactions() {
 
     }
-    public boolean processATransaction(String buyerPhone,int offerId,int quantity,Timestamp timestamp){
+    public boolean processATransaction(String buyerPhone,int offerId,int quantity,Timestamp timestamp) {
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = Server.getConnection();
+            conn.setAutoCommit(false);
             Offer offer = SellerTable.getInstance().getOffer(offerId);
             addTransaction=conn.prepareStatement(ADD_TRANSACTION);
             addTransaction.setString(1,offer.getSellerPhone());
@@ -49,6 +47,8 @@ public class Transactions {
             addTransaction.setInt(5,offer.getPrice());
             addTransaction.setTimestamp(6,timestamp);
             addTransaction.executeUpdate();
+            System.out.println("Add transaction updated");
+            //throw new SQLException(); //To check rollback is working or not
             int current_quantity = offer.getQuantity();
             if(current_quantity>quantity) {
                 SellerTable.getInstance().updateOfferQuantity(offerId, current_quantity - quantity);
@@ -58,11 +58,16 @@ public class Transactions {
             return true;
         }catch (SQLException e){
             System.out.println("Error occured while buying an offer in the Transactions class "+e.getMessage());
+            try {
+                conn.rollback();
+            } catch (SQLException e1) {
+                System.out.println("Error occurred during performing rollback");
+            }
             return false;
         }finally {
             try {
+                conn.setAutoCommit(true);
                 addTransaction.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in the buy method of the Transactions class");
             }
@@ -70,7 +75,7 @@ public class Transactions {
     }
     public ArrayList<Transaction> getSellTransaction(String sellerPhone){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = Server.getConnection();
             getSellTransactionWithPhoneNumber = conn.prepareStatement(QUERY_SELL_TRANSACTION);
             getSellTransactionWithPhoneNumber.setString(1,sellerPhone);
             ResultSet results=getSellTransactionWithPhoneNumber.executeQuery();
@@ -89,7 +94,6 @@ public class Transactions {
         }finally {
             try{
                 getSellTransactionWithPhoneNumber.close();
-                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in the getSellTransaction method of Transactions class "+e.getMessage());
             }
@@ -97,7 +101,7 @@ public class Transactions {
     }
     public ArrayList<Transaction> getBuyTransaction(String buyerPhone){
         try {
-            conn = DriverManager.getConnection(CONNECTION_STRING);
+            conn = Server.getConnection();
             getBuyTransactionWithPhoneNumber = conn.prepareStatement(QUERY_BUY_TRANSACTION);
             getBuyTransactionWithPhoneNumber.setString(1,buyerPhone);
             ResultSet results=getBuyTransactionWithPhoneNumber.executeQuery();
@@ -116,7 +120,6 @@ public class Transactions {
         }finally {
             try{
                 getBuyTransactionWithPhoneNumber.close();
-                conn.close();
             }catch (SQLException e) {
                 System.out.println("Error occured while closing the resources in the getBuyTransaction method of Transactions class " + e.getMessage());
             }
