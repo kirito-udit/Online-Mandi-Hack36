@@ -61,7 +61,7 @@
             </TableView>
          </children>
       </VBox>
-      <Button fx:id="backToProfileButton" mnemonicParsing="false" text="Back to Profile" GridPane.rowIndex="3" />
+      <Button fx:id="backToProfileButton" mnemonicParsing="false" onAction="#backToProfileButtonResponse" text="Back to Profile" GridPane.rowIndex="3" />
       <Label text="Transactions History">
          <font>
             <Font name="System Bold" size="32.0" />
