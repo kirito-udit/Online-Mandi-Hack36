@@ -77,21 +77,29 @@
                <Label text="Profile picture:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                <TextField fx:id="cityName" prefHeight="40.0" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="5" />
                <Button mnemonicParsing="false" style="-fx-font-size: 14; -fx-font-style: Italic;" text="Already have an account? Login!" GridPane.columnSpan="4" GridPane.rowIndex="11" />
-               <Button fx:id="selectLocationButton" mnemonicParsing="false" onAction="#selectButtonResponse" style="-fx-font-size: 16;" text="Select location" GridPane.rowIndex="7" GridPane.rowSpan="2" />
-               <TextField fx:id="latitudeTextField" prefHeight="39.0" prefWidth="361.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7">
+               <Button fx:id="selectLocationButton" mnemonicParsing="false" onAction="#selectButtonResponse" style="-fx-font-size: 16;" text="Select location" GridPane.rowIndex="6" GridPane.rowSpan="2" />
+               <TextField fx:id="latitudeTextField" prefHeight="39.0" prefWidth="361.0" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="6">
                    <GridPane.margin>
                        <Insets bottom="5.0" />
                    </GridPane.margin>
             </TextField>
-               <TextField fx:id="longitudeTextField" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="8">
+               <TextField fx:id="longitudeTextField" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="7">
                    <GridPane.margin>
                        <Insets top="5.0" />
                    </GridPane.margin>
             </TextField>
-               <Label text="Latitude" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-               <Label text="Longitude" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-            <TextField fx:id="otpTextField" prefHeight="41.0" prefWidth="328.0" GridPane.columnIndex="2" GridPane.rowIndex="9" />
-            <Button fx:id="otpButton" mnemonicParsing="false" onAction="#getOTP" text="Get OTP" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+               <Label text="Latitude" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+               <Label text="Longitude" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <TextField fx:id="otpTextField" prefHeight="41.0" prefWidth="328.0" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            <Button fx:id="otpButton" mnemonicParsing="false" onAction="#getOTP" text="Verify Phone" GridPane.rowIndex="9" />
+            <Label text="Email" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <TextField fx:id="emailTextField" GridPane.columnIndex="2" GridPane.columnSpan="2" GridPane.rowIndex="8">
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </TextField>
+            <TextField fx:id="verifyEmailTextField" GridPane.columnIndex="3" GridPane.rowIndex="9" />
+            <Button fx:id="verifyEmailButton" mnemonicParsing="false" onAction="#verifyEmailButtonResponse" text="Verify Email" GridPane.columnIndex="2" GridPane.rowIndex="9" />
            </children>
             <rowConstraints>
                 <RowConstraints />
@@ -102,7 +110,7 @@
                 <RowConstraints prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
-                <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
+            <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
                 <RowConstraints minHeight="10.0" prefHeight="40.0" valignment="CENTER" vgrow="NEVER" />
