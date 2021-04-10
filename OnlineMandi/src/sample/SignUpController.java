@@ -141,7 +141,7 @@ public class SignUpController implements Initializable {
         //adding filters to the type of file that will be opened
         fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("image files","*.png","*.jpg","*.jpeg"));
         selectedFile = fc.showOpenDialog(null);
-
+        upload.setText(selectedFile.getName());
     }
     String originalOtp;
     //method to recieve OTP message
