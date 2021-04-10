@@ -62,7 +62,48 @@ public class MessageManager extends Thread{
             }
         }
     }
-
+  public ArrayList<Conversation> getUnreadConversations(String userPhone){
+        try {
+            conn=Server.getConnection();
+            getAllUnreadConversationsStmt=conn.prepareStatement(QUERY_ALL_UNREAD_CONVERSATIONS);
+            getAllUnreadConversationsStmt.setString(1, userPhone);
+            getAllUnreadConversationsStmt.setInt(2,0);
+            ResultSet results=getAllUnreadConversationsStmt.executeQuery();
+            ArrayList<Conversation>result=new ArrayList<>();
+            HashMap<String,String> mp1=new HashMap<>();
+            HashMap<String,Integer> mp2=new HashMap<>();
+            HashMap<String,String> mp3=new HashMap<>();
+            while(results.next()){
+                if(results.getString(4).equals(userPhone)){
+                    mp2.put(results.getString(2),results.getInt(9));
+                    String str= mp1.get(results.getString(2))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
+                            "  :" + results.getString(5)+"\n";
+                    mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
+                }else{
+                    mp2.put(results.getString(4),results.getInt(9));
+                    String str= mp1.get(results.getString(4))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
+                            " :" + results.getString(5)+"\n";
+                    mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
+                }
+            }
+            for(String str:mp1.keySet()){
+                Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
+                result.add(conversation);
+            }
+            return result;
+        }catch (SQLException e){
+            System.out.println("Error occured while fetching all the unread conversations from the MessageManager Table "+e.getMessage());
+            return null;
+        }finally {
+            try{
+                getAllUnreadConversationsStmt.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources of the getAllUnreadConversations method of the MessageManager Class "+e.getMessage());
+            }
+        }
+    }
 
     public ArrayList<Conversation> getAllConversations(String userPhone,String userName){
         try {
