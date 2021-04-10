@@ -135,7 +135,7 @@ public class SignUpController implements Initializable {
         String phoneNo = getPhone();
         originalOtp = SendSMS.OTP();
         System.out.println("OTP: "+originalOtp);
-//        SendSMS.sendSms(originalOtp,phoneNo);
+        SendSMS.sendSms(originalOtp,phoneNo);
     }
     //this function is to be registered with the submit button in scene builder
     @FXML
