@@ -7,8 +7,17 @@ public class Conversation {
     private String nameOfClient;
     private String convo;
     private int seen;
+    private Timestamp timestamp;
 
-    public Conversation(String client, String convo, int seen,String nameOfClient) {
+    public Timestamp getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(Timestamp timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public Conversation(String client, String convo, int seen, String nameOfClient) {
         this.client = client;
         this.nameOfClient = nameOfClient;
         this.convo = convo;
