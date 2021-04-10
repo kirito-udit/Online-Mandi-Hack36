@@ -6,19 +6,24 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Server {
-    public static Connection conn;
+    public static Connection conn=null;
     public static ArrayList<String> currentlyActiveUser = new ArrayList<>();
     public static ArrayList <HandleClientRequest> clientHandlers= new ArrayList<>();
-
+    public static File dbFile = new File("./src/sample/Resources");
+    public static final String DB_NAME = "register.db";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static void main(String[] args) {
         ServerSocket serverSocket = null;
         Socket socket;
@@ -60,5 +65,24 @@ public class Server {
                 
             }
         }
+    }
+    public static Connection getConnection()  {
+        if (conn != null) return conn;
+        try {
+            conn = DriverManager.getConnection(CONNECTION_STRING);
+            return conn;
+        }catch (SQLException e){
+            System.out.println("Unable to establish connection with Database "+e.getMessage());
+            return null;
+        }
+    }
+    private static Connection getConnection(String databaseName, String UserName, String password) {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            conn = DriverManager.getConnection("jdbc:mysql://localhost/" + databaseName + "?user=" + UserName + "&password=" + password);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return conn;
     }
 }
