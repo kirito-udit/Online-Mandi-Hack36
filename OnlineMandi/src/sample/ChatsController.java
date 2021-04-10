@@ -63,14 +63,9 @@ public class ChatsController implements Initializable {
     public void first(String name, String phoneNo) {
         this.name = name;
         this.phoneNo = phoneNo;
-
+        System.out.println(name);
         ArrayList<Conversation> list = MessageManager.getInstance().getAllConversations(phoneNo,name);
-//        if(list == null) {
-//            MessageManager.getInstance().addConversation("Yogiji","99", name, phoneNo, "Welcome to Online Mandi chat!", new Timestamp(System.currentTimeMillis()), 0);
-//            list = MessageManager.getInstance().getAllConversations(phoneNo,name);
-//        }
-//        if(list == null)
-//            System.out.println("NULL HAI");
+
         observableConvoList= FXCollections.observableList(list);
         phoneNoTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Conversation,String>("client")
@@ -88,7 +83,6 @@ public class ChatsController implements Initializable {
     }
     @FXML
     public void setConvoTextArea() {
-        System.out.println("here");
         Conversation convo = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
         conversationTextArea.setText(convo.getConvo()+"\n");
     }
@@ -96,28 +90,8 @@ public class ChatsController implements Initializable {
     public void sendButtonResponse(ActionEvent e) {
         Conversation conversation = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        conversationTextArea.setText(conversationTextArea.getText()+
-                this.name+"->"+conversation.getClient()+" "+timestamp.toString()+": "+
-                sendTextField.getText());
         MessageManager.getInstance().addConversation(this.name,this.phoneNo,conversation.getNameOfClient(),conversation.getClient(),sendTextField.getText(),timestamp,0);
+        first(name,phoneNo);
         sendTextField.setText("");
-        setConvoTextArea();
-    }
-    @FXML
-    public void refreshResponse(ActionEvent e) {
-        MessageManager.getInstance().close();
-        MessageManager.getInstance().open();
-        ArrayList<Conversation> list = MessageManager.getInstance().getAllConversations(phoneNo,name);
-        MessageManager.getInstance().close();
-        observableConvoList= FXCollections.observableList(list);
-        phoneNoTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Conversation,String>("client")
-        );
-        nameTableColumn.setCellValueFactory(
-                new PropertyValueFactory<Conversation,String>("nameOfClient")
-        );
-        conversationTableView.setItems(observableConvoList);
-        conversationTableView.getSelectionModel().select(0);
-        setConvoTextArea();
     }
 }
