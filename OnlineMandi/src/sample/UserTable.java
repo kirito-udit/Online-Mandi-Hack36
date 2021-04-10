@@ -16,7 +16,7 @@ public class UserTable {
     public static final String COLUMN_PHONE = "PhoneNumber";
     public static final String COLUMN_ID = "AadharNumber";
     public static final String COLUMN_NAME = "FullName";
-    public static final String COLUMN_POBOX = "PoBox";
+    public static final String COLUMN_POBOX = "Email";
     public static final String COLUMN_DOB = "DOB";
     public static final String COLUMN_CITY = "City";
     public static final String COLUMN_PASSWORD = "Password";
