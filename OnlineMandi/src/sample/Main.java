@@ -12,6 +12,7 @@ import java.net.Socket;
 public class Main extends Application {
     public static Stage primaryStage;
     public static UserTable userTable;
+    public static Socket socket;
 
     @Override
     public void start(Stage primary) throws Exception{
@@ -28,6 +29,11 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) throws IOException {
+        try {
+            socket = new Socket("localhost", 6963);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         launch(args);
     }
 }
