@@ -39,7 +39,7 @@ public class StartController implements Initializable {
         //open a new Scene for SignUp Page
         Parent root = FXMLLoader.load(getClass().getResource("SignUpForm.fxml"));
         Scene scene = new Scene(root, 1023, 614);
-        Main.primaryStage.setTitle("Login");
+        Main.primaryStage.setTitle("Sign Up");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
     }
