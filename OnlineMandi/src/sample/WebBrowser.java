@@ -20,6 +20,7 @@ public class WebBrowser extends JFrame implements Runnable{
         add(panel);
         Platform.runLater(() -> {
             WebView view = new WebView();
+            //view.getEngine().load("https://www.mapquest.com/");
         view.getEngine().load("https://www.openstreetmap.org/search?whereami=1&query=28.5897%2C77.1450#map=12/28.5895/77.1450");
             panel.setScene(new Scene(view));
         });
