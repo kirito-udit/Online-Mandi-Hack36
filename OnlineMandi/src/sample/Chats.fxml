@@ -20,10 +20,9 @@
             <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="682.0" spacing="10.0">
                <children>
                   <Label text="Search Chat:" />
-                  <TextField fx:id="searchTextField" />
+                  <TextField fx:id="searchTextField" prefHeight="26.0" prefWidth="143.0" />
                   <CheckBox fx:id="unreadCheckBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Unread" />
                   <Button fx:id="backToProfileButton" mnemonicParsing="false" text="Go To Your Profile" />
-                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshButtonResponse" text="Refresh" />
                </children>
                <padding>
                   <Insets left="10.0" />
@@ -31,7 +30,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="469.0" prefWidth="682.0" spacing="10.0">
                <children>
-                  <TableView fx:id="conversationTableView" onSort="#setConvoTextArea" prefHeight="180.0" prefWidth="222.0">
+                  <TableView fx:id="conversationTableView" onMouseClicked="#clickItem" onSort="#setConvoTextArea" prefHeight="180.0" prefWidth="222.0">
                     <columns>
                       <TableColumn fx:id="phoneNoTableColumn" prefWidth="107.99999982118607" text="Phone" />
                       <TableColumn fx:id="nameTableColumn" prefWidth="112.79998779296875" text="Name" />
