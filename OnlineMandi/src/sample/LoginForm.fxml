@@ -23,6 +23,7 @@
             <RowConstraints maxHeight="-Infinity" minHeight="30.0" prefHeight="70.0" valignment="CENTER" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
+            <RowConstraints maxHeight="-Infinity" minHeight="70.0" prefHeight="70.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
             <Label text="Phone number:" GridPane.rowIndex="1">
@@ -47,7 +48,8 @@
                </font>
             </Button>
             <PasswordField fx:id="password" prefHeight="40.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#signUpResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="4" />
+            <Button fx:id="signUpButton" mnemonicParsing="false" onAction="#signUpResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="New here? Sign Up!" GridPane.columnSpan="2" GridPane.rowIndex="5" />
+            <Button fx:id="forgotPasswordButton" mnemonicParsing="false" onAction="#forgotPasswordButtonResponse" style="-fx-font-size: 12; -fx-font-style: italic;" text="Forgot password?" GridPane.columnSpan="2" GridPane.rowIndex="4" />
          </children>
       </GridPane>
    </center>
