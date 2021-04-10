@@ -1,12 +1,14 @@
 package sample;
 
+import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MessageManager {
-    public static final String DB_NAME="register.DB";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:C:\\Users\\Kartikeya"+DB_NAME;
+    public static File dbFile = new File("./src/sample/Resources");
+    public static final String DB_NAME = "register.db";
+    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String MESSAGE_TABLE="MessageManager";
 
     public static final String COLUMN_SENDER_NAME="SenderName";
@@ -22,24 +24,27 @@ public class MessageManager {
 
     public static final String QUERY_ALL_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_SENDER_PHONE+" = ? OR "+COLUMN_RECEIVER_PHONE+" = ? ";
     public static final String QUERY_ALL_UNREAD_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_RECEIVER_PHONE+" = ? AND "+COLUMN_SEEN+" = ? ";
+    public static final String QUERY_ADD_CONVO = " INSERT INTO " + MESSAGE_TABLE + " VALUES ( ?, ? , ? , ? , ? , ? , ?) ";
 
     public Connection conn;
     public PreparedStatement getAllConversationsStmt;
     public PreparedStatement getAllUnreadConversationsStmt;
-    private static  MessageManager messageManager;
+    public PreparedStatement addConvo;
+    private static MessageManager messageManager;
     //private constructor
     private MessageManager(){
 
     }
 
     public static MessageManager getInstance(){
-        if(messageManager!=null) messageManager = new MessageManager();
+        if(messageManager == null) messageManager = new MessageManager();
         return messageManager;
     }
 
     public boolean open(){
         try{
             conn= DriverManager.getConnection(CONNECTION_STRING);
+            addConvo = conn.prepareStatement(QUERY_ADD_CONVO);
             getAllConversationsStmt=conn.prepareStatement(QUERY_ALL_CONVERSATIONS);
             getAllUnreadConversationsStmt=conn.prepareStatement(QUERY_ALL_UNREAD_CONVERSATIONS);
             return true;
@@ -54,6 +59,9 @@ public class MessageManager {
             if(getAllConversationsStmt!=null){
                 getAllConversationsStmt.close();
             }
+            if(addConvo!=null){
+                addConvo.close();
+            }
             if(getAllUnreadConversationsStmt!=null){
                 getAllUnreadConversationsStmt.close();
             }
@@ -67,6 +75,28 @@ public class MessageManager {
         }
     }
 
+
+    public boolean addConversation(String senderName, String senderPhone, String receiverName, String receiverPhone,
+                            String content, Timestamp sentTime, int seen) {
+        try {
+            open();
+            addConvo.setString(1, senderName);
+            addConvo.setString(2, senderPhone);
+            addConvo.setString(3, receiverName);
+            addConvo.setString(4, receiverPhone);
+            addConvo.setString(5, content);
+            addConvo.setTimestamp(6, sentTime);
+            addConvo.setInt(7, seen);
+            addConvo.executeUpdate();
+            close();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error occured while adding a conversation " + e.getMessage());
+            return false;
+        }
+    }
+
+
     public ArrayList<Conversation> getAllConversations(String userPhone,String userName){
         try {
             getAllConversationsStmt.setString(1, userPhone);
@@ -75,21 +105,24 @@ public class MessageManager {
             ArrayList<Conversation>result=new ArrayList<>();
             HashMap<String,String> mp1=new HashMap<>();
             HashMap<String,Integer>mp2=new HashMap<>();
+            HashMap<String,String> mp3=new HashMap<>();
             while(results.next()){
                 if(results.getString(4).equals(userPhone)){
                     mp2.put(results.getString(2),results.getInt(9));
                     String str= mp1.get(results.getString(2))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
                             "  :" + results.getString(5)+"\n";
                     mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
                 }else{
                     mp2.put(results.getString(4),results.getInt(9));
                     String str= mp1.get(results.getString(4))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
                             " :" + results.getString(5)+"\n";
                     mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
                 }
             }
             for(String str:mp1.keySet()){
-                Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str));
+                Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
                 result.add(conversation);
             }
             return result;
@@ -105,22 +138,25 @@ public class MessageManager {
             ResultSet results=getAllUnreadConversationsStmt.executeQuery();
             ArrayList<Conversation>result=new ArrayList<>();
             HashMap<String,String> mp1=new HashMap<>();
-            HashMap<String,Integer>mp2=new HashMap<>();
+            HashMap<String,Integer> mp2=new HashMap<>();
+            HashMap<String,String> mp3=new HashMap<>();
             while(results.next()){
                 if(results.getString(4).equals(userPhone)){
                     mp2.put(results.getString(2),results.getInt(9));
                     String str= mp1.get(results.getString(2))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
                             "  :" + results.getString(5)+"\n";
                     mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
                 }else{
                     mp2.put(results.getString(4),results.getInt(9));
                     String str= mp1.get(results.getString(4))+results.getString(1)+"->"+results.getString(3)+" "+results.getTimestamp(6)+
                             " :" + results.getString(5)+"\n";
                     mp1.put(results.getString(2),str);
+                    mp3.put(results.getString(2),results.getString(1));
                 }
             }
             for(String str:mp1.keySet()){
-                Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str));
+                Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
                 result.add(conversation);
             }
             return result;
