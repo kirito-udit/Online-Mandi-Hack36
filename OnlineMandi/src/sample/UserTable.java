@@ -44,8 +44,8 @@ public class UserTable {
     public static final String UPDATE_CITY = "UPDATE " + UTABLE + " SET " + COLUMN_CITY + " = ? WHERE " + COLUMN_PHONE + " = ?";
     public static final String UPDATE_PASSWORD = "UPDATE " + UTABLE + " SET " + COLUMN_PASSWORD + " = ? WHERE " + COLUMN_PHONE + " = ?";
     public static final String UPDATE_PROFILE_PIC = "UPDATE " + UTABLE + " SET " + COLUMN_PROFILE_PIC + " = ? WHERE " + COLUMN_PHONE + " = ?";
-    public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
-    public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
+    public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
+    public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
 
     public static final String QUERY_LATLONG = "SELECT " + COLUMN_LATITUDE + ","+ COLUMN_LONGITUDE + " FROM "+UTABLE +" WHERE "+COLUMN_PHONE + " = ?";
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
