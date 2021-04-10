@@ -1,5 +1,7 @@
 package sample;
 
+import com.email.durgesh.Email;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,10 +12,10 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import javax.mail.MessagingException;
 import javax.swing.*;
 import java.io.*;
 import java.math.BigInteger;
@@ -25,6 +27,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -68,12 +71,21 @@ public class SignUpController implements Initializable {
     private Button selectLocationButton;
 
     @FXML
+    private Button verifyEmailButton;
+
+    @FXML
     private TextField otpTextField;
+
+    @FXML
+    private TextField emailTextField;
+
+    @FXML
+    private TextField verifyEmailTextField;
 
     @FXML
     private Button otpButton;
     File selectedFile;
-
+    private String emailOTP;
     // JOptionPane.showMessageDialog(null,"Message!!!");
     public String getName() {
         String name = nameField.getText();
@@ -89,7 +101,10 @@ public class SignUpController implements Initializable {
         String password = getMd5(passwordField.getText());
         return password;
     }
-
+    public String getEmail() {
+        String email = emailTextField.getText();
+        return email;
+    }
     public String getCity() {
         String city = cityName.getText();
         //here instead of taking input string from textfield we will try a combo box kind of thing
@@ -135,7 +150,22 @@ public class SignUpController implements Initializable {
         String phoneNo = getPhone();
         originalOtp = SendSMS.OTP();
         System.out.println("OTP: "+originalOtp);
-        SendSMS.sendSms(originalOtp,phoneNo);
+        //SendSMS.sendSms(originalOtp,phoneNo);
+        System.out.println("Clicked.");
+
+        Task task = new Task<Void>() {
+            @Override public Void call() throws InterruptedException {
+                long clickTime = System.currentTimeMillis();
+                otpButton.setDisable(true);
+                while(System.currentTimeMillis() - clickTime < 30000) {
+
+                }
+                otpButton.setDisable(false);
+                return null;
+            }
+        };
+
+        new Thread(task).start();
     }
     //this function is to be registered with the submit button in scene builder
     @FXML
@@ -149,9 +179,10 @@ public class SignUpController implements Initializable {
         String city = getCity();
         String aadhar = getAdhar();
         java.sql.Date dob = getDob();
-//        String poBoxNumber = getPIN();
+        String Email = getEmail();
         double latitude = getLatitude();
         double longitude = getLongitude();
+        String emailOTPEntered = getEmailOTPEntered();
         //now sending an OTP to the user for verification
         //this OTP will be entered by the user in the OTP field
 
@@ -164,10 +195,10 @@ public class SignUpController implements Initializable {
 //
 //        //getting the verification response from the server, if otps don't match, user will be prompted
 //        String verification = (String) ois.readObject();
-        if(originalOtp.equals(otp)) {
+        if(originalOtp.equals(otp) && emailOTP.equals(emailOTPEntered)) {
             //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
             FileInputStream fis = new FileInputStream(selectedFile);
-            Main.userTable.insertUser(name, phoneNo, password, city, fis, aadhar, dob,"POboxwashere", latitude, longitude);
+            Main.userTable.insertUser(name, phoneNo, password, city, fis, aadhar, dob,Email, latitude, longitude);
 
 
             //open a new Scene for Login Page
@@ -180,6 +211,11 @@ public class SignUpController implements Initializable {
         else{
             JOptionPane.showMessageDialog(null,"OTPs don't match!!");
         }
+
+    }
+
+    private String getEmailOTPEntered() {
+        return verifyEmailTextField.getText();
     }
 
     @FXML
@@ -213,13 +249,20 @@ public class SignUpController implements Initializable {
             Address address = null;
             try {
 //                address = GetLocationFromIP.getAddress();
-                ArrayList<String> arrayList = GeoipifyAPIQuery.accessLocation();
-                latitudeTextField.setText(arrayList.get(0));
-                longitudeTextField.setText(arrayList.get(1));
-                cityName.setText(arrayList.get(2));
+                Task task = new Task<Void>() {
+                    @Override public Void call() throws InterruptedException, IOException {
+                        ArrayList<String> arrayList = GeoipifyAPIQuery.accessLocation();
+                        latitudeTextField.setText(arrayList.get(0));
+                        longitudeTextField.setText(arrayList.get(1));
+                        cityName.setText(arrayList.get(2));
+                        return null;
+                    }
+                };
+
+                new Thread(task).start();
             }
-            catch (IOException ioException) {
-                ioException.printStackTrace();
+            catch (Exception e1) {
+                e1.printStackTrace();
             }
             createStage.close();
         });
@@ -278,4 +321,38 @@ public class SignUpController implements Initializable {
         return sqlDate;
     }
 
+    @FXML
+    public void verifyEmailButtonResponse(ActionEvent e) {
+        try {
+            Task task = new Task<Void>() {
+                @Override public Void call() throws InterruptedException, UnsupportedEncodingException, MessagingException {
+                    Email email = new Email("onlinemandi0@gmail.com","KSSU$367");
+                    email.setFrom("onlinemandi0@gmail.com","ONLINE MANDI");
+                    email.setSubject("Verification Mail");
+                    Random random = new Random();
+                    emailOTP = ""+random.ints(1000, 9999).findFirst().getAsInt();
+                    email.setContent("<h1>Welcome to Online Mandi</h1><br><br><p>Your Verification Code Is "+emailOTP+".</p>","text/html");
+                    email.addRecipient(emailTextField.getText());
+                    email.send();
+                    return null;
+                }
+            };
+            Task task2 = new Task<Void>() {
+                @Override public Void call() throws InterruptedException, UnsupportedEncodingException, MessagingException {
+                    long clickTime = System.currentTimeMillis();
+                    verifyEmailButton.setDisable(true);
+                    while(System.currentTimeMillis() - clickTime < 30000) {
+
+                    }
+                    verifyEmailButton.setDisable(false);
+                    return null;
+                }
+            };
+            new Thread(task).start();
+            new Thread(task2).start();
+        } catch(Exception e1) {
+            JOptionPane.showMessageDialog(null,"Enter a valid email address.");
+            e1.printStackTrace();
+        }
+    }
 }
