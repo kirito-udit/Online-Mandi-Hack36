@@ -53,6 +53,7 @@ public class Server implements  Runnable {
             for(ClientDetails client : clients) {
                 if(client.getPhoneNo().equals(phoneNumber)) {
                     clients.remove(client);
+                    break;
                 }
             }
             return;
@@ -72,6 +73,7 @@ public class Server implements  Runnable {
                 for(ClientDetails client : clients) {
                     if(client.getPhoneNo().equals(phoneNumber)) {
                         clients.remove(client);
+                        break;
                     }
                 }
                 return;
