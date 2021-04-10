@@ -39,6 +39,9 @@ public class ProfilePageController implements Initializable {
     private Label nameLabel;
 
     @FXML
+    private Button updateProfileButton;
+
+    @FXML
     private Button refreshButton;
 
     @FXML
@@ -131,13 +134,25 @@ public class ProfilePageController implements Initializable {
     }
 
     @FXML
-    void historyButtonResponse(ActionEvent e) throws IOException {
+    public void historyButtonResponse(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("TransactionsPage.fxml"));
         Parent root = (Parent) loader.load();
         TransactionsPageController tpc = loader.getController();
         tpc.first(name,phoneNo);
         Scene scene = new Scene(root, 750, 600);
         Main.primaryStage.setTitle("Transactions History");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
+    }
+
+    @FXML
+    public void updateProfileButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("UpdateProfilePage.fxml"));
+        Parent root = (Parent) loader.load();
+        UpdateProfilePageController tpc = loader.getController();
+        tpc.first(name,phoneNo);
+        Scene scene = new Scene(root, 750, 600);
+        Main.primaryStage.setTitle("Update Profile");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
     }
