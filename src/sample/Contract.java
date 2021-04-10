@@ -1,6 +1,5 @@
 package sample;
 
-//import javafx.collections.ObservableList;
 
 import java.sql.*;
 import java.util.ArrayList;
