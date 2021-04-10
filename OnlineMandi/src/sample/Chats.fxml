@@ -22,7 +22,7 @@
                   <Label text="Search Chat:" />
                   <TextField fx:id="searchTextField" prefHeight="26.0" prefWidth="143.0" />
                   <CheckBox fx:id="unreadCheckBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Unread" />
-                  <Button fx:id="backToProfileButton" mnemonicParsing="false" text="Go To Your Profile" />
+                  <Button fx:id="backToProfileButton" mnemonicParsing="false" onAction="#backToProfileResponse" text="Go To Your Profile" />
                </children>
                <padding>
                   <Insets left="10.0" />
