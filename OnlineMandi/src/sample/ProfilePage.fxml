@@ -34,8 +34,9 @@
                   </Label>
                </children>
             </VBox>
-            <VBox alignment="CENTER" prefHeight="155.0" prefWidth="123.0" spacing="20.0">
+            <VBox alignment="CENTER" prefHeight="165.0" prefWidth="165.0" spacing="20.0">
                <children>
+                  <Button fx:id="updateProfileButton" mnemonicParsing="false" onAction="#updateProfileButtonResponse" text="Update Profile" />
                   <Button fx:id="chatButton" mnemonicParsing="false" onAction="#chatButtonResponse" text="View Chats" />
                   <Button fx:id="historyButton" mnemonicParsing="false" onAction="#historyButtonResponse" prefHeight="42.0" prefWidth="122.0" text="History" />
                </children>
