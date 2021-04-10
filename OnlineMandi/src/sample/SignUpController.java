@@ -24,6 +24,7 @@ import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class SignUpController implements Initializable {
@@ -57,8 +58,6 @@ public class SignUpController implements Initializable {
     @FXML
     private DatePicker dateOfBirth;
 
-    @FXML
-    private TextField poBoxNumber;
     @FXML
     private TextField latitudeTextField;
 
@@ -111,12 +110,6 @@ public class SignUpController implements Initializable {
         return date;
     }
 
-    public String getPIN() {
-        String pin = (poBoxNumber.getText());
-        //verify correctness of PIN whether it is of six digits or not
-        return pin;
-    }
-
     public double getLatitude(){
         return Double.parseDouble(latitudeTextField.getText());
     }
@@ -156,7 +149,7 @@ public class SignUpController implements Initializable {
         String city = getCity();
         String aadhar = getAdhar();
         java.sql.Date dob = getDob();
-        String poBoxNumber = getPIN();
+//        String poBoxNumber = getPIN();
         double latitude = getLatitude();
         double longitude = getLongitude();
         //now sending an OTP to the user for verification
@@ -174,7 +167,7 @@ public class SignUpController implements Initializable {
         if(originalOtp.equals(otp)) {
             //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
             FileInputStream fis = new FileInputStream(selectedFile);
-            Main.userTable.insertUser(name, phoneNo, password, city, fis, aadhar, dob, poBoxNumber, latitude, longitude);
+            Main.userTable.insertUser(name, phoneNo, password, city, fis, aadhar, dob,"POboxwashere", latitude, longitude);
 
 
             //open a new Scene for Login Page
@@ -208,7 +201,7 @@ public class SignUpController implements Initializable {
         root.getChildren().add(vBox);
 
         Scene canvasScene = new Scene(root);
-        createStage.setTitle("Create Rectangle");
+        createStage.setTitle("Get Location");
         createStage.setScene(canvasScene);
         createStage.show();
 
@@ -219,10 +212,11 @@ public class SignUpController implements Initializable {
         accessGrantedButton.setOnAction(actionEvent1 -> {
             Address address = null;
             try {
-                address = GetLocationFromIP.getAddress();
-                poBoxNumber.setText(""+address.getPoBox());
-                latitudeTextField.setText(""+address.getLatitude());
-                longitudeTextField.setText(""+address.getLongitude());
+//                address = GetLocationFromIP.getAddress();
+                ArrayList<String> arrayList = GeoipifyAPIQuery.accessLocation();
+                latitudeTextField.setText(arrayList.get(0));
+                longitudeTextField.setText(arrayList.get(1));
+                cityName.setText(arrayList.get(2));
             }
             catch (IOException ioException) {
                 ioException.printStackTrace();
