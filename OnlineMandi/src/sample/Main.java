@@ -33,7 +33,7 @@ public class Main extends Application {
     }
     public static void main(String[] args) throws IOException {
         try {
-            socket = new Socket("localhost", 6963);
+            socket = new Socket("localhost", 6970);
             oos= new ObjectOutputStream(socket.getOutputStream());
             ois= new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
