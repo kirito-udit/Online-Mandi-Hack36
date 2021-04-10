@@ -20,10 +20,7 @@ public class Server {
     public static ArrayList <HandleClientRequest> clientHandlers= new ArrayList<>();
 
     public static void main(String[] args) {
-        UserTable.getInstance().open();
-        Server.conn=UserTable.getInstance().conn;
-        UserTable.getInstance().close();
-        ServerSocket serverSocket;
+        ServerSocket serverSocket = null;
         Socket socket;
 
         try {
@@ -32,7 +29,6 @@ public class Server {
         }
         catch (IOException e) {
             e.printStackTrace();
-            return;
         }
         while(true) {
             try {
@@ -46,11 +42,7 @@ public class Server {
                 System.out.println("Client Connected");
 
                 //Authentication now
-                UserTable.getInstance().close();
-                UserTable.getInstance().open();
                 FullNameProfilePic fnpc = UserTable.getInstance().authentication(password,phoneNumber);
-                UserTable.getInstance().close();
-
                 if(fnpc!=null)
                     oos.writeObject(phoneNumber);
                 else
@@ -65,7 +57,7 @@ public class Server {
                 }
             } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
-                return;
+                
             }
         }
     }
