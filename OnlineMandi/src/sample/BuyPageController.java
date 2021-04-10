@@ -1,5 +1,7 @@
 package sample;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -7,11 +9,14 @@ import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +27,9 @@ import javafx.stage.Stage;
 import javafx.stage.Window;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -56,6 +63,7 @@ public class BuyPageController implements Initializable {
     private ComboBox filterByComboBox;
 
     ObservableList<Offer> data;
+    private String cropToSearch;
     private String phoneNo;
     private String name;
     String filter = "";
@@ -71,6 +79,17 @@ public class BuyPageController implements Initializable {
         @Override
         public int compare(Offer o1, Offer o2) {
             return (o1.getPrice()<o2.getPrice())?0:1;
+        }
+    };
+    private Comparator<Offer> sortByDistanceComparator = new Comparator<Offer>() {
+        @Override
+        public int compare(Offer o1, Offer o2) {
+            ArrayList<String> user1 = UserTable.getInstance().getLatLong(o1.getSellerPhone());
+            ArrayList<String> user2 = UserTable.getInstance().getLatLong(o2.getSellerPhone());
+            ArrayList<String> me = UserTable.getInstance().getLatLong(phoneNo);
+            Double dis1 = Distance.getDistanceBetweenTwoPlaces(user1.get(0),user1.get(1),me.get(0),me.get(1));
+            Double dis2 = Distance.getDistanceBetweenTwoPlaces(user2.get(0),user2.get(1),me.get(0),me.get(1));
+            return (dis1<dis2)?0:1;
         }
     };
 
@@ -94,7 +113,14 @@ public class BuyPageController implements Initializable {
             return true;
         }
     };
-
+    private Predicate<Offer> filterByCropPredicate = new Predicate<Offer>() {
+        @Override
+        public boolean test(Offer offer) {
+            if(offer.getCropName().equals(cropToSearch))
+                return true;
+            return false;
+        }
+    };
     private Predicate<Offer> priceRangePredicate = new Predicate<Offer>() {
         @Override
         public boolean test(Offer offer) {
@@ -130,6 +156,7 @@ public class BuyPageController implements Initializable {
         //Filling sort by combobox
         ArrayList <String> sortByArrayList = new ArrayList<>();
         sortByArrayList.add("Price");
+        sortByArrayList.add("Closest first");
         sortByArrayList.add("End date");
         sortByArrayList.add("Start date");
         sortByComboBox.setItems(FXCollections.observableArrayList(sortByArrayList));
@@ -160,6 +187,12 @@ public class BuyPageController implements Initializable {
         );
         globalComparator = sortByPriceComparator;
         refresh();
+//        cropComboBox.valueProperty().addListener(new ChangeListener() {
+//            @Override
+//            public void changed(ObservableValue observableValue, Object o, Object t1) {
+//                onCropSelectedListener();
+//            }
+//        });
     }
     @FXML
     public void clickItem(MouseEvent event) {
@@ -167,6 +200,8 @@ public class BuyPageController implements Initializable {
     }
 
     public void setDescriptionTextArea() {
+        if(cropTableView.getSelectionModel().getSelectedItem() == null)
+            return;
         Offer offer = (Offer)cropTableView.getSelectionModel().getSelectedItem();
         String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
         descriptionTextArea.setText("OfferID: "+offer.getOfferId()+"\n"+
@@ -197,10 +232,19 @@ public class BuyPageController implements Initializable {
     }
 
     @FXML
-    public void hiButtonAction(ActionEvent e) {
+    public void hiButtonAction(ActionEvent e) throws IOException, InterruptedException {
         Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
         String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
         MessageManager.getInstance().addConversation(this.phoneNo,offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Chats.fxml"));
+        Parent root = (Parent) loader.load();
+        ChatsController cpc = loader.getController();
+        cpc.setSellerPhone(offer.getSellerPhone());
+        cpc.first(name,phoneNo,cpc);
+        Scene scene = new Scene(root, 681, 530);
+        Main.primaryStage.setTitle("Chat Page");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
         //MessageManager.getInstance().close();
     }
     @FXML
@@ -243,8 +287,14 @@ public class BuyPageController implements Initializable {
     }
     @FXML
     public void handleOnKeyPressed(KeyEvent e) {
+        if(e.getCode() == KeyCode.ENTER) {
+            cropToSearch = cropComboBox.getEditor().getText();
+            filteredList = new FilteredList<>(offerSortedList);
+            filteredList.setPredicate(filterByCropPredicate);
+            cropTableView.setItems(filteredList);
+            cropTableView.getSelectionModel().select(0);
+        }
         pref = cropComboBox.getEditor().getText();
-        List<String> cropList = t.autocomplete(pref);
         cropComboBox.setItems(FXCollections.observableArrayList(t.autocomplete(pref)));
     }
     @FXML
@@ -258,10 +308,15 @@ public class BuyPageController implements Initializable {
         else if(((String)sortByComboBox.getSelectionModel().getSelectedItem()).equals("Start date")) {
             globalComparator = sortByStartDateComparator;
         }
+        else if(((String)sortByComboBox.getSelectionModel().getSelectedItem()).equals("Closest first")) {
+            globalComparator = sortByDistanceComparator;
+        }
         refresh();
     }
     @FXML
     private void filterResponse(ActionEvent e) {
+        if(filterByComboBox.getSelectionModel().getSelectedItem() == null)
+            return;
         if(((String)filterByComboBox.getSelectionModel().getSelectedItem()).equals("Price Range")) {
             globalComparator = sortByPriceComparator;
             Spinner spinner = new Spinner();
@@ -304,6 +359,7 @@ public class BuyPageController implements Initializable {
                 cropTableView.setItems(filteredList);
                 cropTableView.getSelectionModel().select(0);
                 setDescriptionTextArea();
+                filterByComboBox.getSelectionModel().clearSelection();
                 createStage.close();
             });
         }
@@ -321,6 +377,21 @@ public class BuyPageController implements Initializable {
         dis.getdes(buyerLatLong.get(0),buyerLatLong.get(1));
         Thread t = new Thread(dis);
         t.start();
+    }
+
+    @FXML
+    public void backToProfileButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
+        Parent root = (Parent) loader.load();
+        ProfilePageController ppc = loader.getController();
+        ppc.setName(name);
+        ppc.setPhoneNo(phoneNo);
+        Image image = UserTable.getInstance().getProfilePic(phoneNo);
+        ppc.createProfile(phoneNo,image,name);
+        Scene scene = new Scene(root, 900, 620);
+        Main.primaryStage.setTitle("My Profile");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
     }
 
 }
