@@ -23,6 +23,7 @@
                   <TextField fx:id="searchTextField" />
                   <CheckBox fx:id="unreadCheckBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="90.0" style="-fx-text-fill: white;" text="Unread" />
                   <Button fx:id="backToProfileButton" mnemonicParsing="false" text="Go To Your Profile" />
+                  <Button fx:id="refreshButton" mnemonicParsing="false" onAction="#refreshButtonResponse" text="Refresh" />
                </children>
                <padding>
                   <Insets left="10.0" />
