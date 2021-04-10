@@ -32,8 +32,8 @@
                <children>
                   <TableView fx:id="conversationTableView" onMouseClicked="#clickItem" prefHeight="180.0" prefWidth="222.0">
                     <columns>
-                      <TableColumn prefWidth="107.99999982118607" text="Phone" />
-                      <TableColumn prefWidth="112.79998779296875" text="Name" />
+                      <TableColumn fx:id="phoneNoTableColumn" prefWidth="107.99999982118607" text="Phone" />
+                      <TableColumn fx:id="nameTableColumn" prefWidth="112.79998779296875" text="Name" />
                     </columns>
                   </TableView>
                   <VBox prefHeight="236.0" prefWidth="434.0" spacing="5.0">
