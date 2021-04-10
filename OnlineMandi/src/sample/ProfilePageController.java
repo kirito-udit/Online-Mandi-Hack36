@@ -24,7 +24,16 @@ public class ProfilePageController implements Initializable {
     private BorderPane profilePane;
 
     @FXML
-    private ImageView profilePic;
+    public ImageView profilePic;
+
+    public ImageView getProfilePic() {
+        return profilePic;
+    }
+
+    public void setProfilePic(Image profilePic) {
+        this.profilePic.setImage(profilePic);
+        this.profilePic.setVisible(true);
+    }
 
     @FXML
     private Label nameLabel;
