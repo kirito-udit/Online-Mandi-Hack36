@@ -4,6 +4,8 @@ package sample;
 import java.io.File;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 
 public class MessageManager {
@@ -25,6 +27,14 @@ public class MessageManager {
     public PreparedStatement getAllUnreadConversationsStmt;
     public PreparedStatement addConvo;
     private static MessageManager messageManager;
+
+    private Comparator<Conversation> cmp = new Comparator<Conversation>() {
+        @Override
+        public int compare(Conversation o1, Conversation o2) {
+            return 1;
+        }
+    };
+
     //private constructor
     private MessageManager(){
 
@@ -74,9 +84,9 @@ public class MessageManager {
             HashMap<String,String> mp3=new HashMap<>();
             UserTable userTable=UserTable.getInstance();
             while(results.next()){
-                if(results.getString(2).equals(userPhone)){//I am receiver
+                if(results.getString(2).equals(userPhone)){ //I am receiver
                     String senderName=userTable.getFullName(results.getString(1));
-                    mp2.put(results.getString(1),results.getInt(5));//senderPhone mapped to seen variable
+                    mp2.put(results.getString(1),results.getInt(5)); //senderPhone mapped to seen variable
                     String str = null;
                     if(mp1.get(results.getString(1))==null){
                         str =senderName+"\n"+results.getTimestamp(4)+
@@ -110,6 +120,7 @@ public class MessageManager {
                 Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
                 result.add(conversation);
             }
+            Collections.sort(result,cmp);
             return result;
         }catch (SQLException e){
             System.out.println("Error occured while fetching all the conversations from the MessageManager Table "+e.getMessage());
