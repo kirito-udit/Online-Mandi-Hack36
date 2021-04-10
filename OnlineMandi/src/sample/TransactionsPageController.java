@@ -31,6 +31,10 @@ public class TransactionsPageController implements Initializable {
     @FXML
     private TableColumn sPrice;
     @FXML
+    private TableColumn sQuantity;
+    @FXML
+    private TableColumn bQuantity;
+    @FXML
     private TableColumn sTimestamp;
     @FXML
     private TableColumn sCropName;
@@ -87,7 +91,7 @@ public class TransactionsPageController implements Initializable {
         
         //Populating the selling transactions table
         sTID.setCellValueFactory(
-                new PropertyValueFactory<Transaction,Integer>("transactionID")
+                new PropertyValueFactory<Transaction,Integer>("transactionId")
         );
         sBuyerPhone.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("buyerPhone")
@@ -104,13 +108,17 @@ public class TransactionsPageController implements Initializable {
         sCropName.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("cropName")
         );
+        sQuantity.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("quantity")
+        );
         sellingTableView.setItems(sellingTransactions);
         sellingTableView.getSelectionModel().select(0);
         
         //Populating the buying transactions table
         bTID.setCellValueFactory(
-                new PropertyValueFactory<Transaction,Integer>("transactionID")
+                new PropertyValueFactory<Transaction,Integer>("transactionId")
         );
+
         bSellerPhone.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("sellerPhone")
         );
@@ -125,6 +133,9 @@ public class TransactionsPageController implements Initializable {
         );
         bCropName.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("cropName")
+        );
+        bQuantity.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("quantity")
         );
         buyingTableView.setItems(buyingTransactions);
         buyingTableView.getSelectionModel().select(0);
