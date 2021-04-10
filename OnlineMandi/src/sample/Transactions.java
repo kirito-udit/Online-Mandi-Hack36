@@ -17,7 +17,7 @@ public class Transactions {
     public static final String COLUMN_QUANTITY="Quantity";
     public static final String COLUMN_PRICE="Price";
     public static final String COLUMN_TRANSACTION_TIME="TransactionTime";
-    public static final String ADD_TRANSACTION="INSERT INTO "+TRANSACTION_TABLE+" VALUES ( ? , ? , ? , ? , ? , ? ) ";
+    public static final String ADD_TRANSACTION="INSERT INTO "+TRANSACTION_TABLE+" VALUES ( NULL, ? , ? , ? , ? , ? , ? ) ";
     public static final String QUERY_SELL_TRANSACTION="SELECT * FROM "+TRANSACTION_TABLE+" WHERE "+COLUMN_SELLER_PHONE+" = ? ";
     public static final String QUERY_BUY_TRANSACTION="SELECT * FROM "+TRANSACTION_TABLE+" WHERE "+COLUMN_BUYER_PHONE+" = ? ";
 
@@ -61,8 +61,8 @@ public class Transactions {
             return false;
         }finally {
             try {
-                conn.close();
                 addTransaction.close();
+                conn.close();
             }catch (SQLException e){
                 System.out.println("Error occured while closing the resources in the buy method of the Transactions class");
             }
@@ -98,7 +98,7 @@ public class Transactions {
     public ArrayList<Transaction> getBuyTransaction(String buyerPhone){
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
-            getBuyTransactionWithPhoneNumber = conn.prepareStatement(QUERY_SELL_TRANSACTION);
+            getBuyTransactionWithPhoneNumber = conn.prepareStatement(QUERY_BUY_TRANSACTION);
             getBuyTransactionWithPhoneNumber.setString(1,buyerPhone);
             ResultSet results=getBuyTransactionWithPhoneNumber.executeQuery();
             ArrayList<Transaction>ans=new ArrayList<>();
