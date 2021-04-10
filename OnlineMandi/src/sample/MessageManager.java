@@ -1,3 +1,4 @@
+  
 package sample;
 
 import java.io.File;
@@ -6,9 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MessageManager {
-    public static File dbFile = new File("./src/sample/Resources");
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String MESSAGE_TABLE="MessageManager";
 
     public static final String COLUMN_SENDER_PHONE="SenderPhone";
@@ -37,63 +35,36 @@ public class MessageManager {
         return messageManager;
     }
 
-    public boolean open(){
-        try{
-            conn= DriverManager.getConnection(CONNECTION_STRING);
-            addConvo = conn.prepareStatement(QUERY_ADD_CONVO);
-            getAllConversationsStmt=conn.prepareStatement(QUERY_ALL_CONVERSATIONS);
-            getAllUnreadConversationsStmt=conn.prepareStatement(QUERY_ALL_UNREAD_CONVERSATIONS);
-            return true;
-        } catch (SQLException e) {
-            System.out.println(" Error occured while opening the MessageManager table register database "+e.getMessage());
-            return false;
-        }
-    }
-
-    public boolean close(){
-        try{
-            if(getAllConversationsStmt!=null){
-                getAllConversationsStmt.close();
-            }
-            if(addConvo!=null){
-                addConvo.close();
-            }
-            if(getAllUnreadConversationsStmt!=null){
-                getAllUnreadConversationsStmt.close();
-            }
-            if(conn!=null){
-                conn.close();
-            }
-            return true;
-        } catch (SQLException e) {
-            System.out.println(" Error occured while closing the resources of the MessageManager table register database "+e.getMessage());
-            return false;
-        }
-    }
-
 
     public boolean addConversation(String senderPhone,String receiverPhone,
                                    String content, Timestamp sentTime, int seen) {
         try {
-            open();
+            conn=Server.getConnection();
+            addConvo=conn.prepareStatement(QUERY_ADD_CONVO);
             addConvo.setString(1, senderPhone);
             addConvo.setString(2, receiverPhone);
             addConvo.setString(3, content);
             addConvo.setTimestamp(4, sentTime);
             addConvo.setInt(5, seen);
             addConvo.executeUpdate();
-            close();
             return true;
         } catch (SQLException e) {
             System.out.println("Error occured while adding a conversation " + e.getMessage());
             return false;
+        }finally {
+            try{
+                addConvo.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in addConversation method in Message Manager class "+e.getMessage());
+            }
         }
     }
 
 
     public ArrayList<Conversation> getAllConversations(String userPhone,String userName){
         try {
-            open();
+            conn=Server.getConnection();
+            getAllConversationsStmt=conn.prepareStatement(QUERY_ALL_CONVERSATIONS);
             getAllConversationsStmt.setString(1, userPhone);
             getAllConversationsStmt.setString(2, userPhone);
             ResultSet results=getAllConversationsStmt.executeQuery();
@@ -139,16 +110,22 @@ public class MessageManager {
                 Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
                 result.add(conversation);
             }
-            close();
             return result;
         }catch (SQLException e){
             System.out.println("Error occured while fetching all the conversations from the MessageManager Table "+e.getMessage());
             return null;
+        }finally {
+            try{
+                getAllConversationsStmt.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources of the getAllConversations Method of Message Manager class "+e.getMessage());
+            }
         }
     }
     public ArrayList<Conversation> getUnreadConversations(String userPhone){
         try {
-            open();
+            conn=Server.getConnection();
+            getAllUnreadConversationsStmt=conn.prepareStatement(QUERY_ALL_UNREAD_CONVERSATIONS);
             getAllUnreadConversationsStmt.setString(1, userPhone);
             getAllUnreadConversationsStmt.setInt(2,0);
             ResultSet results=getAllUnreadConversationsStmt.executeQuery();
@@ -175,11 +152,16 @@ public class MessageManager {
                 Conversation conversation=new Conversation(str,mp1.get(str),mp2.get(str),mp3.get(str));
                 result.add(conversation);
             }
-            close();
             return result;
         }catch (SQLException e){
             System.out.println("Error occured while fetching all the unread conversations from the MessageManager Table "+e.getMessage());
             return null;
+        }finally {
+            try{
+                getAllUnreadConversationsStmt.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources of the getAllUnreadConversations method of the MessageManager Class "+e.getMessage());
+            }
         }
     }
 
