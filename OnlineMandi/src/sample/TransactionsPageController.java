@@ -3,42 +3,52 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.awt.event.ActionEvent;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class TransactionsPageController extends Initializable {
+public class TransactionsPageController implements Initializable {
     @FXML
-    public Button backToProfileButton;
+    private Button backToProfileButton;
     @FXML
-    public TableColumn sTID;
+    private TableColumn sTID;
     @FXML
-    public TableColumn sBuyerPhone;
+    private TableColumn sBuyerPhone;
     @FXML
-    public TableColumn sBuyerName;
+    private TableColumn sBuyerName;
     @FXML
-    public TableColumn sPrice;
+    private TableColumn sPrice;
     @FXML
-    public TableColumn sTimestamp;
+    private TableColumn sTimestamp;
     @FXML
-    public TableColumn sCropName;
+    private TableColumn sCropName;
     @FXML
-    public TableColumn bTID;
+    private TableColumn bTID;
     @FXML
-    public TableColumn bSellerPhone;
+    private TableColumn bSellerPhone;
     @FXML
-    public TableColumn bSellerName;
+    private TableColumn bSellerName;
     @FXML
-    public TableColumn bPrice;
+    private TableColumn bPrice;
     @FXML
-    public TableColumn bTimestamp;
+    private TableColumn bTimestamp;
     @FXML
-    public TableColumn bCropName;
+    private TableColumn bCropName;
+    @FXML
+    private TableView sellingTableView;
+    @FXML
+    private TableView buyingTableView;
 
     private String phoneNo;
     private String name;
@@ -66,9 +76,15 @@ public class TransactionsPageController extends Initializable {
 
     }
 
-    public void first() {
-        sellingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getSellingTransactions(phoneNo));
-        buyingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getBuyingTransactions(phoneNo));
+    public void first(String name,String phoneNo) {
+        this.name = name;
+        this.phoneNo = phoneNo;
+
+        //Fetching the transaction details from database and making observable array lists
+        sellingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getSellTransactions(phoneNo));
+        buyingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getBuyTransactions(phoneNo));
+        
+        //Populating the selling transactions table
         sTID.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("transactionID")
         );
@@ -87,24 +103,42 @@ public class TransactionsPageController extends Initializable {
         sCropName.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("cropName")
         );
-        sTID.setCellValueFactory(
+        sellingTableView.setItems(sellingTransactions);
+        sellingTableView.getSelectionModel().select(0);
+        
+        //Populating the buying transactions table
+        bTID.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("transactionID")
         );
-        sBuyerPhone.setCellValueFactory(
-                new PropertyValueFactory<Transaction,Integer>("buyerPhone")
+        bSellerPhone.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("sellerPhone")
         );
-        sBuyerName.setCellValueFactory(
-                new PropertyValueFactory<Transaction,Integer>("buyerName")
+        bSellerName.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("sellerName")
         );
-        sPrice.setCellValueFactory(
+        bPrice.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("price")
         );
-        sTimestamp.setCellValueFactory(
+        bTimestamp.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("timestamp")
         );
-        sCropName.setCellValueFactory(
+        bCropName.setCellValueFactory(
                 new PropertyValueFactory<Transaction,Integer>("cropName")
         );
+        buyingTableView.setItems(buyingTransactions);
+        buyingTableView.getSelectionModel().select(0);
     }
 
+    @FXML
+    private void backToProfileButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
+        Parent root = (Parent) loader.load();
+        ProfilePageController ppc = loader.getController();
+        ppc.setName(name);
+        ppc.setPhoneNo(phoneNo);
+        Scene scene = new Scene(root, 900, 620);
+        Main.primaryStage.setTitle("My Profile");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
+    }
 }
