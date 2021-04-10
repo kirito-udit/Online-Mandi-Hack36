@@ -119,7 +119,11 @@ public class ChatsController implements Initializable {
         Conversation conversation = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         MessageManager.getInstance().addConversation(this.phoneNo,conversation.getClient(),sendTextField.getText(),timestamp,0);
-        conversationTextArea.setText(conversationTextArea.getText()+this.name+"->"+conversation.getNameOfClient()+"\n"+timestamp.toString()+"\n"+sendTextField.getText());
+        conversationTextArea.setText(conversationTextArea.getText()+this.name+"\n"+timestamp.toString()+"\n"+sendTextField.getText()+"\n");
         sendTextField.setText("");
+    }
+    @FXML
+    public void refreshButtonResponse(ActionEvent e) {
+        first(name,phoneNo);
     }
 }
