@@ -7,8 +7,6 @@ import java.io.*;
 import java.sql.*;
 
 public class UserTable {
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
     public static File dbFile = new File("./src/sample/Resources");
     public static final String DB_NAME = "REGISTER.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;

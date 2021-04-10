@@ -55,7 +55,6 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image("file:///C:/Users/hp/Desktop/farmLogin.jpg");
-        Image image = new Image("file:./src/sample/Resources/farmLogin.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,

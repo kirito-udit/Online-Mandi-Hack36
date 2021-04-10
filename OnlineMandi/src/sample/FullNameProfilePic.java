@@ -1,9 +1,9 @@
 package sample;
 
+import java.io.Serializable;
+
 import javafx.scene.image.Image;
 
-public class FullNameProfilePic {
-import java.io.Serializable;
 
 public class FullNameProfilePic implements Serializable {
     private String fullName;

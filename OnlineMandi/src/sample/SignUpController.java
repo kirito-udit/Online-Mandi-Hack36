@@ -127,7 +127,6 @@ public class SignUpController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Image image = new Image("file:///C:/Users/hp/Desktop/farm.jpg");
-        Image image = new Image("file:./src/sample/Resources/farm.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,

@@ -7,8 +7,6 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class SellerTable {
-    public static final String DB_NAME = "register.db";
-    public static final String CONNECTION_STRING = "jdbc:sqlite:D:\\databases\\" + DB_NAME;
     public static File dbFile = new File("./src/sample/Resources");
     public static final String DB_NAME = "REGISTER.db";
     public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
@@ -193,9 +191,7 @@ public class SellerTable {
         catch (SQLException e) {
             System.out.println("Couldn't fetch all offers: "+e.getMessage());
         }
-    //this function returns the list of all the offers of a particular seller
-    ObservableList<Offer> getAllOffers(){
-
         return null;
-    }
+
+}
 }

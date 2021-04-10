@@ -40,7 +40,6 @@ public class StartController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         Image image = new Image("file:///C:/Users/hp/Desktop/farmStart.jpg");
-        Image image = new Image("file:./src/sample/Resources/farmStart.jpg");
         System.out.println(image.getHeight()+"\n"+image.getWidth()+"\n"+image.getUrl());
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
