@@ -35,28 +35,36 @@ public class Server implements  Runnable {
         ObjectOutputStream oos = null;
         ObjectInputStream ois = null;
         String phoneNumber = null;
-        String password=null;
+        String password = null;
         try {
             oos = new ObjectOutputStream((socket.getOutputStream()));
             ois = new ObjectInputStream((socket.getInputStream()));
-            phoneNumber = (String)ois.readObject();//this is the first string read by the server
-            password=(String)ois.readObject();
-            FullNameProfilePic fnpc = UserTable.getInstance().authentication(password,phoneNumber);
-            if(fnpc==null) {
-                oos.writeObject("Authentication Failed");
-            }else{
-                oos.writeObject("Authentication Successful");
-                clients.add(new ClientDetails(phoneNumber,oos));
-            }
-        }catch(Exception e){
+        } catch (Exception e) {
+            System.out.println("Error in run method OOS OIS ");
             e.printStackTrace();
-            for(ClientDetails client : clients) {
-                if(client.getPhoneNo().equals(phoneNumber)) {
-                    clients.remove(client);
+        }
+        while(true) {
+            try {
+                phoneNumber = (String) ois.readObject();//this is the first string read by the server
+                password = (String) ois.readObject();
+                FullNameProfilePic fnpc = UserTable.getInstance().authentication(password, phoneNumber);
+                if (fnpc == null) {
+                    oos.writeObject("Authentication Failed");
+                } else {
+                    oos.writeObject("Authentication Successful");
+                    clients.add(new ClientDetails(phoneNumber, oos));
                     break;
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
+                for (ClientDetails client : clients) {
+                    if (client.getPhoneNo().equals(phoneNumber)) {
+                        clients.remove(client);
+                        break;
+                    }
+                }
+                return;
             }
-            return;
         }
 
         while(true){
