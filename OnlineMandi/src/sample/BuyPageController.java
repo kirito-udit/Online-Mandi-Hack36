@@ -3,22 +3,28 @@ package sample;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.Window;
 
 import javax.swing.*;
 import java.net.URL;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.stream.Stream;
 
 public class BuyPageController implements Initializable {
     @FXML
@@ -35,11 +41,15 @@ public class BuyPageController implements Initializable {
     private TextArea descriptionTextArea;
     @FXML
     private Button buyButton;
+    @FXML
+    private ComboBox cropComboBox;
 
     ObservableList<Offer> data;
     private String phoneNo;
     private String name;
-
+    String filter = "";
+    private ObservableList<String> originalItems;
+    
     public String getPhoneNo() {
         return phoneNo;
     }
@@ -59,7 +69,12 @@ public class BuyPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+        final String[] crops = { "Mango","Rice","Wheat", "Guava", "Tomato", "Raddish",
+                "Carrot", "Avocado", "Banana", "Grapes"};
 
+        cropComboBox.setItems(FXCollections.observableArrayList(crops));
+        originalItems = FXCollections.observableArrayList(cropComboBox.getItems());
+        //new ComboBoxAutoComplete<String>(cropComboBox);
         cropNameTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("cropName")
         );
@@ -69,6 +84,7 @@ public class BuyPageController implements Initializable {
         quantityTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("quantity")
         );
+
         cropTableView.setItems(data);
         cropTableView.getSelectionModel().select(0);
         setDescriptionTextArea();
@@ -146,5 +162,42 @@ public class BuyPageController implements Initializable {
             Transactions.getInstance().processATransaction(buyerPhone,offer.getOfferId(),(int)spinner.getValue(),new Timestamp(System.currentTimeMillis()));
             createStage.close();
         });
+    }
+    @FXML
+    public void handleOnKeyPressed(KeyEvent e) {
+        ObservableList<String> filteredList = FXCollections.observableArrayList();
+        KeyCode code = e.getCode();
+
+        if (code.isLetterKey()) {
+            filter += e.getText();
+        }
+        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
+            filter = filter.substring(0, filter.length() - 1);
+            cropComboBox.getItems().setAll(originalItems);
+        }
+        if (code == KeyCode.ESCAPE) {
+            filter = "";
+        }
+        if (filter.length() == 0) {
+            filteredList = originalItems;
+        } else {
+            Stream<String> itens = cropComboBox.getItems().stream();
+            String txtUsr = filter.toString().toLowerCase();
+            itens.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
+            cropComboBox.getTooltip().setText(txtUsr);
+            Window stage = cropComboBox.getScene().getWindow();
+            double posX = stage.getX() + cropComboBox.getBoundsInParent().getMinX();
+            double posY = stage.getY() + cropComboBox.getBoundsInParent().getMinY();
+            cropComboBox.getTooltip().show(stage, posX, posY);
+            cropComboBox.show();
+        }
+        cropComboBox.getItems().setAll(filteredList);
+    }
+    @FXML
+    public void handleOnHiding(Event e) {
+        filter = "";
+        String s = (String) cropComboBox.getSelectionModel().getSelectedItem();
+        cropComboBox.getItems().setAll(originalItems);
+        cropComboBox.getSelectionModel().select(s);
     }
 }
