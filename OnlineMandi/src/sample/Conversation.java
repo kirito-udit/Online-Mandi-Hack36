@@ -4,13 +4,23 @@ import java.sql.Timestamp;
 
 public class Conversation {
     private String client;
+    private String nameOfClient;
     private String convo;
     private int seen;
 
-    public Conversation(String client, String convo, int seen) {
+    public Conversation(String client, String convo, int seen,String nameOfClient) {
         this.client = client;
+        this.nameOfClient = nameOfClient;
         this.convo = convo;
-        this.seen=seen;
+        this.seen = seen;
+    }
+
+    public String getNameOfClient() {
+        return nameOfClient;
+    }
+
+    public void setNameOfClient(String nameOfClient) {
+        this.nameOfClient = nameOfClient;
     }
 
     public String getClient() {
