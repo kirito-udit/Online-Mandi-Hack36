@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
@@ -18,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="530.0" prefWidth="681.0" stylesheets="@ChatStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ChatsController">
+<BorderPane prefHeight="530.0" prefWidth="681.0" stylesheets="@ChatStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ChatsController">
    <center>
       <VBox alignment="CENTER_LEFT" prefHeight="231.0" prefWidth="682.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
@@ -35,7 +30,7 @@
             </HBox>
             <HBox alignment="CENTER" prefHeight="469.0" prefWidth="682.0" spacing="10.0">
                <children>
-                  <TableView fx:id="conversationTableView" onMouseClicked="#clickItem" onSort="#setConvoTextArea" prefHeight="180.0" prefWidth="222.0">
+                  <TableView fx:id="conversationTableView" onSort="#setConvoTextArea" prefHeight="180.0" prefWidth="222.0">
                     <columns>
                       <TableColumn fx:id="phoneNoTableColumn" prefWidth="107.99999982118607" text="Phone" />
                       <TableColumn fx:id="nameTableColumn" prefWidth="112.79998779296875" text="Name" />
@@ -54,7 +49,7 @@
                               <Insets left="10.0" />
                            </padding>
                         </HBox>
-                        <TextArea fx:id="conversationTextArea" prefHeight="373.0" prefWidth="434.0"  />
+                        <TextArea fx:id="conversationTextArea" prefHeight="373.0" prefWidth="434.0" />
                         <HBox alignment="CENTER" prefHeight="38.0" prefWidth="368.0" spacing="10.0">
                            <children>
                               <Label contentDisplay="RIGHT" prefHeight="18.0" prefWidth="30.0" text="Seen" />
