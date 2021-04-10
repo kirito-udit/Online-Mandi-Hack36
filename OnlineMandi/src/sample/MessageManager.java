@@ -11,20 +11,16 @@ public class MessageManager {
     public static final String CONNECTION_STRING = "jdbc:sqlite:"+dbFile.getAbsolutePath()+"\\"+DB_NAME;
     public static final String MESSAGE_TABLE="MessageManager";
 
-    public static final String COLUMN_SENDER_NAME="SenderName";
     public static final String COLUMN_SENDER_PHONE="SenderPhone";
-    public static final String COLUMN_RECEIVER_NAME="ReceiverName";
     public static final String COLUMN_RECEIVER_PHONE="ReceiverPhone";
     public static final String COLUMN_CONTENT="Content";
-    public static final String COLUMN_SEEN_TIME="SeenTime";
     public static final String COLUMN_SENT_TIME="SentTime";
-    public static final String COLUMN_RECEIVED_TIME="ReceivedTime";
     public static final String COLUMN_SEEN="Seen";
 
 
     public static final String QUERY_ALL_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_SENDER_PHONE+" = ? OR "+COLUMN_RECEIVER_PHONE+" = ? ";
     public static final String QUERY_ALL_UNREAD_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_RECEIVER_PHONE+" = ? AND "+COLUMN_SEEN+" = ? ";
-    public static final String QUERY_ADD_CONVO = " INSERT INTO " + MESSAGE_TABLE + " VALUES ( ?, ? , ? , ? , ? , ? , ?) ";
+    public static final String QUERY_ADD_CONVO = " INSERT INTO " + MESSAGE_TABLE + " VALUES ( ?, ? , ? , ? , ? ) ";
 
     public Connection conn;
     public PreparedStatement getAllConversationsStmt;
@@ -76,17 +72,15 @@ public class MessageManager {
     }
 
 
-    public boolean addConversation(String senderName, String senderPhone, String receiverName, String receiverPhone,
-                            String content, Timestamp sentTime, int seen) {
+    public boolean addConversation(String senderPhone,String receiverPhone,
+                                   String content, Timestamp sentTime, int seen) {
         try {
             open();
-            addConvo.setString(1, senderName);
-            addConvo.setString(2, senderPhone);
-            addConvo.setString(3, receiverName);
-            addConvo.setString(4, receiverPhone);
-            addConvo.setString(5, content);
-            addConvo.setTimestamp(6, sentTime);
-            addConvo.setInt(7, seen);
+            addConvo.setString(1, senderPhone);
+            addConvo.setString(2, receiverPhone);
+            addConvo.setString(3, content);
+            addConvo.setTimestamp(4, sentTime);
+            addConvo.setInt(5, seen);
             addConvo.executeUpdate();
             close();
             return true;
@@ -107,33 +101,37 @@ public class MessageManager {
             HashMap<String,String> mp1=new HashMap<>();
             HashMap<String,Integer>mp2=new HashMap<>();
             HashMap<String,String> mp3=new HashMap<>();
+            UserTable userTable=UserTable.getInstance();
             while(results.next()){
-                if(results.getString(4).equals(userPhone)){
-                    mp2.put(results.getString(2),results.getInt(7));
+                if(results.getString(2).equals(userPhone)){//I am receiver
+                    String senderName=userTable.getFullName(results.getString(1));
+                    mp2.put(results.getString(1),results.getInt(5));//senderPhone mapped to seen variable
+                    String str = null;
+                    if(mp1.get(results.getString(1))==null){
+                        str =senderName+"\n"+results.getTimestamp(4)+
+                                " \n" + results.getString(3)+"\n";
+                    }
+                    else {
+                        str = mp1.get(results.getString(1)) + senderName + "\n" + results.getTimestamp(4) +
+                                "\n" + results.getString(3) + "\n";
+                    }
+                    mp1.put(results.getString(1),str);
+                    mp3.put(results.getString(1),senderName);
+                }else{
+                    String senderName=userName;
+                    String receiverName=userTable.getFullName(results.getString(2));
+                    mp2.put(results.getString(2),results.getInt(5));//senderPhone mapped to seen variable
                     String str = null;
                     if(mp1.get(results.getString(2))==null){
-                        str = results.getString(1)+"->"+results.getString(3)+"\n"+results.getTimestamp(6)+
-                                " \n" + results.getString(5)+"\n";
+                        str =senderName+"\n"+results.getTimestamp(4)+
+                                " \n" + results.getString(3)+"\n";
                     }
                     else {
-                        str = mp1.get(results.getString(2)) + results.getString(1) + "->" + results.getString(3) + "\n" + results.getTimestamp(6) +
-                                "\n" + results.getString(5) + "\n";
+                        str = mp1.get(results.getString(2)) + senderName + "\n" + results.getTimestamp(4) +
+                                "\n" + results.getString(3) + "\n";
                     }
                     mp1.put(results.getString(2),str);
-                    mp3.put(results.getString(2),results.getString(1));
-                }else{
-                    mp2.put(results.getString(4),results.getInt(7));
-                    String str = null;
-                    if(mp1.get(results.getString(4))==null){
-                        str = results.getString(1)+"->"+results.getString(3)+"\n"+results.getTimestamp(6)+
-                                " \n" + results.getString(5)+"\n";
-                    }
-                    else {
-                        str = mp1.get(results.getString(4)) + results.getString(1) + "->" + results.getString(3) + "\n" + results.getTimestamp(6) +
-                                "\n" + results.getString(5) + "\n";
-                    }
-                    mp1.put(results.getString(4),str);
-                    mp3.put(results.getString(4),results.getString(3));
+                    mp3.put(results.getString(2),receiverName);
                 }
 
             }
