@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.sql.Timestamp;
 import java.util.ResourceBundle;
 
 public class BuyPageController implements Initializable {
@@ -96,5 +97,13 @@ public class BuyPageController implements Initializable {
         cropTableView.setItems(data);
         cropTableView.getSelectionModel().select(0);
         setDescriptionTextArea();
+    }
+    @FXML
+    public void hiButtonAction(ActionEvent e) {
+        MessageManager.getInstance().close();
+        MessageManager.getInstance().open();
+        Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
+        MessageManager.getInstance().addConversation(this.name,this.phoneNo,offer.getSellerName(),offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
+        //MessageManager.getInstance().close();
     }
 }
