@@ -8,12 +8,24 @@ import java.util.Comparator;
 import java.util.HashMap;
 
 public class MessageManager extends Thread{
-    public static final String MESSAGE_TABLE="MessageManager";
+      public static final String MESSAGE_TABLE="MessageManager";
 
     public static final String COLUMN_SENDER_PHONE="SenderPhone";
     public static final String COLUMN_RECEIVER_PHONE="ReceiverPhone";
     public static final String COLUMN_CONTENT="Content";
     public static final String COLUMN_SENT_TIME="SentTime";
+    public static final String COLUMN_SEEN="Seen";
+
+
+    public static final String QUERY_ALL_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_SENDER_PHONE+" = ? OR "+COLUMN_RECEIVER_PHONE+" = ? ";
+    public static final String QUERY_ALL_UNREAD_CONVERSATIONS=" SELECT * FROM "+MESSAGE_TABLE+" WHERE "+COLUMN_RECEIVER_PHONE+" = ? AND "+COLUMN_SEEN+" = ? ";
+    public static final String QUERY_ADD_CONVO = " INSERT INTO " + MESSAGE_TABLE + " VALUES ( ?, ? , ? , ? , ? ) ";
+
+    public Connection conn;
+    public PreparedStatement getAllConversationsStmt;
+    public PreparedStatement getAllUnreadConversationsStmt;
+    public PreparedStatement addConvo;
+    private static MessageManager messageManager;
     public static final String COLUMN_SEEN="Seen";
 
 
