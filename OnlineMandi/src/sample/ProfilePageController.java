@@ -13,6 +13,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import sample.*;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,8 +40,27 @@ public class ProfilePageController implements Initializable {
 
     @FXML
     private Button chatButton;
-    private Image img;
 
+    @FXML
+    private Button historyButton;
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    private Image img;
     private String phoneNo;
     private String name;
 
@@ -99,5 +119,17 @@ public class ProfilePageController implements Initializable {
                 BackgroundPosition.CENTER,
                 bSize));
         profilePane.setBackground(background);
+    }
+
+    @FXML
+    void historyButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("TransactionsPage.fxml"));
+        Parent root = (Parent) loader.load();
+        TransactionsPageController tpc = loader.getController();
+        tpc.first(name,phoneNo);
+        Scene scene = new Scene(root, 600, 600);
+        Main.primaryStage.setTitle("Transactions History");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
     }
 }
