@@ -8,7 +8,7 @@ import java.net.*;
 public class GeoipifyAPIQuery {
     public static ArrayList<String> accessLocation() throws IOException {
         String IP = "8.8.8.8";
-        String API_KEY = "at_OlwZQUtRfGC83GyQBhrrA863ixHMS";
+        String API_KEY = "/";
         String API_URL = "https://geo.ipify.org/api/v1?";
         try {
             URL url_name = new URL("http://bot.whatismyipaddress.com");
