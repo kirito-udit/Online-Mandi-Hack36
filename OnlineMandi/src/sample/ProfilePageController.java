@@ -113,7 +113,7 @@ public class ProfilePageController implements Initializable {
         Parent root = (Parent) loader.load();
         ChatsController cpc = loader.getController();
         cpc.first(name,phoneNo);
-        Scene scene = new Scene(root, 580, 790);
+        Scene scene = new Scene(root, 681, 530);
         Main.primaryStage.setTitle("Chat Page");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
