@@ -4,7 +4,12 @@ Online Mandi: A desktop application which helps trade of crops between two parti
 
 ![WhatsApp Image 2021-04-10 at 23 44 18](https://user-images.githubusercontent.com/66271037/114282223-39ab5600-9a60-11eb-8f76-318a44844a42.jpeg)
 
-
+# Team: Pings With Things:<br>><br>
+Teammates:<br>
+<a href="https://github.com/kirito-udit">UDIT KOTECHA</a><br>
+<a href="https://github.com/kartikeyasri23">KARTIKEY SRIVASTAVA</a><br>
+<a href="https://github.com/mrdinosaurabh">SAURABH SINGH</a><br>
+<a href="https://github.com/shubhamdixit760">SHUBHAM DIXIT</a><br><br
 After the introduction of new farm reforms in September 2020, we introduce this app as a suggestion to the
 Government which helps in E administration of the crop market.It also helps the farmers use the new reforms in
 the most profitable way, as they can have a platform to braodcast their products all over the country, can involve in 
@@ -105,3 +110,14 @@ d)distance(closest first)
 Features yet to be implemented : 
 
 1. Payment Gateway is to implemented inorder to facilate the farmers to online transactions.
+2. Voice and Video Calling with EnableX
+3. AIML Chatbot
+
+<br>
+Working Screenshots<br>
+![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/dLHVT55/ind2ex.jpg)
+![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/T2XPw4c/index4.jpg)
+![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/cNz4syT/index3.jpg)
+![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/H2G92Pz/index5.jpg)
+![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/Jz8ZsBY/index.jpg)
+
