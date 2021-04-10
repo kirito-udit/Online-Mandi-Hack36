@@ -14,7 +14,7 @@
 
 <GridPane alignment="CENTER" hgap="10.0" prefHeight="358.0" prefWidth="477.0" vgap="10.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.TransactionsPageController">
   <columnConstraints>
-    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="550.0" prefWidth="550.0" />
+    <ColumnConstraints halignment="CENTER" hgrow="ALWAYS" minWidth="700.0" prefWidth="700.0" />
   </columnConstraints>
   <rowConstraints>
       <RowConstraints minHeight="50.0" prefHeight="100.0" vgrow="SOMETIMES" />
@@ -32,12 +32,13 @@
             </Label>
             <TableView fx:id="sellingTableView" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                  <TableColumn fx:id="sTID" prefWidth="94.39999043941498" text="Transaction ID" />
-                <TableColumn fx:id="sBuyerName" prefWidth="83.20002746582031" text="Buyer Name" />
-                <TableColumn fx:id="sBuyerPhone" prefWidth="107.20001220703125" text="Buyer Phone" />
-                  <TableColumn fx:id="sCropName" prefWidth="79.19999694824219" text="Crop Name" />
-                  <TableColumn fx:id="sPrice" prefWidth="83.20001220703125" text="Price/100kg" />
-                  <TableColumn fx:id="sTimestamp" minWidth="8.0" prefWidth="99.1998291015625" text="Date/Time" />
+                  <TableColumn fx:id="sTID" prefWidth="45.60000264644623" text="TID" />
+                <TableColumn fx:id="sBuyerName" prefWidth="179.19998931884766" text="Buyer Name" />
+                <TableColumn fx:id="sBuyerPhone" prefWidth="116.0" text="Buyer Phone" />
+                  <TableColumn fx:id="sCropName" prefWidth="56.79998779296875" text="Crop" />
+                  <TableColumn fx:id="sQuantity" prefWidth="65.5999755859375" text="Quantity" />
+                  <TableColumn fx:id="sPrice" prefWidth="77.60000610351562" text="Price/100kg" />
+                  <TableColumn fx:id="sTimestamp" minWidth="8.0" prefWidth="160.7999267578125" text="Date/Time" />
               </columns>
             </TableView>
          </children>
@@ -51,12 +52,13 @@
             </Label>
             <TableView fx:id="buyingTableView" prefHeight="200.0" prefWidth="200.0">
                <columns>
-                  <TableColumn fx:id="bTID" prefWidth="92.79995381832123" text="Transaction ID" />
-                  <TableColumn fx:id="bSellerName" prefWidth="76.00007629394531" text="Seller Name" />
-                  <TableColumn fx:id="bSellerPhone" prefWidth="107.20001220703125" text="Seller Phone" />
-                  <TableColumn fx:id="bCropName" prefWidth="89.5999755859375" text="Crop Name" />
-                  <TableColumn fx:id="bPrice" prefWidth="93.60003662109375" text="Price/100kg" />
-                  <TableColumn fx:id="bTimestamp" minWidth="8.0" prefWidth="89.599853515625" text="Date/Time" />
+                  <TableColumn fx:id="bTID" prefWidth="45.60000264644623" text="TID" />
+                  <TableColumn fx:id="bSellerName" prefWidth="179.9999771118164" text="Seller Name" />
+                  <TableColumn fx:id="bSellerPhone" minWidth="0.0" prefWidth="108.0" text="Seller Phone" />
+                  <TableColumn fx:id="bCropName" prefWidth="67.20001220703125" text="Crop" />
+                  <TableColumn fx:id="bQuantity" prefWidth="72.0" text="Quantity" />
+                  <TableColumn fx:id="bPrice" prefWidth="79.99996948242188" text="Price/100kg" />
+                  <TableColumn fx:id="bTimestamp" minWidth="8.0" prefWidth="147.9998779296875" text="Date/Time" />
                </columns>
             </TableView>
          </children>
