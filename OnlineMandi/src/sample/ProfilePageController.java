@@ -88,7 +88,7 @@ public class ProfilePageController implements Initializable {
         BuyPageController bpc = loader.getController();
         bpc.setName(name);
         bpc.setPhoneNo(phoneNo);
-        Scene scene = new Scene(root, 800, 700);
+        Scene scene = new Scene(root, 600, 593);
         Main.primaryStage.setTitle("Buy Page");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
@@ -136,7 +136,7 @@ public class ProfilePageController implements Initializable {
         Parent root = (Parent) loader.load();
         TransactionsPageController tpc = loader.getController();
         tpc.first(name,phoneNo);
-        Scene scene = new Scene(root, 600, 600);
+        Scene scene = new Scene(root, 750, 600);
         Main.primaryStage.setTitle("Transactions History");
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
