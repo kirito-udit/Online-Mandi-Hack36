@@ -14,7 +14,7 @@
 
 <BorderPane fx:id="profilePane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@StartStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ProfilePageController">
    <top>
-      <HBox fx:id="hBox" alignment="CENTER_LEFT" prefHeight="95.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
+      <HBox fx:id="hBox" alignment="CENTER" prefHeight="95.0" prefWidth="600.0" spacing="20.0" BorderPane.alignment="CENTER">
          <children>
             <ImageView fx:id="profilePic" fitHeight="155.0" fitWidth="159.0" pickOnBounds="true" preserveRatio="true">
                <HBox.margin>
@@ -34,14 +34,15 @@
                   </Label>
                </children>
             </VBox>
+<<<<<<< HEAD
+            <Button fx:id="chatButton" mnemonicParsing="false" onAction="#chatButtonResponse" text="View Chats" />
+=======
             <Button fx:id="chatButton" onAction="#chatButtonResponse" mnemonicParsing="false" text="View Chats" />
+>>>>>>> b443c020478ce7342e88045003f2cebf59ed54bd
          </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
-         <padding>
-            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-         </padding>
       </HBox>
    </top>
    <center>
