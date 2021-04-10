@@ -1,5 +1,8 @@
 package sample;
 
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,6 +59,9 @@ public class ChatsController implements Initializable {
     @FXML
     private TableColumn nameTableColumn;
 
+    @FXML
+    private Conversation lastSelected;
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -75,12 +81,32 @@ public class ChatsController implements Initializable {
         );
         conversationTableView.setItems(observableConvoList);
         conversationTableView.getSelectionModel().select(0);
+        lastSelected = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
         setConvoTextArea();
+        conversationTableView.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+            int idx = conversationTableView.getSelectionModel().getSelectedIndex();
+            Platform.runLater(new Runnable() {
+                @Override
+                public void run() {
+                    ArrayList<Conversation> list2 = MessageManager.getInstance().getAllConversations(phoneNo,name);
+                    observableConvoList= FXCollections.observableList(list2);
+                }
+            });
+            phoneNoTableColumn.setCellValueFactory(
+                    new PropertyValueFactory<Conversation,String>("client")
+            );
+            nameTableColumn.setCellValueFactory(
+                    new PropertyValueFactory<Conversation,String>("nameOfClient")
+            );
+            conversationTableView.setItems(observableConvoList);
+            conversationTableView.getSelectionModel().select(idx);
+            setConvoTextArea();
+        });
     }
-    @FXML
-    public void clickItem(MouseEvent event) {
-        setConvoTextArea();
-    }
+//    @FXML
+//    public void clickItem(MouseEvent event) {
+//        setConvoTextArea();
+//    }
     @FXML
     public void setConvoTextArea() {
         Conversation convo = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
@@ -88,10 +114,12 @@ public class ChatsController implements Initializable {
     }
     @FXML
     public void sendButtonResponse(ActionEvent e) {
+        if(sendTextField.getText().trim()=="")
+            return;
         Conversation conversation = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-        MessageManager.getInstance().addConversation(this.name,this.phoneNo,conversation.getNameOfClient(),conversation.getClient(),sendTextField.getText(),timestamp,0);
-        first(name,phoneNo);
+        MessageManager.getInstance().addConversation(this.phoneNo,conversation.getClient(),sendTextField.getText(),timestamp,0);
+        conversationTextArea.setText(conversationTextArea.getText()+this.name+"->"+conversation.getNameOfClient()+"\n"+timestamp.toString()+"\n"+sendTextField.getText());
         sendTextField.setText("");
     }
 }
