@@ -29,7 +29,7 @@ public class SellerTable {
             COLUMN_OFFER_ID + " = ? ";
     public static final String UPDATE_DESCRIPTION=" UPDATE "+SELL_TABLE+" SET "+COLUMN_DESCRIPTION+" = ? "+" WHERE "+
             COLUMN_OFFER_ID+" = ? ";
-
+    public static final String GET_OFFER="SELECT * FROM "+SELL_TABLE+" WHERE "+COLUMN_OFFER_ID+" = ? ";
     public static final String DELETE_OFFER = " DELETE FROM " + SELL_TABLE + " WHERE " + COLUMN_OFFER_ID + " = ? ";
     public static final String GET_ALL_OFFERS = " SELECT * FROM " + SELL_TABLE;
 
@@ -41,6 +41,7 @@ public class SellerTable {
     public PreparedStatement updateDescription;
     public PreparedStatement deleteOffer;
     public PreparedStatement getAllOffers;
+    public PreparedStatement getQuantity;
 
     private static SellerTable sellerTable;
 
@@ -58,6 +59,7 @@ public class SellerTable {
     public boolean deleteOffer(int offerId) {
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
+            deleteOffer=conn.prepareStatement(DELETE_OFFER);
             deleteOffer.setInt(1, offerId);
             deleteOffer.executeQuery();
             return true;
@@ -126,6 +128,31 @@ public class SellerTable {
             }
         }
     }
+    public Offer getOffer(int offerId){
+        try {
+            conn = DriverManager.getConnection(CONNECTION_STRING);
+            getQuantity = conn.prepareStatement(GET_OFFER);
+            getQuantity.setInt(1,offerId);
+            ResultSet results = getQuantity.executeQuery();
+            while(results.next()){
+                Offer offer=new Offer(results.getInt(1),results.getString(2),results.getInt(3),results.getInt(4),
+                        results.getDate(5),results.getDate(6),results.getString(7),results.getString(8));
+                return offer;
+            }
+        }catch (SQLException e){
+            System.out.println("Exception occured while fetching the answer in the SellTable class "+e.getMessage());
+        }finally {
+            try {
+                getQuantity.close();
+                conn.close();
+            }catch(SQLException e){
+                System.out.println("Exception occured while closing the resources in getQuantity method of the SellTable class "+e.getMessage());
+                return null;
+            }
+        }
+        return null;
+    }
+
     public boolean updateOfferQuantity(int offerId,int quantity){
         try {
             conn = DriverManager.getConnection(CONNECTION_STRING);
