@@ -14,7 +14,6 @@ import javafx.scene.layout.*;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ProfilePageController implements Initializable {
@@ -35,9 +34,6 @@ public class ProfilePageController implements Initializable {
 
     @FXML
     private Button sellSectionButton;
-
-    @FXML
-    private Button chatButton;
     private Image img;
 
     private String phoneNo;
@@ -76,22 +72,6 @@ public class ProfilePageController implements Initializable {
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
 
-    }
-    @FXML
-    void chatButtonResponse(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Chats.fxml"));
-        Parent root = (Parent) loader.load();
-        ChatsController  cpc = loader.getController();
-        cpc.setName(name);
-        cpc.setPhoneNo(phoneNo);
-        MessageManager.getInstance().close();
-        MessageManager.getInstance().open();
-        ArrayList<Conversation> convoList = MessageManager.getInstance().getAllConversations(phoneNo,name);
-        cpc.setConvoList(convoList);
-        Scene scene = new Scene(root, 580, 790);
-        Main.primaryStage.setTitle("Chat Page");
-        Main.primaryStage.setScene(scene);
-        Main.primaryStage.show();
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
