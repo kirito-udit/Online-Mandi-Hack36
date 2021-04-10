@@ -2,6 +2,7 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -11,8 +12,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 
-import java.awt.event.ActionEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -52,8 +53,8 @@ public class TransactionsPageController implements Initializable {
 
     private String phoneNo;
     private String name;
-    ObservableList<Transaction> sellingTransactions;
-    ObservableList<Transaction> buyingTransactions;
+    private ObservableList<Transaction> sellingTransactions;
+    private ObservableList<Transaction> buyingTransactions;
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
@@ -81,8 +82,8 @@ public class TransactionsPageController implements Initializable {
         this.phoneNo = phoneNo;
 
         //Fetching the transaction details from database and making observable array lists
-        sellingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getSellTransactions(phoneNo));
-        buyingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getBuyTransactions(phoneNo));
+        sellingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getSellTransaction(phoneNo));
+        buyingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getBuyTransaction(phoneNo));
         
         //Populating the selling transactions table
         sTID.setCellValueFactory(
@@ -136,6 +137,8 @@ public class TransactionsPageController implements Initializable {
         ProfilePageController ppc = loader.getController();
         ppc.setName(name);
         ppc.setPhoneNo(phoneNo);
+        Image image = UserTable.getInstance().getProfilePic(phoneNo);
+        ppc.createProfile(phoneNo,image,name);
         Scene scene = new Scene(root, 900, 620);
         Main.primaryStage.setTitle("My Profile");
         Main.primaryStage.setScene(scene);
