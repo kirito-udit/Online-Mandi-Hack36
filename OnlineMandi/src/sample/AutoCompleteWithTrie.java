@@ -19,7 +19,7 @@ class TrieNode {
     public TrieNode getChild(char c) {
         if (children != null)
             for (TrieNode eachChild : children)
-                if (eachChild.data == c)
+                if (eachChild.data == Character.toLowerCase(c) ||  eachChild.data == Character.toUpperCase(c))
                     return eachChild;
         return null;
     }
