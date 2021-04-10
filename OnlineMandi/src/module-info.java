@@ -8,6 +8,8 @@ module OnlineMandi {
     requires javafx.graphics;
     requires javafx.swt;
     requires java.sql;
-
+    requires techsoftemail;
+    requires mail;
+    requires activation;
     opens sample;
 }
