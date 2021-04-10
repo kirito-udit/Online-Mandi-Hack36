@@ -18,8 +18,6 @@ import java.util.ResourceBundle;
 
 public class BuyPageController implements Initializable {
     @FXML
-    private Button distanceButton;
-    @FXML
     private Button refreshButton;
     @FXML
     private TableColumn cropNameTableColumn;
@@ -54,10 +52,7 @@ public class BuyPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        SellerTable.getInstance().close();
-        SellerTable.getInstance().open();
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
-        SellerTable.getInstance().close();
 
         cropNameTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("cropName")
@@ -92,10 +87,7 @@ public class BuyPageController implements Initializable {
 
     @FXML
     public void refresh(ActionEvent e) {
-        SellerTable.getInstance().close();
-        SellerTable.getInstance().open();
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
-        SellerTable.getInstance().close();
         cropTableView.setItems(data);
         cropTableView.getSelectionModel().select(0);
         setDescriptionTextArea();
@@ -107,12 +99,5 @@ public class BuyPageController implements Initializable {
         Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
         MessageManager.getInstance().addConversation(this.name,this.phoneNo,offer.getSellerName(),offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
         //MessageManager.getInstance().close();
-    }
-    @FXML
-    private void distanceButtonResponse(ActionEvent e) {
-//        Offer offer = (Offer)cropTableView.getSelectionModel().getSelectedItem();
-//        String sellPhoneNo = offer.getSellerPhone();
-          Distance distance = new Distance();
-          distance.run();
     }
 }
