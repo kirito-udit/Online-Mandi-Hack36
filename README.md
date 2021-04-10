@@ -12,8 +12,7 @@ Teammates:<br>
 <a href="https://github.com/shubhamdixit760">SHUBHAM DIXIT</a><br><br>
 Public Links<br>
 Video Presentation: https://youtu.be/EDNZ7KvfUxo<br>
-
-
+PPT Presentation : https://docs.google.com/presentation/d/1kUAo5uv9t_tgxLmi5Pj9cufpSQw-tyFTfI3HG9mwpcc/edit?usp=sharing<br>
 After the introduction of new farm reforms in September 2020, we introduce this app as a suggestion to the
 Government which helps in E administration of the crop market.It also helps the farmers use the new reforms in
 the most profitable way, as they can have a platform to braodcast their products all over the country, can involve in 
