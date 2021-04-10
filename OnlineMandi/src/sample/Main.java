@@ -7,13 +7,16 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class Main extends Application {
     public static Stage primaryStage;
     public static UserTable userTable;
     public static Socket socket;
-
+    public static ObjectInputStream ois;
+    public static ObjectOutputStream oos;
     @Override
     public void start(Stage primary) throws Exception{
         userTable = UserTable.getInstance();
@@ -31,6 +34,8 @@ public class Main extends Application {
     public static void main(String[] args) throws IOException {
         try {
             socket = new Socket("localhost", 6963);
+            oos= new ObjectOutputStream(socket.getOutputStream());
+            ois= new ObjectInputStream(socket.getInputStream());
         } catch (IOException e) {
             e.printStackTrace();
         }
