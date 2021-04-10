@@ -1,5 +1,7 @@
 package sample;
-import javafx.embed.swing.SwingFXUtils;
+//import javafx.embed.swing.SwingFXUtils;
+//import javafx.scene.image.Image;
+
 import javafx.scene.image.Image;
 
 import javax.imageio.ImageIO;
@@ -21,18 +23,24 @@ public class UserTable {
     public static final String COLUMN_CITY = "City";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_PROFILE_PIC = "ProfilePicture";
+    public static final String COLUMN_LATITUDE="Latitude";
+    public static final String COLUMN_LONGITUDE="Longitude";
 
-    public static final String INSERT_USER = "INSERT INTO " + UTABLE + " VALUES (?,?,?,?,?,?,?,?)";
+    public static final String INSERT_USER = "INSERT INTO " + UTABLE + " VALUES (?,?,?,?,?,?,?,?,?,?)";
     public static final String UPDATE_PHONE = "UPDATE " + UTABLE + " SET " + COLUMN_PHONE + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_NAME = "UPDATE " + UTABLE + " SET " + COLUMN_NAME + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_POBOX = "UPDATE " + UTABLE + " SET " + COLUMN_POBOX + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_CITY = "UPDATE " + UTABLE + " SET " + COLUMN_CITY + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_DOB = "UPDATE " + UTABLE + " SET " + COLUMN_DOB + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_PASSWORD = "UPDATE " + UTABLE + " SET " + COLUMN_PASSWORD + " = ? WHERE " + COLUMN_ID + " = ?";
     public static final String UPDATE_PROFILE_PIC = "UPDATE " + UTABLE + " SET " + COLUMN_PROFILE_PIC + " = ? WHERE " + COLUMN_ID + " = ?";
+    public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
+    public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
+
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_NAME+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
+    public static final String QUERY_ADDRESS="SELECT ( "+COLUMN_CITY+" , "+COLUMN_POBOX+" , "+COLUMN_LATITUDE+" , "+COLUMN_LONGITUDE+" ) WHERE "+
+            COLUMN_ID+" = ? ";
 
     public Connection conn;
     public PreparedStatement insertUser;
@@ -42,6 +50,9 @@ public class UserTable {
     public PreparedStatement updateCity;
     public PreparedStatement updatePassword;
     public PreparedStatement updateProfilePic;
+    public PreparedStatement updateLatitde;
+    public PreparedStatement updateLongitude;
+    public PreparedStatement queryAddress;
     public PreparedStatement queryPasswordVerfication;
     public PreparedStatement selectFullNameWithThisPhoneNumber;
     public PreparedStatement selectProfilePicWithThisPhoneNumber;
@@ -50,7 +61,7 @@ public class UserTable {
 
     public static UserTable getInstance() {
         if(userTable == null)
-                userTable = new UserTable();
+            userTable = new UserTable();
         return userTable;
     }
 
@@ -58,68 +69,13 @@ public class UserTable {
 
     }
 
-    public boolean open() {
+
+
+    public boolean insertUser(String fullName, String phoneNumber, String password, String city, FileInputStream fis, String aadharNumber, Date dob, String poBox,
+                              double latitude,double longitude) {
         try {
             this.conn = DriverManager.getConnection(CONNECTION_STRING);
-            insertUser = conn.prepareStatement(INSERT_USER);
-            updatePhone = conn.prepareStatement(UPDATE_PHONE);
-            updateName = conn.prepareStatement(UPDATE_NAME);
-            updatePoBox = conn.prepareStatement(UPDATE_POBOX);
-            updateCity = conn.prepareStatement(UPDATE_CITY);
-            updatePassword = conn.prepareStatement(UPDATE_PASSWORD);
-            updateProfilePic = conn.prepareStatement(UPDATE_PROFILE_PIC);
-            queryPasswordVerfication=conn.prepareStatement(QUERY_PASSWORD_VERIFICATION);
-            selectFullNameWithThisPhoneNumber=conn.prepareStatement(SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER);
-            selectProfilePicWithThisPhoneNumber=conn.prepareStatement(SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER);
-            return true;
-        } catch (SQLException e) {
-            System.out.println("Open failed!" + e.getMessage());
-            return false;
-        }
-    }
-
-    public void close() {
-        try {
-            if (updatePoBox != null) {
-                updatePoBox.close();
-            }
-            if (updateCity != null) {
-                updateCity.close();
-            }
-            if (updatePassword != null) {
-                updatePassword.close();
-            }
-            if (updateProfilePic != null) {
-                updateProfilePic.close();
-            }
-            if (updateName != null) {
-                updateName.close();
-            }
-            if (updatePhone != null) {
-                updatePhone.close();
-            }
-            if (insertUser != null) {
-                insertUser.close();
-            }
-            if (conn != null) {
-                conn.close();
-            }
-            if(queryPasswordVerfication!=null){
-                queryPasswordVerfication.close();
-            }
-            if(selectProfilePicWithThisPhoneNumber!=null){
-                selectProfilePicWithThisPhoneNumber.close();
-            }
-            if(selectFullNameWithThisPhoneNumber!=null){
-                selectFullNameWithThisPhoneNumber.close();
-            }
-        } catch (SQLException e) {
-            System.out.println("Couldn't close connections: " + e.getMessage());
-        }
-    }
-
-    public void insertUser(String fullName, String phoneNumber, String password, String city, FileInputStream fis, String aadharNumber, Date dob, String poBox) {
-        try {
+            insertUser=conn.prepareStatement(INSERT_USER);
             insertUser.setString(1, fullName);
             insertUser.setString(2, phoneNumber);
             insertUser.setString(3, password);
@@ -128,63 +84,221 @@ public class UserTable {
             insertUser.setString(6, aadharNumber);
             insertUser.setDate(7, dob);
             insertUser.setString(8, poBox);
+            insertUser.setDouble(9,latitude);
+            insertUser.setDouble(10,longitude);
             insertUser.executeUpdate();
+            System.out.println("Insert user successful");
+            return true;
         } catch (Exception e) {
-            System.out.println("Insert failed: " + e.getMessage());
+            System.out.println("Insert user failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                insertUser.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in insertUser in UserTable");
+                return false;
+            }
         }
     }
 
-    private void updateName(String aadharNumber, String newName) {
+    private boolean updateName(String aadharNumber, String newName) {
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updateName=conn.prepareStatement(UPDATE_NAME);
             updateName.setString(1, newName);
             updateName.setString(2, aadharNumber);
+            int affectedRows=updateName.executeUpdate();
+            if(affectedRows==1) {
+                System.out.println("Update Name Successful");
+                return true;
+            }
+            else {
+                System.out.println("Update Name failed: ");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Update Name failed: " + e.getMessage());
+            return false;
+        }finally{
+            try{
+                updateName.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in insertUser in UserTable");
+            }
         }
     }
 
-    private void updateCity(String aadharNumber, String newCity) {
+    private boolean updateCity(String aadharNumber, String newCity) {
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updateCity=conn.prepareStatement(UPDATE_CITY);
             updateCity.setString(1, newCity);
             updateCity.setString(2, aadharNumber);
+            int affectedRows=updateCity.executeUpdate();
+            if(affectedRows==1) {
+                System.out.println("Update city Successful");
+                return true;
+            }
+            else {
+                System.out.println("Update City failed: ");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Update City failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updateCity.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updateCity in UserTable");
+            }
         }
     }
 
-    private void updatePoBox(String aadharNumber, String newPoBox) {
+    private boolean updatePoBox(String aadharNumber, String newPoBox) {
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updatePoBox=conn.prepareStatement(UPDATE_POBOX);
             updatePoBox.setString(1, newPoBox);
             updatePoBox.setString(2, aadharNumber);
+            int affectedRows=updatePoBox.executeUpdate();
+            if(affectedRows==1) {
+                System.out.println("Update PoBox Successful");
+                return true;
+            }
+            else {
+                System.out.println("Update PoBox failed: ");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Update PoBox failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updatePoBox.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updatePoBox in UserTable");
+            }
         }
     }
 
-    private void updatePhone(String aadharNumber, String newPhoneNumber) {
+    private boolean updatePhone(String aadharNumber, String newPhoneNumber) {
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updatePhone=conn.prepareStatement(UPDATE_PHONE);
             updatePhone.setString(1, newPhoneNumber);
             updatePhone.setString(2, aadharNumber);
+            int affectedRows=updatePhone.executeUpdate();
+            if(affectedRows==1){
+                System.out.println("Update Phone Successful");
+                return true;
+            }else {
+                System.out.println("Update Phone failed");
+                return false;
+            }
         } catch (SQLException e) {
             System.out.println("Update Phone failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updatePhone.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updatePhone in UserTable");
+            }
         }
     }
 
-    private void updateProfilePic(String aadharNumber, String local) {
+    private boolean updateProfilePic(String aadharNumber, String local) {
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updateProfilePic=conn.prepareStatement(UPDATE_PROFILE_PIC);
             FileInputStream fis = new FileInputStream(local);
             updateProfilePic.setBinaryStream(1, fis, fis.available());
             updateProfilePic.setString(2, aadharNumber);
-            updateProfilePic.executeUpdate();
+            int affectedRows=updateProfilePic.executeUpdate();
+            if(affectedRows==1){
+                System.out.println("Update ProfilePic Successful");
+                return true;
+            }else {
+                System.out.println("Update ProfilePic failed");
+                return false;
+            }
         } catch (Exception e) {
             System.out.println("Update ProfilePic failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updateProfilePic.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updateProfilePic in UserTable");
+            }
+        }
+    }
+
+    private boolean updateLatitude(String aadharNumber, double newLatitude) {
+        try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updateLatitde=conn.prepareStatement(UPDATE_LATITUDE);
+            updateLatitde.setDouble(1, newLatitude);
+            updateLatitde.setString(2, aadharNumber);
+            int affectedRows=updateLatitde.executeUpdate();
+            if(affectedRows==1){
+                System.out.println("Update Latitude Successful");
+                return true;
+            }else {
+                System.out.println("Update Latitude failed");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Update latitude failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updateLatitde.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updateLatitue in UserTable");
+            }
+        }
+    }
+    private boolean updateLongitude(String aadharNumber, double newLongitude) {
+        try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            updateLongitude=conn.prepareStatement(UPDATE_LONGITUDE);
+            updateLongitude.setDouble(1, newLongitude);
+            updateLongitude.setString(2, aadharNumber);
+            int affectedRows=updateLongitude.executeUpdate();
+            if(affectedRows==1){
+                System.out.println("Update Longitude Successful");
+                return true;
+            }else {
+                System.out.println("Update Longitude failed");
+                return false;
+            }
+        } catch (Exception e) {
+            System.out.println("Update longitude failed: " + e.getMessage());
+            return false;
+        }finally {
+            try{
+                updateLongitude.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in updateLongitude in UserTable");
+            }
         }
     }
 
     public FullNameProfilePic authentication(String password,String phoneNumber){
         try {
-            System.out.println(phoneNumber);
-            System.out.println(password);
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            queryPasswordVerfication=conn.prepareStatement(QUERY_PASSWORD_VERIFICATION);
             queryPasswordVerfication.setString(1,phoneNumber);
             ResultSet results=queryPasswordVerfication.executeQuery();
             while(results.next()){
@@ -197,11 +311,20 @@ public class UserTable {
         }catch(Exception e){
             System.out.println("Exception occured while password verifcation during user login "+e.getMessage());
             return null;
+        }finally {
+            try{
+                queryPasswordVerfication.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in authentication in UserTable");
+            }
         }
     }
 
-    private String getFullName(String phoneNumber){
+    public String getFullName(String phoneNumber){
         try{
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            selectFullNameWithThisPhoneNumber=conn.prepareStatement(SELECT_FULL_NAME_WITH_THIS_PHONE_NUMBER);
             selectFullNameWithThisPhoneNumber.setString(1,phoneNumber);
             ResultSet results=selectFullNameWithThisPhoneNumber.executeQuery();
             while(results.next()){
@@ -211,10 +334,19 @@ public class UserTable {
         }catch (Exception e){
             System.out.println("Exception occured while checking the full name of the user during user login "+e.getMessage());
             return null;
+        }finally {
+            try{
+                selectFullNameWithThisPhoneNumber.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in selectFullNameWithThisPhoneNumber in UserTable");
+            }
         }
     }
     public Image getProfilePic(String phoneNumber){
         try {
+            this.conn=DriverManager.getConnection(CONNECTION_STRING);
+            selectProfilePicWithThisPhoneNumber=conn.prepareStatement(SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER);
             selectProfilePicWithThisPhoneNumber.setString(1, phoneNumber);
             ResultSet results = selectProfilePicWithThisPhoneNumber.executeQuery();
             while (results.next()) {
@@ -231,6 +363,36 @@ public class UserTable {
         }catch (Exception e){
             System.out.println("Exception occured while checking the profile pic of the user during user login ");
             e.printStackTrace();
+        }finally {
+            try{
+                selectProfilePicWithThisPhoneNumber.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in selectProfilePicWithThisPhoneNumber in UserTable");
+            }
+        }
+        return null;
+    }
+    public Address queryAddress(String aadharNumber){
+        try {
+            conn = DriverManager.getConnection(CONNECTION_STRING);
+            queryAddress=conn.prepareStatement(QUERY_ADDRESS);
+            queryAddress.setString(1,aadharNumber);
+            ResultSet results=queryAddress.executeQuery();
+            if(results.next()) {
+                Address address=new Address(results.getString(1),results.getString(2),results.getDouble(3),results.getDouble(4));
+                return address;
+            }
+        }catch (SQLException e){
+            System.out.println("Error occured while fetching the user Address from user Table "+e.getMessage());
+            return null;
+        } finally {
+            try{
+                queryAddress.close();
+                conn.close();
+            }catch (SQLException e){
+                System.out.println("Error occured while closing the resources in selectProfilePicWithThisPhoneNumber in UserTable");
+            }
         }
         return null;
     }
