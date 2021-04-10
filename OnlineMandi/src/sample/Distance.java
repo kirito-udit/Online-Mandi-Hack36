@@ -42,12 +42,12 @@ public class Distance extends JFrame implements Runnable{
         });
     }
 
-    public static void main(String[] args) {
-        Distance objd  = new Distance();
-        objd.getdes("27.713","75.564");
-        objd.getdes2("28.910","76.457");
-       // SwingUtilities.invokeLater(new sample.WebBrowser());
-        objd.run();
-    }
+//    public static void main(String[] args) {
+//        Distance objd  = new Distance();
+//        objd.getdes("27.713","75.564");
+//        objd.getdes2("28.910","76.457");
+//       // SwingUtilities.invokeLater(new sample.WebBrowser());
+//        objd.run();
+//    }
 
 }
