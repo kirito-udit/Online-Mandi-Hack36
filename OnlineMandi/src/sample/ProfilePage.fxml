@@ -34,7 +34,12 @@
                   </Label>
                </children>
             </VBox>
-            <Button fx:id="chatButton" onAction="#chatButtonResponse" mnemonicParsing="false" text="View Chats" />
+            <VBox alignment="CENTER" prefHeight="155.0" prefWidth="123.0" spacing="20.0">
+               <children>
+                  <Button fx:id="chatButton" mnemonicParsing="false" onAction="#chatButtonResponse" text="View Chats" />
+                  <Button fx:id="historyButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="122.0" text="History" />
+               </children>
+            </VBox>
          </children>
          <opaqueInsets>
             <Insets />
