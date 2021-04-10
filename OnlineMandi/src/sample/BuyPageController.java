@@ -23,6 +23,7 @@ import javax.swing.*;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Stream;
 
@@ -49,7 +50,9 @@ public class BuyPageController implements Initializable {
     private String name;
     String filter = "";
     private ObservableList<String> originalItems;
-    
+    public Trie t;
+    private String pref = "";
+
     public String getPhoneNo() {
         return phoneNo;
     }
@@ -69,11 +72,17 @@ public class BuyPageController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
-        final String[] crops = { "Mango","Rice","Wheat", "Guava", "Tomato", "Raddish",
-                "Carrot", "Avocado", "Banana", "Grapes"};
+        final String[] crops = {"Wheat", "Rice","Barley","Jowar","Maize","Soybean","ChickPeas","Beans"
+                ,"Sugarcane","Potatoes","Tomatoes","Coconut","Coffee","Tea",
+                "SweetPotato","Radish","Carrot","SugarBeat","Olives","grapes","Cocoa Beans","Peas","Apples","Plantains","Mango",
+                "Banana","Papaya","Strawberry","Lichi","PineApple","WaterMelon","MuskMelon","Yams","GroundNut","Mustard","Palm","SunflowerSeeds","FlexSeeds","EggPlant","Garlic","Onion"
+                ,"BottleGourd","BitterGourd","ladyFinger","Coriander","GreenChilli","RedChilli"};
+        t = new Trie();
+        for(String crop : crops)
+            t.insert(crop);
 
         cropComboBox.setItems(FXCollections.observableArrayList(crops));
-        originalItems = FXCollections.observableArrayList(cropComboBox.getItems());
+        //originalItems = FXCollections.observableArrayList(cropComboBox.getItems());
         //new ComboBoxAutoComplete<String>(cropComboBox);
         cropNameTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("cropName")
@@ -165,39 +174,8 @@ public class BuyPageController implements Initializable {
     }
     @FXML
     public void handleOnKeyPressed(KeyEvent e) {
-        ObservableList<String> filteredList = FXCollections.observableArrayList();
-        KeyCode code = e.getCode();
-
-        if (code.isLetterKey()) {
-            filter += e.getText();
-        }
-        if (code == KeyCode.BACK_SPACE && filter.length() > 0) {
-            filter = filter.substring(0, filter.length() - 1);
-            cropComboBox.getItems().setAll(originalItems);
-        }
-        if (code == KeyCode.ESCAPE) {
-            filter = "";
-        }
-        if (filter.length() == 0) {
-            filteredList = originalItems;
-        } else {
-            Stream<String> itens = cropComboBox.getItems().stream();
-            String txtUsr = filter.toString().toLowerCase();
-            itens.filter(el -> el.toString().toLowerCase().contains(txtUsr)).forEach(filteredList::add);
-            cropComboBox.getTooltip().setText(txtUsr);
-            Window stage = cropComboBox.getScene().getWindow();
-            double posX = stage.getX() + cropComboBox.getBoundsInParent().getMinX();
-            double posY = stage.getY() + cropComboBox.getBoundsInParent().getMinY();
-            cropComboBox.getTooltip().show(stage, posX, posY);
-            cropComboBox.show();
-        }
-        cropComboBox.getItems().setAll(filteredList);
-    }
-    @FXML
-    public void handleOnHiding(Event e) {
-        filter = "";
-        String s = (String) cropComboBox.getSelectionModel().getSelectedItem();
-        cropComboBox.getItems().setAll(originalItems);
-        cropComboBox.getSelectionModel().select(s);
+        pref = cropComboBox.getEditor().getText();
+        List<String> cropList = t.autocomplete(pref);
+        cropComboBox.setItems(FXCollections.observableArrayList(t.autocomplete(pref)));
     }
 }
