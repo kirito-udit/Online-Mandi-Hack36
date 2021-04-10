@@ -110,7 +110,7 @@ public class Server implements  Runnable {
         //Socket socket;
 
         try {
-            ss=new ServerSocket(6963);
+            ss=new ServerSocket(6970);
             System.out.println("Server started");
         }
         catch (IOException e) {
