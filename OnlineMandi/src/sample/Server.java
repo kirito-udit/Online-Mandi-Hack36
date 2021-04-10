@@ -16,14 +16,16 @@ import java.util.ArrayList;
 
 public class Server {
     public static Connection conn;
+    public static ArrayList<String> currentlyActiveUser = new ArrayList<>();
+    public static ArrayList <HandleClientRequest> clientHandlers= new ArrayList<>();
+
     public static void main(String[] args) {
         UserTable.getInstance().open();
         Server.conn=UserTable.getInstance().conn;
         UserTable.getInstance().close();
         ServerSocket serverSocket = null;
         Socket socket;
-        ArrayList<String> currentlyActiveUser = new ArrayList<>();
-        ArrayList <HandleClientRequest> clientHandlers= new ArrayList<>();
+
         try {
             serverSocket=new ServerSocket(6963);
             System.out.println("Server started");
@@ -34,20 +36,22 @@ public class Server {
         while(true) {
             try {
                 socket=serverSocket.accept();
-                System.out.println("Client Connected");
 
+//                System.out.println("Client Connected");
                 ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
                 ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
                 String phoneNumber = ois.readObject().toString();
                 String password = ois.readObject().toString();
+                System.out.println("Client Connected");
 
                 //Authentication now
                 UserTable.getInstance().close();
                 UserTable.getInstance().open();
                 FullNameProfilePic fnpc = UserTable.getInstance().authentication(password,phoneNumber);
                 UserTable.getInstance().close();
+
                 if(fnpc!=null)
-                    oos.writeObject(fnpc.getFullName());
+                    oos.writeObject(phoneNumber);
                 else
                     oos.writeObject(null);
 
