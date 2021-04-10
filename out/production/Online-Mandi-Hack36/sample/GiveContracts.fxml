@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.control.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GiveContractsController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.GiveContractsController">
    <top>
       <HBox alignment="CENTER" cacheShape="false" prefHeight="46.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
@@ -19,13 +22,19 @@
       </HBox>
    </top>
    <bottom>
-      <HBox prefHeight="33.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+      <HBox alignment="CENTER" prefHeight="33.0" prefWidth="600.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonResponse" text="Back to profile page" />
-            <Button fx:id="approachForContractButton" mnemonicParsing="false" onAction="#approachForContractButtonResponse" text="ApproachForContract">
+            <Button fx:id="backButton" mnemonicParsing="false" onAction="#backButtonResponse" text="Back to profile page">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+            <Button fx:id="approachForContractButton" mnemonicParsing="false" onAction="#approachForContractButtonResponse" text="Approach for contract">
                <HBox.margin>
-                  <Insets bottom="5.0" left="5.0" />
+                  <Insets />
                </HBox.margin>
+               <font>
+                  <Font size="14.0" />
+               </font>
             </Button>
          </children>
       </HBox>
@@ -33,10 +42,10 @@
    <center>
       <TableView fx:id="contractsTableView" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
         <columns>
-          <TableColumn fx:id="cropNameTableColumn" prefWidth="137.0" text="Crop name" />
-          <TableColumn fx:id="priceTableColumn" prefWidth="154.0" text="Expected Minimum Price" />
-            <TableColumn fx:id="phoneNoTableColumn" prefWidth="143.0" text="phoneNumber" />
-            <TableColumn fx:id="descriptionTableColumn" prefWidth="165.0" text="Description" />
+          <TableColumn fx:id="cropNameTableColumn" prefWidth="106.4000244140625" text="Crop name" />
+          <TableColumn fx:id="priceTableColumn" prefWidth="100.0" text="EMP/100kg" />
+            <TableColumn fx:id="phoneNoTableColumn" prefWidth="169.60003662109375" text="Phone Number" />
+            <TableColumn fx:id="descriptionTableColumn" prefWidth="225.59991455078125" text="Description" />
         </columns>
       </TableView>
    </center>

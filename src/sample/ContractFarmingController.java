@@ -27,21 +27,21 @@ public class ContractFarmingController {
 
     @FXML
     public void getContractButtonResponse(ActionEvent e) {
-        Label cropLabel = new Label("Enter the crop you grow");
+        Label cropLabel = new Label("Enter the crop:");
         TextField cropTextField = new TextField();
         cropTextField.setPromptText("Enter name of crop");
-        Label expectedPriceLable = new Label("Enter expected minimum price");
+        Label expectedPriceLable = new Label("Enter Expected Minimum Price/100KG (EMP/100kg):");
         TextField expectedPriceTextField = new TextField();
-        expectedPriceTextField.setPromptText("Enter expected price");
-        Label descriptionLabel = new Label("Enter the description (e.g your experience)");
+        expectedPriceTextField.setPromptText("Enter EMP/100");
+        Label descriptionLabel = new Label("Enter the description (Experience,specialisation,etc):");
         TextArea descriptionTextArea = new TextArea();
         descriptionTextArea.setPromptText("Enter description");
         Button submit = new Button("Submit");
         VBox vBox = new VBox();
         vBox.getChildren().addAll(cropLabel,cropTextField,expectedPriceLable,expectedPriceTextField,
         descriptionLabel,descriptionTextArea,submit);
-        vBox.setPrefHeight(400);
-        vBox.setPrefWidth(400);
+        vBox.setPrefHeight(320);
+        vBox.setPrefWidth(320);
         vBox.setSpacing(5);
         vBox.setAlignment(Pos.CENTER);
 
@@ -50,7 +50,7 @@ public class ContractFarmingController {
         root.getChildren().add(vBox);
 
         Scene canvasScene = new Scene(root);
-        createStage.setTitle("Add yourself to ContractList");
+        createStage.setTitle("Add yourself to get a contract");
         createStage.setScene(canvasScene);
         createStage.show();
 
