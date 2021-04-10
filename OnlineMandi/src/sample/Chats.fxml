@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="530.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ChatsController">
+   <center>
+      <VBox alignment="CENTER_LEFT" prefHeight="231.0" prefWidth="682.0" spacing="10.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox alignment="CENTER_LEFT" prefHeight="49.0" prefWidth="682.0" spacing="10.0">
+               <children>
+                  <Label text="Search Chat:" />
+                  <TextField fx:id="searchTextField" />
+                  <CheckBox fx:id="unreadCheckBox" mnemonicParsing="false" prefHeight="18.0" prefWidth="90.0" text="Unread" />
+                  <Button fx:id="backToProfileButton" mnemonicParsing="false" text="Go To Your Profile" />
+               </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER" prefHeight="469.0" prefWidth="682.0" spacing="10.0">
+               <children>
+                  <TableView fx:id="conversationTableView" prefHeight="180.0" prefWidth="222.0">
+                    <columns>
+                      <TableColumn prefWidth="107.99999982118607" text="Phone" />
+                      <TableColumn prefWidth="112.79998779296875" text="Name" />
+                    </columns>
+                  </TableView>
+                  <VBox prefHeight="236.0" prefWidth="434.0" spacing="5.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="38.0" prefWidth="363.0" spacing="15.0">
+                           <children>
+                              <Label prefHeight="18.0" prefWidth="43.0" text="From:" />
+                              <Label fx:id="nameLabel" prefHeight="18.0" prefWidth="65.0" text="NameLabel" />
+                              <Label text="Sent time:" />
+                              <Label fx:id="sentTimeLabel" text="SentTimeHere" />
+                           </children>
+                           <padding>
+                              <Insets left="10.0" />
+                           </padding>
+                        </HBox>
+                        <TextArea fx:id="conversationTextArea" prefHeight="373.0" prefWidth="434.0" />
+                        <HBox alignment="CENTER" prefHeight="38.0" prefWidth="368.0" spacing="10.0">
+                           <children>
+                              <Label contentDisplay="RIGHT" prefHeight="18.0" prefWidth="30.0" text="Seen" />
+                              <TextField fx:id="sendTextField" alignment="CENTER" prefHeight="26.0" prefWidth="315.0" />
+                              <Button fx:id="sendButton" mnemonicParsing="false" text="Send" />
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </VBox>
+   </center>
+   <top>
+      <Label text="Your conversations:" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="15.0" top="10.0" />
+         </BorderPane.margin>
+         <font>
+            <Font name="Book Antiqua Bold" size="24.0" />
+         </font>
+      </Label>
+   </top>
+</BorderPane>
