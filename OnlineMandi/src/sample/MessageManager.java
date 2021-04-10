@@ -1,7 +1,13 @@
 package sample;
 
+import java.io.File;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
-public class MessageManager {
+public class MessageManager extends Thread{
     public static final String MESSAGE_TABLE="MessageManager";
 
     public static final String COLUMN_SENDER_PHONE="SenderPhone";
