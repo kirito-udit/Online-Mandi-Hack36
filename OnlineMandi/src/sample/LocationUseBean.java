@@ -1,6 +1,6 @@
 package sample;
 
-public class Location_Use_Bean {
+public class LocationUseBean {
     private String country_code;
     private String utc_offset;
     private String country;
@@ -69,13 +69,5 @@ public class Location_Use_Bean {
     public void setLon(String lon) {
         this.lon = lon;
     }
-
-
-
-
-
-
-
-
 
 }
