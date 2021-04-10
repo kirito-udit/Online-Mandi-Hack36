@@ -15,7 +15,7 @@ public class WebBrowser extends JFrame implements Runnable{
         setTitle("Search");
         setVisible(true);
         setBounds(0,0,500, 500);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        //setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         panel = new JFXPanel();
         add(panel);
         Platform.runLater(() -> {
