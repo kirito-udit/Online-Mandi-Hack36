@@ -9,27 +9,18 @@ public class Offer {
     private int price;
     private Date startDate;
     private Date endDate;
-    private String sellerName;
     private String sellerPhone;
-//    private String description;
-//
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+    private String description;
 
-    public Offer(int offerId, String cropName, int quantity, int price, Date startDate, Date endDate, String sellerName, String sellerPhone) {
+    public Offer(int offerId, String cropName, int quantity, int price, Date startDate, Date endDate, String sellerPhone, String description) {
         this.offerId = offerId;
         this.cropName = cropName;
         this.quantity = quantity;
         this.price = price;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.sellerName = sellerName;
         this.sellerPhone = sellerPhone;
+        this.description = description;
     }
 
     public int getOfferId() {
@@ -80,19 +71,19 @@ public class Offer {
         this.endDate = endDate;
     }
 
-    public String getSellerName() {
-        return sellerName;
-    }
-
-    public void setSellerName(String sellerName) {
-        this.sellerName = sellerName;
-    }
-
     public String getSellerPhone() {
         return sellerPhone;
     }
 
     public void setSellerPhone(String sellerPhone) {
         this.sellerPhone = sellerPhone;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
