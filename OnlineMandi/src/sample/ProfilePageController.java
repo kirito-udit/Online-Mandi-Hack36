@@ -67,7 +67,7 @@ public class ProfilePageController implements Initializable {
 
     @FXML
     void sellButtonResponse(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("../SellPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("SellPage.fxml"));
         Parent root = (Parent) loader.load();
         SellPageController spc = loader.getController();
         spc.setName(name);
@@ -83,9 +83,7 @@ public class ProfilePageController implements Initializable {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Chats.fxml"));
         Parent root = (Parent) loader.load();
         ChatsController cpc = loader.getController();
-        cpc.setName(name);
-        cpc.setPhoneNo(phoneNo);
-        cpc.first();
+        cpc.first(name,phoneNo);
         Scene scene = new Scene(root, 580, 790);
         Main.primaryStage.setTitle("Chat Page");
         Main.primaryStage.setScene(scene);
