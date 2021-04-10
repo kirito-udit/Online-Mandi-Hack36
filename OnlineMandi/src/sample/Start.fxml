@@ -13,7 +13,6 @@
 <?import javafx.scene.text.Font?>
 
 <BorderPane fx:id="startPane" prefHeight="425.0" prefWidth="539.0" stylesheets="@StartStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.StartController">
-<BorderPane fx:id="startPane" prefHeight="425.0" prefWidth="539.0" stylesheets="@StartStyles.css" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.StartController">
    <center>
       <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="40.0" BorderPane.alignment="CENTER">
          <children>
