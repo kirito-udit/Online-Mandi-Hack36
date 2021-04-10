@@ -49,19 +49,7 @@ public class Server implements  Runnable {
                 clients.add(new ClientDetails(phoneNumber,oos));
             }
         }catch(Exception e){
-            for(ClientDetails client : clients) {
-                if(client.getPhoneNo() == phoneNumber) {
-                    clients.remove(client);
-                    break;
-                }
-            }
             e.printStackTrace();
-
-            try {
-                socket.close();
-            } catch (IOException ioException) {
-                ioException.printStackTrace();
-            }
             return;
         }
 
@@ -76,11 +64,6 @@ public class Server implements  Runnable {
                 mm.addConversation(phoneNumber,data, message,t, 0);
             } catch (Exception e) {
                 e.printStackTrace();
-                for(ClientDetails client : clients) {
-                    if (client.getPhoneNo() == phoneNumber) {
-                        clients.remove(client);
-                    }
-                }
                 return;
             }
 
