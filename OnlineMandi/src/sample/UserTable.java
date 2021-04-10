@@ -2,13 +2,25 @@ package sample;
 //import javafx.embed.swing.SwingFXUtils;
 //import javafx.scene.image.Image;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
+import javax.swing.*;
 import java.io.*;
+import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.ResourceBundle;
 
 public class UserTable {
     public static final String UTABLE = "USERTABLE";
@@ -18,6 +30,7 @@ public class UserTable {
     public static final String COLUMN_NAME = "FullName";
     public static final String COLUMN_POBOX = "Email";
     public static final String COLUMN_DOB = "DOB";
+
     public static final String COLUMN_CITY = "City";
     public static final String COLUMN_PASSWORD = "Password";
     public static final String COLUMN_PROFILE_PIC = "ProfilePicture";
@@ -25,14 +38,14 @@ public class UserTable {
     public static final String COLUMN_LONGITUDE="Longitude";
 
     public static final String INSERT_USER = "INSERT INTO " + UTABLE + " VALUES (?,?,?,?,?,?,?,?,?,?)";
-    public static final String UPDATE_PHONE = "UPDATE " + UTABLE + " SET " + COLUMN_PHONE + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_NAME = "UPDATE " + UTABLE + " SET " + COLUMN_NAME + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_POBOX = "UPDATE " + UTABLE + " SET " + COLUMN_POBOX + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_CITY = "UPDATE " + UTABLE + " SET " + COLUMN_CITY + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_PASSWORD = "UPDATE " + UTABLE + " SET " + COLUMN_PASSWORD + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_PROFILE_PIC = "UPDATE " + UTABLE + " SET " + COLUMN_PROFILE_PIC + " = ? WHERE " + COLUMN_ID + " = ?";
-    public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
-    public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_ID+" = ? ";
+    public static final String UPDATE_PHONE = "UPDATE " + UTABLE + " SET " + COLUMN_PHONE + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_NAME = "UPDATE " + UTABLE + " SET " + COLUMN_NAME + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_POBOX = "UPDATE " + UTABLE + " SET " + COLUMN_POBOX + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_CITY = "UPDATE " + UTABLE + " SET " + COLUMN_CITY + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_PASSWORD = "UPDATE " + UTABLE + " SET " + COLUMN_PASSWORD + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_PROFILE_PIC = "UPDATE " + UTABLE + " SET " + COLUMN_PROFILE_PIC + " = ? WHERE " + COLUMN_PHONE + " = ?";
+    public static final String UPDATE_LONGITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LATITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
+    public static final String UPDATE_LATITUDE="UPDATE "+UTABLE+" SET "+COLUMN_LONGITUDE+" = ? WHERE "+COLUMN_PHONE+" = ? ";
 
     public static final String QUERY_LATLONG = "SELECT " + COLUMN_LATITUDE + ","+ COLUMN_LONGITUDE + " FROM "+UTABLE +" WHERE "+COLUMN_PHONE + " = ?";
     public static final String QUERY_PASSWORD_VERIFICATION=" SELECT "+COLUMN_PASSWORD+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
@@ -40,6 +53,7 @@ public class UserTable {
     public static final String SELECT_PROFILE_PIC_WITH_THIS_PHONE_NUMBER="SELECT "+COLUMN_PROFILE_PIC+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
     public static final String QUERY_ADDRESS="SELECT ( "+COLUMN_CITY+" , "+COLUMN_POBOX+" , "+COLUMN_LATITUDE+" , "+COLUMN_LONGITUDE+" ) WHERE "+
             COLUMN_ID+" = ? ";
+    public static final String QUERY_POBOX=" SELECT "+COLUMN_POBOX+" FROM "+UTABLE+" WHERE "+COLUMN_PHONE+" = ? ";
 
     public Connection conn;
     public PreparedStatement insertUser;
@@ -52,6 +66,7 @@ public class UserTable {
     public PreparedStatement updateLatitde;
     public PreparedStatement updateLongitude;
     public PreparedStatement queryAddress;
+    public PreparedStatement queryPoBox;
     public PreparedStatement queryPasswordVerfication;
     public PreparedStatement queryLatLong;
     public PreparedStatement selectFullNameWithThisPhoneNumber;
@@ -129,7 +144,7 @@ public class UserTable {
         }
     }
 
-    private boolean updateCity(String aadharNumber, String newCity) {
+    public boolean updateCity(String aadharNumber, String newCity) {
         try {
             conn=Server.getConnection();
             updateCity=conn.prepareStatement(UPDATE_CITY);
@@ -209,7 +224,7 @@ public class UserTable {
         }
     }
 
-    private boolean updateProfilePic(String aadharNumber, String local) {
+    public boolean updateProfilePic(String aadharNumber, String local) {
         try {
             conn=Server.getConnection();
             updateProfilePic=conn.prepareStatement(UPDATE_PROFILE_PIC);
@@ -236,7 +251,7 @@ public class UserTable {
         }
     }
 
-    private boolean updateLatitude(String aadharNumber, double newLatitude) {
+    public boolean updateLatitude(String aadharNumber, double newLatitude) {
         try {
             conn=Server.getConnection();
             updateLatitde=conn.prepareStatement(UPDATE_LATITUDE);
@@ -261,7 +276,7 @@ public class UserTable {
             }
         }
     }
-    private boolean updateLongitude(String aadharNumber, double newLongitude) {
+    public boolean updateLongitude(String aadharNumber, double newLongitude) {
         try {
             conn=Server.getConnection();
             updateLongitude=conn.prepareStatement(UPDATE_LONGITUDE);
@@ -407,5 +422,70 @@ public class UserTable {
             }
         }
         return null;
+    }
+
+    public String getPassword(String phoneNumber) {
+        try {
+            conn = Server.getConnection();
+            queryPasswordVerfication = conn.prepareStatement(QUERY_PASSWORD_VERIFICATION);
+            queryPasswordVerfication.setString(1,phoneNumber);
+            ResultSet results = queryPasswordVerfication.executeQuery();
+            while(results.next()) {
+                return results.getString(1);
+            }
+            return null;
+        } catch(SQLException e) {
+            System.out.println("Error in querying for Password: "+e.getMessage());
+        } finally {
+            try {
+                queryPasswordVerfication.close();
+            } catch (SQLException e1) {
+                System.out.println("Error in closing queryPasswordVerification.");
+            }
+        }
+        return null;
+    }
+
+    public boolean updatePassword(String phoneNumber,String password) {
+        try {
+            conn = Server.getConnection();
+            updatePassword = conn.prepareStatement(UPDATE_PASSWORD);
+            updatePassword.setString(1,password);
+            updatePassword.setString(2,phoneNumber);
+            updatePassword.executeUpdate();
+            return true;
+        } catch(SQLException e) {
+            System.out.println("Error in updating Password: "+e.getMessage());
+            return false;
+        } finally {
+            try {
+                updatePassword.close();
+            } catch (SQLException e1) {
+                System.out.println("Error in closing updatePassword.");
+            }
+        }
+    }
+
+    public String getPoBox(String phoneNumber)  {
+        try {
+            conn = Server.getConnection();
+            queryPoBox = conn.prepareStatement(QUERY_POBOX);
+            queryPoBox.setString(1,phoneNumber);
+            ResultSet results = queryPoBox.executeQuery();
+            while (results.next()) {
+                return results.getString(1);
+            }
+            return null;
+        } catch (SQLException throwables) {
+            System.out.println("Error in querying Email");
+            throwables.printStackTrace();
+            return null;
+        } finally {
+            try {
+                queryPoBox.close();
+            } catch (SQLException e) {
+                System.out.println("Error in closing email prepared statement");
+            }
+        }
     }
 }
