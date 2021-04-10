@@ -46,6 +46,7 @@
                            <children>
                            <Button fx:id="buyButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#buyButtonResponse" text="Place Order" />
                               <Button fx:id="hiButton" alignment="CENTER" mnemonicParsing="false" onAction="#hiButtonAction" text="Say Hi to the Seller" />
+                              <Button fx:id="distanceButton" mnemonicParsing="false" onAction="#distanceButtonResponse" text="Get distance" />
                            </children>
                         </HBox>
                   </children>
