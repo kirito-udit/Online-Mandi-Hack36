@@ -55,10 +55,7 @@ public class AddOfferController {
         java.sql.Date endDateValue = Date.valueOf(endDatePicker.getValue());
         int quantity = (int) quantitySpinner.getValue();
         int price = Integer.parseInt(priceTextField.getText());
-        SellerTable.getInstance().close();
-        SellerTable.getInstance().open();
         System.out.println(SellerTable.getInstance().addOffer(cropName,quantity,price,startDateValue,endDateValue,name,phoneNo));
-        SellerTable.getInstance().close();
     }
 
 }
