@@ -2,10 +2,15 @@
 Online Mandi: A desktop application which helps trade of crops between two parties to ease the trade for farmers and contribute to E-Administration 
 
 
+![WhatsApp Image 2021-04-10 at 23 44 18](https://user-images.githubusercontent.com/66271037/114282223-39ab5600-9a60-11eb-8f76-318a44844a42.jpeg)
+
+
 After the introduction of new farm reforms in September 2020, we introduce this app as a suggestion to the
 Government which helps in E administration of the crop market.It also helps the farmers use the new reforms in
 the most profitable way, as they can have a platform to braodcast their products all over the country, can involve in 
 contract farming etc.
+
+
 
 Installation Details :
 
