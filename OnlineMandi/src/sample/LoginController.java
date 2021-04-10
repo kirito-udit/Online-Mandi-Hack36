@@ -1,115 +1,203 @@
 package sample;
 
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseEvent;
 
-import javax.swing.*;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.math.BigInteger;
-import java.net.Socket;
 import java.net.URL;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
-public class LoginController implements Initializable {
-    @FXML
-    private BorderPane loginPane;
+public class ChatsController implements Initializable, Runnable{
 
-    @FXML
-    private Button signIn;
+    private String name,phoneNo;
+    private ArrayList<Conversation> convoList;
+    public ObservableList<Conversation> observableConvoList;
 
-    @FXML
-    private TextField phoneNumber;
-
-    @FXML
-    private PasswordField password;
-
-    @FXML
-    void signIn(ActionEvent e) throws IOException, ClassNotFoundException {
-        String pass = getMd5(password.getText());
-        String phoneNo = phoneNumber.getText();
-        //ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
-        //ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
-        Main.oos.writeObject(phoneNo);
-        Main.oos.writeObject(pass);
-        String check=Main.ois.readObject().toString();
-        if(check.equals("Authentication Failed")){
-            JOptionPane.showMessageDialog(null,"Incorrect credentials");
-        }else{
-
-
-        //creating an instance of UserTable class, if it already present then the same instance will be returned
-            FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass, phoneNo);
-
-            //if authentication is successful then fetch the profile pic and name of the user
-            Image image = fullNameProfilePic.getImage();
-            String name = fullNameProfilePic.getFullName();
-
-            //Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
-            Parent root = (Parent) loader.load();
-            ProfilePageController ppc = loader.getController();
-            ppc.createProfile(phoneNo, image, name);
-            Scene scene = new Scene(root, 900, 620);
-            Main.primaryStage.setTitle("My Profile");
-            Main.primaryStage.setScene(scene);
-            Main.primaryStage.show();
-        }
+    public ArrayList<Conversation> getConvoList() {
+        return convoList;
     }
 
+    public void setConvoList(ArrayList<Conversation> convoList) {
+        this.convoList = convoList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getPhoneNo() {
+        return phoneNo;
+    }
+
+    public void setPhoneNo(String phoneNo) {
+        this.phoneNo = phoneNo;
+    }
+    @FXML
+    private TextField sendTextField;
+    @FXML
+    private TableView conversationTableView;
+    @FXML
+    private TextArea conversationTextArea;
+    @FXML
+    private Button sendButton;
+    @FXML
+    private TableColumn phoneNoTableColumn;
+    @FXML
+    private TableColumn nameTableColumn;
+    @FXML
+    private TextField searchTextField;
+    private FilteredList<Conversation> filteredData;
+    private SortedList<Conversation> sortedData;
+    private ChatsController cpc;
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
-//        try {
-//            socket = new Socket("localhost", 6963);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-        Image image = new Image("file:./src/sample/Resources/farmLogin.jpg");
-        BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
-        Background background = new Background(new BackgroundImage(image,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundRepeat.NO_REPEAT,
-                BackgroundPosition.CENTER,
-                bSize));
-        loginPane.setBackground(background);
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+    }
+    //    public ChatsController(ChatsController cpc){
+//        this.cpc = cpc;
+//    }
+    public void first(String name, String phoneNo, ChatsController cpc) throws InterruptedException {
+        this.name = name;
+        this.phoneNo = phoneNo;
+        this.cpc = cpc;
+        System.out.println(name);
+        System.out.println(phoneNo);
+        phoneNoTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Conversation,String>("client")
+        );
+        nameTableColumn.setCellValueFactory(
+                new PropertyValueFactory<Conversation,String>("nameOfClient")
+        );
+        ArrayList<Conversation> list = MessageManager.getInstance().getAllConversations(phoneNo,name);
+
+        observableConvoList= FXCollections.observableList(list);
+        conversationTableView.setItems(observableConvoList);
+        conversationTableView.getSelectionModel().select(0);
+        setConvoTextArea();
+
+        conversationTextArea.textProperty().addListener((observableValue, s, t1) -> conversationTextArea.setScrollTop(Double.MAX_VALUE));
+        filteredData = new FilteredList<>(observableConvoList, b -> true);
+
+        // 2. Set the filter Predicate whenever the filter changes.
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(convo -> {
+                // If filter text is empty, display all persons.
+
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+
+                // Compare first name and last name of every person with filter text.
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (convo.getNameOfClient().toLowerCase().indexOf(lowerCaseFilter) != -1 ) {
+                    return true; // Filter matches first name.
+                } else if (convo.getClient().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    return true; // Filter matches last name.
+                }
+                else
+                    return false; // Does not match.
+            });
+        });
+
+        // 3. Wrap the FilteredList in a SortedList.
+        sortedData = new SortedList<>(filteredData);
+
+        // 4. Bind the SortedList comparator to the TableView comparator.
+        // 	  Otherwise, sorting the TableView would have no effect.
+        sortedData.comparatorProperty().bind(conversationTableView.comparatorProperty());
+
+        // 5. Add sorted (and filtered) data to the table.
+        conversationTableView.setItems(sortedData);
+        //now the thread for receiving messages will start separately
+        Thread t = new Thread(cpc);
+        t.start();
+
+    }
+    @Override
+    public  void run() {
+        while(true) {
+            try {
+
+                //if the current selected item's phone No is same as the phone No if the incoming message
+                //we simply display it on the text area
+                //otherwise we will send a message to the the sender that his message has not been seen yet
+                //and highlight that msg
+                String senderPhoneNo = (String) Main.ois.readObject();
+                Timestamp timestamp = (Timestamp) Main.ois.readObject();
+                String message = (String) Main.ois.readObject();
+                System.out.println(message);
+                UserTable userTable = UserTable.getInstance();
+                String senderName = userTable.getFullName(senderPhoneNo);
+                Conversation convo = (Conversation) this.conversationTableView.getSelectionModel().getSelectedItem();
+
+                if (convo.getClient().equals(senderPhoneNo)) {
+                    this.conversationTextArea.setText(this.conversationTextArea.getText() +"\n"+ senderName + "\n" + timestamp + "\n" + message);
+                    this.conversationTextArea.appendText("");
+                }
+                updateTable();
+            }catch(Exception e){
+                e.printStackTrace();
+                return;
+            }
+        }
     }
 
-    public static String getMd5(String input) {
-        try {
+    public void updateTable(){
+        int index = conversationTableView.getSelectionModel().getSelectedIndex();
+        ArrayList<Conversation> list = MessageManager.getInstance().getAllConversations(this.phoneNo,this.name);
+        this.observableConvoList= FXCollections.observableList(list);
+        filteredData = new FilteredList<>(observableConvoList, b -> true);
+        sortedData = new SortedList<>(filteredData);
+        sortedData.comparatorProperty().bind(conversationTableView.comparatorProperty());
+        conversationTableView.setItems(sortedData);
+        this.conversationTableView.getSelectionModel().select(index);
+    }
 
-            // Static getInstance method is called with hashing MD5
-            MessageDigest md = MessageDigest.getInstance("MD5");
+    @FXML
+    public void clickItem(MouseEvent event) {
+        updateTable();
+        setConvoTextArea();
+    }
 
-            // digest() method is called to calculate message digest
-            //  of an input digest() return array of byte
-            byte[] messageDigest = md.digest(input.getBytes());
-
-            // Convert byte array into signum representation
-            BigInteger no = new BigInteger(1, messageDigest);
-
-            // Convert message digest into hex value
-            String hashtext = no.toString(16);
-            while (hashtext.length() < 32) {
-                hashtext = "0" + hashtext;
-            }
-            return hashtext;
-        }
-
-        // For specifying wrong message digest algorithms
-        catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException(e);
-        }
+    public void setConvoTextArea() {
+        Conversation convo = (Conversation)this.conversationTableView.getSelectionModel().getSelectedItem();
+        this.conversationTextArea.setText(convo.getConvo());
+        this.conversationTextArea.appendText("");
+    }
+    @FXML
+    public void sendButtonResponse(ActionEvent e) throws IOException {
+        Conversation convo = (Conversation) conversationTableView.getSelectionModel().getSelectedItem();
+        Main.oos.writeObject(convo.getClient());
+        Main.oos.writeObject(new Timestamp(System.currentTimeMillis()));
+        Main.oos.writeObject(sendTextField.getText());
+        conversationTextArea.setText(conversationTextArea.getText()+
+                "\n"+name+"\n"+new Timestamp(System.currentTimeMillis())+
+                "\n"+sendTextField.getText());
+        conversationTextArea.appendText("");
+        Main.oos.flush();
+        sendTextField.setText("");
     }
 }
