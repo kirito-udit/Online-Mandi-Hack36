@@ -4,20 +4,18 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import javax.swing.*;
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.MessageDigest;
@@ -61,7 +59,20 @@ public class SignUpController implements Initializable {
 
     @FXML
     private TextField poBoxNumber;
+    @FXML
+    private TextField latitudeTextField;
 
+    @FXML
+    private TextField longitudeTextField;
+
+    @FXML
+    private Button selectLocationButton;
+
+    @FXML
+    private TextField otpTextField;
+
+    @FXML
+    private Button otpButton;
     File selectedFile;
 
     // JOptionPane.showMessageDialog(null,"Message!!!");
@@ -106,6 +117,14 @@ public class SignUpController implements Initializable {
         return pin;
     }
 
+    public double getLatitude(){
+        return Double.parseDouble(latitudeTextField.getText());
+    }
+
+    public double getLongitude(){
+       return Double.parseDouble(longitudeTextField.getText());
+    }
+
     @FXML
     void upload(ActionEvent e) {
         FileChooser fc = new FileChooser();
@@ -116,12 +135,21 @@ public class SignUpController implements Initializable {
         selectedFile = fc.showOpenDialog(null);
 
     }
-
+    String originalOtp;
+    //method to recieve OTP message
+    @FXML
+    public void getOTP(){
+        String phoneNo = getPhone();
+        originalOtp = SendSMS.OTP();
+        System.out.println("OTP: "+originalOtp);
+//        SendSMS.sendSms(originalOtp,phoneNo);
+    }
     //this function is to be registered with the submit button in scene builder
     @FXML
     void submitResponse(ActionEvent e) throws Exception{
 
         //opens profilePage.fxml on successful register
+        //Fetching all information from
         String name = getName();
         String phoneNo = getPhone();
         String password = getPassword();
@@ -129,28 +157,78 @@ public class SignUpController implements Initializable {
         String aadhar = getAdhar();
         java.sql.Date dob = getDob();
         String poBoxNumber = getPIN();
+        double latitude = getLatitude();
+        double longitude = getLongitude();
+        //now sending an OTP to the user for verification
+        //this OTP will be entered by the user in the OTP field
 
-        //fetching the path of the image selectd from fileChooser
-        //but before that check if file size exceeds  307200 bytes, if so then error is to be shown
-        String local = null;
-//        if(selectedFile.length() > 307200)
-//             JOptionPane.showMessageDialog(null,"File size exceeds 300KB!!!");
-//        else
-//        local = selectedFile.toURI().toString();
-
-        //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
-        FileInputStream fis = new FileInputStream(selectedFile);
-        Main.userTable.insertUser(name,phoneNo,password,city,fis,aadhar,dob,poBoxNumber);
-
-        //open a new Scene for Login Page
-        Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
-        Scene scene = new Scene(root, 580, 790);
-        Main.primaryStage.setTitle("Login");
-        Main.primaryStage.setScene(scene);
-        Main.primaryStage.show();
-
+        String otp = otpTextField.getText();
+//        ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
+//        ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
+//        //writing the actual and the entered OTP to the server
+//        oos.writeObject(originalOtp);
+//        oos.writeObject(otp);
+//
+//        //getting the verification response from the server, if otps don't match, user will be prompted
+//        String verification = (String) ois.readObject();
+        if(originalOtp.equals(otp)) {
+            //creating the object of singleton class UserTable to avoid creating multiple objects for the same user table entity
+            FileInputStream fis = new FileInputStream(selectedFile);
+            Main.userTable.insertUser(name, phoneNo, password, city, fis, aadhar, dob, poBoxNumber, latitude, longitude);
 
 
+            //open a new Scene for Login Page
+            Parent root = FXMLLoader.load(getClass().getResource("LoginForm.fxml"));
+            Scene scene = new Scene(root, 580, 790);
+            Main.primaryStage.setTitle("Login");
+            Main.primaryStage.setScene(scene);
+            Main.primaryStage.show();
+        }
+        else{
+            JOptionPane.showMessageDialog(null,"OTPs don't match!!");
+        }
+    }
+
+    @FXML
+    public void selectButtonResponse(ActionEvent e){
+        Label locationAccessLabel = new Label("Allow location access to automatically get coordinates: ");
+        Button accessGrantedButton = new Button("Allow access");
+        Label openMapLabel = new Label("Open Map and manually enter coordinates: ");
+        Button openMapButton = new Button("Open Button");
+
+        VBox vBox = new VBox();
+        vBox.getChildren().addAll(locationAccessLabel,accessGrantedButton,openMapLabel,openMapButton);
+        vBox.setPrefHeight(300);
+        vBox.setPrefWidth(300);
+        vBox.setSpacing(5);
+        vBox.setAlignment(Pos.CENTER);
+
+        Stage createStage = new Stage();
+        AnchorPane root = new AnchorPane();
+        root.getChildren().add(vBox);
+
+        Scene canvasScene = new Scene(root);
+        createStage.setTitle("Create Rectangle");
+        createStage.setScene(canvasScene);
+        createStage.show();
+
+        openMapButton.setOnAction(actionEvent1 -> {
+            WebBrowser.main(null);
+            createStage.close();
+        });
+        accessGrantedButton.setOnAction(actionEvent1 -> {
+            Address address = null;
+            try {
+                address = GetLocationFromIP.getAddress();
+                poBoxNumber.setText(""+address.getPoBox());
+                latitudeTextField.setText(""+address.getLatitude());
+                longitudeTextField.setText(""+address.getLongitude());
+            }
+            catch (IOException ioException) {
+                ioException.printStackTrace();
+            }
+            createStage.close();
+        });
     }
 
     @Override
@@ -205,4 +283,5 @@ public class SignUpController implements Initializable {
         }
         return sqlDate;
     }
+
 }
