@@ -20,7 +20,7 @@ public class SendSMS {
         System.out.println(message);
         try {
 
-            String apiKey="p5jxmVU4XP3zagYOFRhqACLTEkMtwrcWG9IivKNJln81bsQDeyiSufGBcJzX65Ml2FrE3hHxmKwWkCnq";
+            String apiKey="#";
             String sendId="TXTIND";
             //important step...
             message=URLEncoder.encode(message, "UTF-8");
