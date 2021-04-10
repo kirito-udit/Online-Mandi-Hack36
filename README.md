@@ -113,11 +113,11 @@ Features yet to be implemented :
 2. Voice and Video Calling with EnableX
 3. AIML Chatbot
 
-<br>
+
 Working Screenshots<br>
-![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/dLHVT55/ind2ex.jpg)
-![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/T2XPw4c/index4.jpg)
-![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/cNz4syT/index3.jpg)
-![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/H2G92Pz/index5.jpg)
-![WhatsApp Image 2021-04-10 at 23 44 18](https://i.ibb.co/Jz8ZsBY/index.jpg)
+![](https://i.ibb.co/dLHVT55/ind2ex.jpg)
+![](https://i.ibb.co/T2XPw4c/index4.jpg)
+![](https://i.ibb.co/cNz4syT/index3.jpg)
+![](https://i.ibb.co/H2G92Pz/index5.jpg)
+![](https://i.ibb.co/Jz8ZsBY/index.jpg)
 
