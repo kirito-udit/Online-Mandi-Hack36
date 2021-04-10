@@ -2,6 +2,8 @@ package sample;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
@@ -23,8 +25,10 @@ import javax.swing.*;
 import java.net.URL;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class BuyPageController implements Initializable {
@@ -44,6 +48,10 @@ public class BuyPageController implements Initializable {
     private Button buyButton;
     @FXML
     private ComboBox cropComboBox;
+    @FXML
+    private ComboBox sortByComboBox;
+    @FXML
+    private ComboBox filterByComboBox;
 
     ObservableList<Offer> data;
     private String phoneNo;
@@ -52,6 +60,47 @@ public class BuyPageController implements Initializable {
     private ObservableList<String> originalItems;
     public Trie t;
     private String pref = "";
+    private int minPrice = 0;
+    private int maxPrice = 1000000000;
+    private SortedList <Offer> offerSortedList;
+    private Comparator <Offer> globalComparator;
+    private FilteredList <Offer> filteredList;
+    private Comparator<Offer> sortByPriceComparator = new Comparator<Offer>() {
+        @Override
+        public int compare(Offer o1, Offer o2) {
+            return (o1.getPrice()<o2.getPrice())?0:1;
+        }
+    };
+
+    private Comparator<Offer> sortByFinishDateComparator = new Comparator<Offer>() {
+        @Override
+        public int compare(Offer o1, Offer o2) {
+            return (o1.getEndDate().compareTo(o2.getEndDate()));
+        }
+    };
+
+    private Comparator<Offer> sortByStartDateComparator = new Comparator<Offer>() {
+        @Override
+        public int compare(Offer o1, Offer o2) {
+            return (o1.getStartDate().compareTo(o2.getStartDate()));
+        }
+    };
+
+    private Predicate<Offer> allOffersPredicate = new Predicate<Offer>() {
+        @Override
+        public boolean test(Offer offer) {
+            return true;
+        }
+    };
+
+    private Predicate<Offer> priceRangePredicate = new Predicate<Offer>() {
+        @Override
+        public boolean test(Offer offer) {
+            if(offer.getPrice()>=minPrice && offer.getPrice()<=maxPrice)
+                return true;
+            return false;
+        }
+    };
 
     public String getPhoneNo() {
         return phoneNo;
@@ -71,6 +120,19 @@ public class BuyPageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        //Filling filter by combobox
+        ArrayList <String> filterByArrayList = new ArrayList<>();
+        filterByArrayList.add("Price Range");
+        filterByComboBox.setItems(FXCollections.observableArrayList(filterByArrayList));
+
+        //Filling sort by combobox
+        ArrayList <String> sortByArrayList = new ArrayList<>();
+        sortByArrayList.add("Price");
+        sortByArrayList.add("End date");
+        sortByArrayList.add("Start date");
+        sortByComboBox.setItems(FXCollections.observableArrayList(sortByArrayList));
+
+        //
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
         final String[] crops = {"Wheat", "Rice","Barley","Jowar","Maize","Soybean","ChickPeas","Beans"
                 ,"Sugarcane","Potatoes","Tomatoes","Coconut","Coffee","Tea",
@@ -84,6 +146,7 @@ public class BuyPageController implements Initializable {
         cropComboBox.setItems(FXCollections.observableArrayList(crops));
         //originalItems = FXCollections.observableArrayList(cropComboBox.getItems());
         //new ComboBoxAutoComplete<String>(cropComboBox);
+
         cropNameTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("cropName")
         );
@@ -93,10 +156,8 @@ public class BuyPageController implements Initializable {
         quantityTableColumn.setCellValueFactory(
                 new PropertyValueFactory<Offer,Integer>("quantity")
         );
-
-        cropTableView.setItems(data);
-        cropTableView.getSelectionModel().select(0);
-        setDescriptionTextArea();
+        globalComparator = sortByPriceComparator;
+        refresh();
     }
     @FXML
     public void clickItem(MouseEvent event) {
@@ -120,15 +181,21 @@ public class BuyPageController implements Initializable {
 
     @FXML
     public void refresh(ActionEvent e) {
+
+        refresh();
+    }
+
+    @FXML
+    public void refresh() {
         data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
-        cropTableView.setItems(data);
+        offerSortedList = new SortedList<Offer>(data,globalComparator);
+        cropTableView.setItems(offerSortedList);
         cropTableView.getSelectionModel().select(0);
         setDescriptionTextArea();
     }
+
     @FXML
     public void hiButtonAction(ActionEvent e) {
-        MessageManager.getInstance().close();
-        MessageManager.getInstance().open();
         Offer offer = (Offer) cropTableView.getSelectionModel().getSelectedItem();
         String name = UserTable.getInstance().getFullName(offer.getSellerPhone());
         MessageManager.getInstance().addConversation(this.phoneNo,offer.getSellerPhone(),"Hi!",new Timestamp(System.currentTimeMillis()),0);
@@ -178,4 +245,66 @@ public class BuyPageController implements Initializable {
         List<String> cropList = t.autocomplete(pref);
         cropComboBox.setItems(FXCollections.observableArrayList(t.autocomplete(pref)));
     }
+    @FXML
+    public void sortResponse(ActionEvent e) {
+        if(((String)sortByComboBox.getSelectionModel().getSelectedItem()).equals("Price")) {
+                globalComparator = sortByPriceComparator;
+        }
+        else if(((String)sortByComboBox.getSelectionModel().getSelectedItem()).equals("End date")) {
+            globalComparator = sortByFinishDateComparator;
+        }
+        else if(((String)sortByComboBox.getSelectionModel().getSelectedItem()).equals("Start date")) {
+            globalComparator = sortByStartDateComparator;
+        }
+        refresh();
+    }
+    @FXML
+    private void filterResponse(ActionEvent e) {
+        if(((String)filterByComboBox.getSelectionModel().getSelectedItem()).equals("Price Range")) {
+            globalComparator = sortByPriceComparator;
+            Spinner spinner = new Spinner();
+            spinner.setEditable(true);
+            spinner.setPromptText("Minimum price:");
+            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000000000, 1);
+            spinner.setValueFactory(valueFactory);
+
+            Spinner spinner2 = new Spinner();
+            spinner2.setEditable(true);
+            spinner2.setPromptText("Maximum price:");
+            SpinnerValueFactory<Integer> valueFactory2 = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000000000, 1);
+            spinner2.setValueFactory(valueFactory2);
+
+            Button createButton = new Button();
+            createButton.setText("Confirm order");
+
+            VBox vBox = new VBox();
+            vBox.getChildren().addAll(spinner,spinner2,createButton);
+            vBox.setPrefHeight(200);
+            vBox.setPrefWidth(200);
+            vBox.setSpacing(5);
+            vBox.setAlignment(Pos.CENTER);
+
+            Stage createStage = new Stage();
+            AnchorPane root = new AnchorPane();
+            root.getChildren().add(vBox);
+
+            Scene canvasScene = new Scene(root);
+            createStage.setTitle("Select Range");
+            createStage.setScene(canvasScene);
+            createStage.show();
+
+            createButton.setOnAction(actionEvent1 -> {
+                minPrice = (Integer) spinner.getValue();
+                maxPrice = (Integer) spinner2.getValue();
+                data = FXCollections.observableList(SellerTable.getInstance().getAllOffers());
+                offerSortedList = new SortedList<Offer>(data,globalComparator);
+                filteredList = new FilteredList<>(offerSortedList,priceRangePredicate);
+                cropTableView.setItems(filteredList);
+                cropTableView.getSelectionModel().select(0);
+                setDescriptionTextArea();
+                createStage.close();
+            });
+        }
+    }
+
 }
