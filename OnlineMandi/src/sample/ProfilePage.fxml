@@ -34,7 +34,7 @@
                   </Label>
                </children>
             </VBox>
-            <Button fx:id="chatButton" mnemonicParsing="false" onAction="#chatButtonResponse" text="View Chats" />
+            <Button fx:id="chatButton" onAction="#chatButtonResponse" mnemonicParsing="false" text="View Chats" />
          </children>
          <opaqueInsets>
             <Insets />
