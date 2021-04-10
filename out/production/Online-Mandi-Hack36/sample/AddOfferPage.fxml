@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -81,4 +82,11 @@
          </font>
       </Label>
    </top>
+   <bottom>
+      <Button fx:id="backToProfileButton" mnemonicParsing="false" onAction="#backToProfileButtonResponse" text="Back to Profile" BorderPane.alignment="CENTER">
+         <BorderPane.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </BorderPane.margin>
+      </Button>
+   </bottom>
 </BorderPane>
