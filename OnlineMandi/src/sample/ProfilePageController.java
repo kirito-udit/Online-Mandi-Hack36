@@ -11,9 +11,11 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import sample.*;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 public class ProfilePageController implements Initializable {
@@ -34,6 +36,9 @@ public class ProfilePageController implements Initializable {
 
     @FXML
     private Button sellSectionButton;
+
+    @FXML
+    private Button chatButton;
     private Image img;
 
     private String phoneNo;
@@ -51,7 +56,7 @@ public class ProfilePageController implements Initializable {
     void buyButtonResponse(ActionEvent e) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("BuyPage.fxml"));
         Parent root = (Parent) loader.load();
-        BuyPageController  bpc = loader.getController();
+        BuyPageController bpc = loader.getController();
         bpc.setName(name);
         bpc.setPhoneNo(phoneNo);
         Scene scene = new Scene(root, 800, 700);
@@ -62,9 +67,9 @@ public class ProfilePageController implements Initializable {
 
     @FXML
     void sellButtonResponse(ActionEvent e) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("SellPage.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../SellPage.fxml"));
         Parent root = (Parent) loader.load();
-        SellPageController  spc = loader.getController();
+        SellPageController spc = loader.getController();
         spc.setName(name);
         spc.setPhoneNo(phoneNo);
         Scene scene = new Scene(root, 580, 790);
@@ -72,6 +77,19 @@ public class ProfilePageController implements Initializable {
         Main.primaryStage.setScene(scene);
         Main.primaryStage.show();
 
+    }
+    @FXML
+    void chatButtonResponse(ActionEvent e) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Chats.fxml"));
+        Parent root = (Parent) loader.load();
+        ChatsController cpc = loader.getController();
+        cpc.setName(name);
+        cpc.setPhoneNo(phoneNo);
+        cpc.first();
+        Scene scene = new Scene(root, 580, 790);
+        Main.primaryStage.setTitle("Chat Page");
+        Main.primaryStage.setScene(scene);
+        Main.primaryStage.show();
     }
     @Override
     public void initialize(URL location, ResourceBundle resources) {
