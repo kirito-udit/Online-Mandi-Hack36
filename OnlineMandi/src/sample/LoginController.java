@@ -40,15 +40,17 @@ public class LoginController implements Initializable {
     void signIn(ActionEvent e) throws IOException, ClassNotFoundException {
         String pass = getMd5(password.getText());
         String phoneNo = phoneNumber.getText();
-        ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
-        ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
-        oos.writeObject(phoneNo);
-        oos.writeObject(pass);
-        phoneNo = ois.readObject().toString();
+        //ObjectOutputStream oos = new ObjectOutputStream(Main.socket.getOutputStream());
+        //ObjectInputStream ois = new ObjectInputStream(Main.socket.getInputStream());
+        Main.oos.writeObject(phoneNo);
+        Main.oos.writeObject(pass);
+        String check=Main.ois.readObject().toString();
+        if(check.equals("Authentication Failed")){
+            JOptionPane.showMessageDialog(null,"Incorrect credentials");
+        }else{
 
 
         //creating an instance of UserTable class, if it already present then the same instance will be returned
-        if (phoneNo != null) {
             FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass, phoneNo);
 
             //if authentication is successful then fetch the profile pic and name of the user
@@ -64,8 +66,6 @@ public class LoginController implements Initializable {
             Main.primaryStage.setTitle("My Profile");
             Main.primaryStage.setScene(scene);
             Main.primaryStage.show();
-        } else {
-            JOptionPane.showMessageDialog(null, "Invalid Phone Number or password!!!");
         }
     }
 
