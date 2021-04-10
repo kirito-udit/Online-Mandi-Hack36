@@ -9,7 +9,11 @@ Teammates:<br>
 <a href="https://github.com/kirito-udit">UDIT KOTECHA</a><br>
 <a href="https://github.com/kartikeyasri23">KARTIKEY SRIVASTAVA</a><br>
 <a href="https://github.com/mrdinosaurabh">SAURABH SINGH</a><br>
-<a href="https://github.com/shubhamdixit760">SHUBHAM DIXIT</a><br><br
+<a href="https://github.com/shubhamdixit760">SHUBHAM DIXIT</a><br><br>
+Public Links<br>
+Video Presentation: https://youtu.be/EDNZ7KvfUxo<br>
+
+
 After the introduction of new farm reforms in September 2020, we introduce this app as a suggestion to the
 Government which helps in E administration of the crop market.It also helps the farmers use the new reforms in
 the most profitable way, as they can have a platform to braodcast their products all over the country, can involve in 
