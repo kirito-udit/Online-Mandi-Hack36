@@ -1,9 +1,12 @@
 package sample;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -39,6 +42,8 @@ public class TransactionsPageController extends Initializable {
 
     private String phoneNo;
     private String name;
+    ObservableList<Transaction> sellingTransactions;
+    ObservableList<Transaction> buyingTransactions;
 
     public void setPhoneNo(String phoneNo) {
         this.phoneNo = phoneNo;
@@ -56,16 +61,50 @@ public class TransactionsPageController extends Initializable {
         this.name = name;
     }
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
     }
 
     public void first() {
-        ArrayList <Transaction> sellingTransactions = Transactions.getInstance().getSellingTransactions(phoneNo);
-        ArrayList <Transaction> buyingTransactions = Transactions.getInstance().getBuyingTransactions(phoneNo);
-
+        sellingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getSellingTransactions(phoneNo));
+        buyingTransactions = FXCollections.observableArrayList(Transactions.getInstance().getBuyingTransactions(phoneNo));
+        sTID.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("transactionID")
+        );
+        sBuyerPhone.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("buyerPhone")
+        );
+        sBuyerName.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("buyerName")
+        );
+        sPrice.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("price")
+        );
+        sTimestamp.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("timestamp")
+        );
+        sCropName.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("cropName")
+        );
+        sTID.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("transactionID")
+        );
+        sBuyerPhone.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("buyerPhone")
+        );
+        sBuyerName.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("buyerName")
+        );
+        sPrice.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("price")
+        );
+        sTimestamp.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("timestamp")
+        );
+        sCropName.setCellValueFactory(
+                new PropertyValueFactory<Transaction,Integer>("cropName")
+        );
     }
 
 }
