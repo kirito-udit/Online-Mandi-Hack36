@@ -1,4 +1,5 @@
 package sample;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,51 +11,76 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+
 import javax.swing.*;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.math.BigInteger;
+import java.net.Socket;
 import java.net.URL;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ResourceBundle;
+
 public class LoginController implements Initializable {
     @FXML
     private BorderPane loginPane;
+
     @FXML
     private Button signIn;
+
     @FXML
     private TextField phoneNumber;
+
     @FXML
     private PasswordField password;
+    public static Socket socket;
+
     @FXML
-    void signIn(ActionEvent e) throws IOException {
+    void signIn(ActionEvent e) throws IOException, ClassNotFoundException {
         String pass = getMd5(password.getText());
-        System.out.println(pass);
         String phoneNo = phoneNumber.getText();
+        ObjectOutputStream oos = new ObjectOutputStream(socket.getOutputStream());
+        ObjectInputStream ois = new ObjectInputStream(socket.getInputStream());
+        oos.writeObject(phoneNo);
+        oos.writeObject(pass);
+        phoneNo = ois.readObject().toString();
+
+
         //creating an instance of UserTable class, if it already present then the same instance will be returned
-        FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass,phoneNo);
-        if(fullNameProfilePic!=null){
+        if (phoneNo != null) {
+            UserTable.getInstance().close();
+            UserTable.getInstance().open();
+            FullNameProfilePic fullNameProfilePic = Main.userTable.authentication(pass, phoneNo);
+            UserTable.getInstance().close();
+
             //if authentication is successful then fetch the profile pic and name of the user
             Image image = fullNameProfilePic.getImage();
             String name = fullNameProfilePic.getFullName();
+
             //Parent root = FXMLLoader.load(getClass().getResource("ProfilePage.fxml"));
             FXMLLoader loader = new FXMLLoader(getClass().getResource("ProfilePage.fxml"));
             Parent root = (Parent) loader.load();
             ProfilePageController ppc = loader.getController();
-            ppc.createProfile(phoneNo,image, name);
-            Scene scene = new Scene(root, 580, 790);
+            ppc.createProfile(phoneNo, image, name);
+            Scene scene = new Scene(root, 900, 620);
             Main.primaryStage.setTitle("My Profile");
             Main.primaryStage.setScene(scene);
             Main.primaryStage.show();
-        }
-        else{
-            JOptionPane.showMessageDialog(null,"Invalid Phone Number or password!!!");
+        } else {
+            JOptionPane.showMessageDialog(null, "Invalid Phone Number or password!!!");
         }
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        Image image = new Image("file:///C:/Users/hp/Desktop/farmLogin.jpg");
+        try {
+            socket = new Socket("localhost", 6963);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        Image image = new Image("file:./src/sample/Resources/farmLogin.jpg");
         BackgroundSize bSize = new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, false);
         Background background = new Background(new BackgroundImage(image,
                 BackgroundRepeat.NO_REPEAT,
@@ -63,15 +89,20 @@ public class LoginController implements Initializable {
                 bSize));
         loginPane.setBackground(background);
     }
+
     public static String getMd5(String input) {
         try {
+
             // Static getInstance method is called with hashing MD5
             MessageDigest md = MessageDigest.getInstance("MD5");
+
             // digest() method is called to calculate message digest
             //  of an input digest() return array of byte
             byte[] messageDigest = md.digest(input.getBytes());
+
             // Convert byte array into signum representation
             BigInteger no = new BigInteger(1, messageDigest);
+
             // Convert message digest into hex value
             String hashtext = no.toString(16);
             while (hashtext.length() < 32) {
@@ -79,6 +110,7 @@ public class LoginController implements Initializable {
             }
             return hashtext;
         }
+
         // For specifying wrong message digest algorithms
         catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
