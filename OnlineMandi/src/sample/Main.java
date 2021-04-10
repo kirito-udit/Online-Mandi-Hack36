@@ -1,30 +1,25 @@
 package sample;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.Socket;
+
 public class Main extends Application {
     public static Stage primaryStage;
     public static UserTable userTable;
-    public static Socket socket;
-
-    static {
-        try {
-            socket = new Socket("localhost",6963);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void start(Stage primary) throws Exception{
         userTable = UserTable.getInstance();
-        userTable.open();
-        Server.conn=UserTable.getInstance().conn;
-        SellerTable.getInstance().open();
+//        userTable.open();
+//        Server.conn=UserTable.getInstance().conn;
+//        SellerTable.getInstance().open();
+
         //Start Page
         Parent root = FXMLLoader.load(getClass().getResource("Start.fxml"));
         primaryStage = primary;
@@ -33,7 +28,6 @@ public class Main extends Application {
         primaryStage.show();
     }
     public static void main(String[] args) throws IOException {
-        socket = new Socket("localhost",6963);
         launch(args);
     }
 }
