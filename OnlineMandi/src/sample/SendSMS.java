@@ -9,8 +9,8 @@ import java.util.*;
 public class SendSMS {
     public static String OTP()
     {
-        Random rand = new Random();
-        return Integer.toString(rand.nextInt(10000));
+        Random random = new Random();
+        return ""+random.ints(1000, 9999).findFirst().getAsInt();
     }
     public static void sendSms(String num,String number) {
 //		System.out.println(message);
