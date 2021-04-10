@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="530.0" prefWidth="681.0" stylesheets="@ChatStyles.css" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ChatsController">
+<BorderPane prefHeight="530.0" prefWidth="681.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.ChatsController">
    <center>
       <VBox alignment="CENTER_LEFT" prefHeight="231.0" prefWidth="682.0" spacing="10.0" BorderPane.alignment="CENTER">
          <children>
